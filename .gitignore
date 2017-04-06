@@ -1,0 +1,3 @@
+node_modules
+.baseDir.*
+.DS_STORE

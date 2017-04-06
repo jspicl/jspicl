@@ -1,0 +1,24 @@
+{
+  "name": "jspicl",
+  "version": "0.0.2",
+  "description": "A javascript to pico-8 lua converter",
+  "main": "build/jspicl.js",
+  "module": "build/jspicl.es.js",
+  "scripts": {
+    "start": "rollup -c"
+  },
+  "keywords": [
+    "pico-8",
+    "javascript",
+    "lua",
+    "ast"
+  ],
+  "author": "Agron Kabashi",
+  "license": "MIT",
+  "config": {},
+  "devDependencies": {
+    "rollup": "^0.41.6",
+    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-node-resolve": "^3.0.0"
+  }
+}
