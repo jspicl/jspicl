@@ -1,11 +1,12 @@
 {
   "name": "jspicl",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "A javascript to pico-8 lua converter",
   "main": "build/jspicl.js",
   "module": "build/jspicl.es.js",
   "scripts": {
-    "start": "rollup -c"
+    "start": "rollup -c",
+    "prepublish": "npm start"
   },
   "keywords": [
     "pico-8",

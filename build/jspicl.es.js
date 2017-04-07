@@ -168,6 +168,11 @@ const Property = ({ key, value }) => {
   return `${name} = ${traverser(value)}`;
 };
 
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#sequence-expression
+const SequenceExpression = ({ expressions }) => {
+  return traverser(expressions, { arraySeparator: "\n" });
+};
+
 const SpreadProperty = () => {
   throw new Error(`${SpreadProperty.name} is not supported yet`);
 };
@@ -195,6 +200,7 @@ var expressionMapper = Object.freeze({
 	MemberExpression: MemberExpression,
 	ObjectExpression: ObjectExpression,
 	Property: Property,
+	SequenceExpression: SequenceExpression,
 	SpreadProperty: SpreadProperty,
 	UnaryExpression: UnaryExpression
 });
