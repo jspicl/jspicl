@@ -24,3 +24,9 @@ If you're using Rollup then you may want to consider using [rollup-plugin-jspicl
 | ES2015+ | Not all ES2015+ features are supported. Run your code through a transpiler first such as [bublé](https://www.npmjs.com/package/buble) or [babel](https://www.npmjs.com/package/babel). |
 | Object.assign | Only supports two arguments currently. `Object.assign(a, b)` |
 | AST | Not all declarations, expressions and statements have been implemented. More will be added as needed. |
+
+## Versioning
+This project uses semantic versioning
+
+## License
+MIT
