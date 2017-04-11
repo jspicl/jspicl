@@ -110,15 +110,45 @@ const BinaryExpression = ({ operator, left, right }) => {
   return `${leftExpression} ${luaOperator} ${rightExpression}`;
 };
 
+const generalPolyfills = {
+  "Math.max": "max",
+  "Math.floor": "flr",
+  "Object.assign": "merge"
+};
+
+const arrayPolyfills = {
+  "forEach": "foreach",
+  "push": "add",
+  "join": "join"
+};
+
+var polyfiller = (originalCallExpression = "", argumentList = "", { general = false, array = false } = {}) => {
+  let callExpression = originalCallExpression;
+
+  const callExpressionParts = callExpression.split(".");
+  const objectName = callExpressionParts[0];
+  const propertyName = callExpressionParts[callExpressionParts.length - 1];
+
+  if (general && generalPolyfills.hasOwnProperty(callExpression)) {
+    callExpression = generalPolyfills[callExpression];
+  } else if (array && callExpressionParts.length && arrayPolyfills.hasOwnProperty(propertyName)) {
+    callExpression = arrayPolyfills[propertyName];
+    argumentList = `${objectName}, ${argumentList}`;
+  }
+
+  return `${callExpression}(${argumentList})`;
+};
+
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#call-and-new-expressions
 const CallExpression = ({ callee, arguments: args }) => {
-  const argumentList = traverser(args, { arraySeparator: ", " });
+  let argumentList = traverser(args, { arraySeparator: ", " });
 
   if (callee.object) {
     const objectName = callee.object.name;
     const propertyName = callee.property.name;
-    const objectCallName = `${objectName}.${propertyName}`;
-    return `${objectCallName}(${argumentList})`;
+    let objectCallName = `${objectName}.${propertyName}`;
+
+    return polyfiller(objectCallName, argumentList, { general: true, array: true });
   }
   else {
     return `${callee.name}(${argumentList})`;
@@ -136,7 +166,7 @@ end`;
 };
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#identifier
-const Identifier = ({ name, value }) => value || name;
+const Identifier = ({ name, value }) => (value || name).replace(/\$/g, "_");
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#literal
 const Literal = ({ raw }) => raw;
@@ -214,6 +244,27 @@ var mapper = Object.assign({},
   statementMapper,
   expressionMapper);
 
+const polyfills = `
+function merge(target, source)
+  for key, value in pairs(source) do
+    target[key] = value
+  end
+  return target
+end
+function join(table, separator)
+  local result = ""
+  for value in all(table) do
+    result = result..separator..value
+  end
+
+  if (separator == "") then
+    result = sub(result, 2)
+  end
+
+  return result
+end
+`;
+
 var traverser = (item, { arraySeparator = "\n" } = {}) => {
   return Array.isArray(item) ? item.map(executor).join(arraySeparator) : executor(item);
 };
@@ -229,7 +280,9 @@ function executor (item) {
 
 var index = (source) => {
   const tree = esprima.parse(source);
-  return traverser(tree.body);
+  const lua = traverser(tree.body);
+
+  return `${polyfills}${lua}`;
 };
 
 module.exports = index;

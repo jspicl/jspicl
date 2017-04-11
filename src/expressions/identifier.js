@@ -1,2 +1,2 @@
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#identifier
-export const Identifier = ({ name, value }) => value || name;
+export const Identifier = ({ name, value }) => (value || name).replace(/\$/g, "_");
