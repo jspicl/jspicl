@@ -1,12 +1,12 @@
 # jspicl
 jspicl is a Javascript to PICO-8 Lua transpiler. The Javascript code is processed by Esprima which will create an AST that is used to generate Lua code as faithful to the original as possible.
 
-# Installation
+## Installation
 ```
 npm install jspicl --save-dev
 ```
 
-# Usage
+## Usage
 ```js
 import jspicl from "jspicl";
 
@@ -14,10 +14,12 @@ const javascriptCode = `...`;
 const generatedLuaCode = jspicl(javascriptCode);
 ```
 
-# Related projects
-If you're using Rollup then you may want to consider using [rollup-plugin-jspicl](https://github.com/AgronKabashi/rollup-plugin-jspicl).
+## Related projects
+[rollup-plugin-jspicl](https://github.com/AgronKabashi/rollup-plugin-jspicl) - Rollup plugin wrapper for jspicl
 
-# Known limitations
+[jspicl-mario-sample](https://github.com/AgronKabashi/jspicl-mario-sample) - Mario same game using jspicl
+
+## Known limitations
 
 |||
 |-|-|
