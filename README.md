@@ -17,7 +17,7 @@ const generatedLuaCode = jspicl(javascriptCode);
 ## Related projects
 [rollup-plugin-jspicl](https://github.com/AgronKabashi/rollup-plugin-jspicl) - Rollup plugin wrapper for jspicl
 
-[jspicl-mario-sample](https://github.com/AgronKabashi/jspicl-mario-sample) - Mario same game using jspicl
+[jspicl-mario-sample](https://github.com/AgronKabashi/jspicl-mario-sample) - Mario sample game using jspicl
 
 ## Known limitations
 
