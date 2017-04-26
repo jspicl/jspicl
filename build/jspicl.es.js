@@ -171,9 +171,9 @@ const Literal = ({ raw }) => raw;
 const LogicalExpression = ({ operator, left, right }) => {
   const leftExpression = traverser(left);
   const rightExpression = traverser(right);
-  const op = operator === "||" ? "OR" : "AND";
+  const logicalOperator = operator === "||" ? "or" : "and";
 
-  return `${leftExpression} ${op} ${rightExpression}`;
+  return `${leftExpression} ${logicalOperator} ${rightExpression}`;
 };
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#member-expression

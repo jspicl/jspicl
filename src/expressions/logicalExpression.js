@@ -4,7 +4,7 @@ import traverser from "../traverser";
 export const LogicalExpression = ({ operator, left, right }) => {
   const leftExpression = traverser(left);
   const rightExpression = traverser(right);
-  const op = operator === "||" ? "OR" : "AND";
+  const logicalOperator = operator === "||" ? "or" : "and";
 
-  return `${leftExpression} ${op} ${rightExpression}`;
+  return `${leftExpression} ${logicalOperator} ${rightExpression}`;
 };
