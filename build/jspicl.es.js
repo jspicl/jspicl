@@ -151,6 +151,16 @@ const CallExpression = ({ callee, arguments: args }) => {
   }
 };
 
+// import traverser from "../traverser";
+
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#conditional-expression
+const ConditionalExpression = (/* { test, consequent, alternate } */) => {
+  // const testExpression = traverser(test);
+  // const consequentPath = traverser(consequent);
+  // const alternatePath = traverser(alternate);
+  throw new Error("Conditional expressions such as 'a ? b : c' are not supported.");
+};
+
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#function-expression
 const FunctionExpression = ({ id, params, body }) => {
   const { name = "" } = id || {};
@@ -223,6 +233,7 @@ var expressionMapper = Object.freeze({
 	AssignmentExpression: AssignmentExpression,
 	BinaryExpression: BinaryExpression,
 	CallExpression: CallExpression,
+	ConditionalExpression: ConditionalExpression,
 	FunctionExpression: FunctionExpression,
 	Identifier: Identifier,
 	Literal: Literal,
@@ -235,7 +246,7 @@ var expressionMapper = Object.freeze({
 	UnaryExpression: UnaryExpression
 });
 
-var mapper = Object.assign({},
+var mappers = Object.assign({},
   declarationMapper,
   statementMapper,
   expressionMapper);
@@ -270,7 +281,9 @@ function executor (item) {
     return;
   }
 
-  const result = mapper[item.type] && mapper[item.type](item);
+  const mapper = mappers[item.type];
+
+  const result = mapper && mapper(item);
   return result !== undefined ? result : console.log(`Traverser: There is no handler for ${item.type}, skipping.`); // eslint-disable-line no-console
 }
 

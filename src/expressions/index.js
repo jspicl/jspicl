@@ -2,6 +2,7 @@ export * from "./arrayExpression";
 export * from "./assignmentExpression";
 export * from "./binaryExpression";
 export * from "./callExpression";
+export * from "./conditionalExpression";
 export * from "./functionExpression";
 export * from "./identifier";
 export * from "./literal";
