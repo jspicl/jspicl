@@ -175,11 +175,22 @@ const FunctionExpression = ({ id, params, body }) => {
 end`;
 };
 
+const specialCases = {
+  undefined: "nil"
+};
+
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#identifier
-const Identifier = ({ name, value }) => (value || name).replace(/\$/g, "_");
+const Identifier = ({ name, value }) => {
+  const identifier = (value || name).replace(/\$/g, "_");
+  return specialCases[identifier] || identifier;
+};
+
+const specialCases$1 = {
+  null: "nil"
+};
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#literal
-const Literal = ({ raw }) => raw;
+const Literal = ({ raw }) => specialCases$1[raw] || raw;
 
 const decorateExpression = (type, operator, expression) => type === LogicalExpression.name && operator === "and" ? `(${expression})` : expression;
 
