@@ -57,9 +57,9 @@ const IfStatement = ({ test, consequent, alternate }) => {
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#return-statement
 const ReturnStatement = ({ argument }) => {
-  const value = traverser(argument) || "nil";
+  const value = traverser(argument);
 
-  return `return ${value}`;
+  return value ? `return ${value}` : "do return end";
 };
 
 
