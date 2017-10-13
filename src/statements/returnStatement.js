@@ -4,5 +4,5 @@ import traverser from "../traverser";
 export const ReturnStatement = ({ argument }) => {
   const value = traverser(argument) || "nil";
 
-  return `return ${value}`;
+  return value == "nil" ? `do return end` : `return ${value}`;
 };
