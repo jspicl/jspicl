@@ -2,17 +2,11 @@ import nodeResolve from "rollup-plugin-node-resolve";
 import commonjs from "rollup-plugin-commonjs";
 
 export default {
-  entry: "src/index.js",
-  targets: [
-    {
-      dest: "build/jspicl.es.js",
-      format: "es"
-    },
-    {
-      dest: "build/jspicl.js",
-      format: "cjs"
-    }
-  ],
+  input: "src/index.js",
+  output: {
+    file: "build/jspicl.js",
+    format: "cjs"
+  },
   external: ["esprima"],
   plugins: [
     nodeResolve({
