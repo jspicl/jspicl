@@ -1,10 +1,10 @@
 import esprima from "esprima";
-import traverser from "./traverser";
+import transpile from "./transpile";
 import { polyfills } from "./constants";
 
-export default (source) => {
+export default function jspicl (source) {
   const tree = esprima.parse(source);
-  const lua = traverser(tree.body);
+  const lua = transpile(tree.body);
 
   return `${polyfills}${lua}`;
 };

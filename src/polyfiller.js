@@ -1,28 +1,22 @@
-const generalPolyfills = {
-  "Math.max": "max",
-  "Math.floor": "flr",
-  "Object.assign": "merge"
-};
+import { arrayPolyfills, generalPolyfills } from "./constants";
 
-const arrayPolyfills = {
-  "forEach": "foreach",
-  "push": "add",
-  "join": "join"
-};
+export default function polyfiller (args = {}) {
+  const {
+    objectName = "",
+    functionName = "",
+    argumentList = "",
+    general = false,
+    array = false
+  } = args;
 
-export default (originalCallExpression = "", argumentList = "", { general = false, array = false } = {}) => {
-  let callExpression = originalCallExpression;
-
-  const callExpressionParts = callExpression.split(".");
-  const objectName = callExpressionParts[0];
-  const propertyName = callExpressionParts[callExpressionParts.length - 1];
+  const callExpression = objectName && `${objectName}.${functionName}` || functionName;
 
   if (general && generalPolyfills.hasOwnProperty(callExpression)) {
-    callExpression = generalPolyfills[callExpression];
-  } else if (array && callExpressionParts.length && arrayPolyfills.hasOwnProperty(propertyName)) {
-    callExpression = arrayPolyfills[propertyName];
-    argumentList = `${objectName}, ${argumentList}`;
+    return generalPolyfills[callExpression](argumentList);
+  }
+  else if (array && objectName && functionName && arrayPolyfills.hasOwnProperty(functionName)) {
+    return arrayPolyfills[functionName](objectName, argumentList);
   }
 
   return `${callExpression}(${argumentList})`;
-};
+}

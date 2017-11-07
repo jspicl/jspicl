@@ -1,9 +1,9 @@
-import traverser from "../traverser";
+import transpile from "../transpile";
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#unary-expression
 export const UnaryExpression = ({ operator, argument }) => {
   const { type } = argument;
-  const value = traverser(argument);
+  const value = transpile(argument);
   const luaOperator = operator === "!" ? "not " : operator;
   const expression = type === UnaryExpression.name || operator !== "~" ? value : `(${value})`;
 

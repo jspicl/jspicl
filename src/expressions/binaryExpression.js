@@ -1,14 +1,14 @@
-import traverser from "../traverser";
+import transpile from "../transpile";
 
 const operatorTable = {
   "!==": "!=",
-  "===": "==",
+  "===": "=="
 };
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#binary-expression
 export const BinaryExpression = ({ operator, left, right }) => {
-  let leftExpression = traverser(left);
-  let rightExpression = traverser(right);
+  let leftExpression = transpile(left);
+  let rightExpression = transpile(right);
   const luaOperator = operatorTable[operator] || operator;
 
   if (luaOperator === "*" || luaOperator === "/" || luaOperator === "%") {
@@ -17,7 +17,7 @@ export const BinaryExpression = ({ operator, left, right }) => {
     }
 
     if (right.type === BinaryExpression.name) {
-      rightExpression = `(${leftExpression})`;
+      rightExpression = `(${rightExpression})`;
     }
   }
 
