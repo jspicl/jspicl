@@ -1,5 +1,4 @@
-import traverser from "../traverser";
+import transpile from "../transpile";
 
-export const VariableDeclaration = ({ declarations }) => {
-  return traverser(declarations);
-};
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#variable-declaration
+export const VariableDeclaration = ({ declarations }) => transpile(declarations);

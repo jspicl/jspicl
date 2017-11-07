@@ -11,5 +11,4 @@ export * from "./memberExpression";
 export * from "./objectExpression";
 export * from "./property";
 export * from "./sequenceExpression";
-export * from "./spreadProperty";
 export * from "./unaryExpression";

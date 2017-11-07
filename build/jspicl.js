@@ -4,23 +4,26 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var esprima = _interopDefault(require('esprima'));
 
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#function-declaration
 const FunctionDeclaration = ({ id, body, params }) => {
   const { name = "" } = id || {};
-  const argumentList = traverser(params, { arraySeparator: ", " });
-  const functionContent = traverser(body);
+  const argumentList = transpile(params, { arraySeparator: ", " });
+  const functionContent = transpile(body);
+
   return `
 function ${name}(${argumentList})
   ${functionContent}
 end`;
 };
 
-const VariableDeclaration = ({ declarations }) => {
-  return traverser(declarations);
-};
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#variable-declaration
+const VariableDeclaration = ({ declarations }) => transpile(declarations);
 
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#variable-declaration
 const VariableDeclarator = ({ id, init }) => {
   const { name } = id;
-  const value = traverser(init) || "nil";
+  const value = transpile(init) || "nil";
+
   return `local ${name} = ${value}`;
 };
 
@@ -32,69 +35,30 @@ var declarationMapper = Object.freeze({
 	VariableDeclarator: VariableDeclarator
 });
 
-// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#block-statement
-const BlockStatement = ({ body }) => {
-  return traverser(body);
-};
-
-// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#expression-statement
-const ExpressionStatement = ({ expression }) => {
-  return traverser(expression);
-};
-
-// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#if-statement
-const IfStatement = ({ test, consequent, alternate }) => {
-  const testExpression = traverser(test);
-  const statementBody = traverser(consequent);
-  const alternateStatement = traverser(alternate);
-
-  const closingStatement = alternateStatement && `else${alternateStatement}` || "end";
-
-  return `if (${testExpression}) then
-    ${statementBody}
-  ${closingStatement}`;
-};
-
-// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#return-statement
-const ReturnStatement = ({ argument }) => {
-  const value = traverser(argument);
-
-  return value ? `return ${value}` : "do return end";
-};
-
-
-
-var statementMapper = Object.freeze({
-	BlockStatement: BlockStatement,
-	ExpressionStatement: ExpressionStatement,
-	IfStatement: IfStatement,
-	ReturnStatement: ReturnStatement
-});
-
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#array-expression
 const ArrayExpression = ({ elements }) => {
   return `{
-    ${traverser(elements, { arraySeparator: ", " })}
+    ${transpile(elements, { arraySeparator: ", " })}
   }`;
 };
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#assignment-expression
 const AssignmentExpression = ({ operator, left, right }) => {
-  const leftExpression = traverser(left);
-  const rightExpression = traverser(right);
+  const leftExpression = transpile(left);
+  const rightExpression = transpile(right);
 
   return `${leftExpression} ${operator} ${rightExpression}`;
 };
 
 const operatorTable = {
   "!==": "!=",
-  "===": "==",
+  "===": "=="
 };
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#binary-expression
 const BinaryExpression = ({ operator, left, right }) => {
-  let leftExpression = traverser(left);
-  let rightExpression = traverser(right);
+  let leftExpression = transpile(left);
+  let rightExpression = transpile(right);
   const luaOperator = operatorTable[operator] || operator;
 
   if (luaOperator === "*" || luaOperator === "/" || luaOperator === "%") {
@@ -103,76 +67,75 @@ const BinaryExpression = ({ operator, left, right }) => {
     }
 
     if (right.type === BinaryExpression.name) {
-      rightExpression = `(${leftExpression})`;
+      rightExpression = `(${rightExpression})`;
     }
   }
 
   return `${leftExpression} ${luaOperator} ${rightExpression}`;
 };
 
-const generalPolyfills = {
-  "Math.max": "max",
-  "Math.floor": "flr",
-  "Object.assign": "merge"
-};
+function polyfiller (args = {}) {
+  const {
+    objectName = "",
+    functionName = "",
+    argumentList = "",
+    general = false,
+    array = false
+  } = args;
 
-const arrayPolyfills = {
-  "forEach": "foreach",
-  "push": "add",
-  "join": "join"
-};
-
-var polyfiller = (originalCallExpression = "", argumentList = "", { general = false, array = false } = {}) => {
-  let callExpression = originalCallExpression;
-
-  const callExpressionParts = callExpression.split(".");
-  const objectName = callExpressionParts[0];
-  const propertyName = callExpressionParts[callExpressionParts.length - 1];
+  const callExpression = objectName && `${objectName}.${functionName}` || functionName;
 
   if (general && generalPolyfills.hasOwnProperty(callExpression)) {
-    callExpression = generalPolyfills[callExpression];
-  } else if (array && callExpressionParts.length && arrayPolyfills.hasOwnProperty(propertyName)) {
-    callExpression = arrayPolyfills[propertyName];
-    argumentList = `${objectName}, ${argumentList}`;
+    return generalPolyfills[callExpression](argumentList);
+  }
+  else if (array && objectName && functionName && arrayPolyfills.hasOwnProperty(functionName)) {
+    return arrayPolyfills[functionName](objectName, argumentList);
   }
 
   return `${callExpression}(${argumentList})`;
-};
+}
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#call-and-new-expressions
 const CallExpression = ({ callee, arguments: args }) => {
-  let argumentList = traverser(args, { arraySeparator: ", " });
+  const argumentList = transpile(args, { arraySeparator: ", " });
 
+  // Is it a function inside an object?
   if (callee.object) {
-    const objectName = callee.object.name;
-    const propertyName = callee.property.name;
-    let objectCallName = `${objectName}.${propertyName}`;
+    const { name: objectName } = callee.object;
+    const { name: functionName } = callee.property;
 
-    return polyfiller(objectCallName, argumentList, { general: true, array: true });
+    return polyfiller({ objectName, functionName, argumentList, general: true, array: true });
   }
-  else {
-    return `${callee.name}(${argumentList})`;
-  }
+
+  // Regular function call
+  return `${callee.name}(${argumentList})`;
 };
 
-// import traverser from "../traverser";
+// import transpile from "../transpile";
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#conditional-expression
 const ConditionalExpression = (/* { test, consequent, alternate } */) => {
-  // const testExpression = traverser(test);
-  // const consequentPath = traverser(consequent);
-  // const alternatePath = traverser(alternate);
-  throw new Error("Conditional expressions such as 'a ? b : c' are not supported.");
+  // const testExpression = transpile(test);
+  // const consequentPath = transpile(consequent);
+  // const alternatePath = transpile(alternate);
+
+  // return `if (${testExpression}) then
+  //   ${consequentPath}
+  // else
+  //   ${alternatePath}
+  // end`;
+  throw new Error("Conditional expressions such as 'a ? b : c;' are not supported.");
 };
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#function-expression
 const FunctionExpression = ({ id, params, body }) => {
   const { name = "" } = id || {};
-  const argumentList = traverser(params, { arraySeparator: ", " });
-  const functionContent = traverser(body);
+  const argumentList = transpile(params, { arraySeparator: ", " });
+  const functionContent = transpile(body);
+
   return `function ${name}(${argumentList})
-  ${functionContent}
-end`;
+    ${functionContent}
+  end`;
 };
 
 const specialCases = {
@@ -197,16 +160,16 @@ const decorateExpression = (type, operator, expression) => type === LogicalExpre
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#logical-expression
 const LogicalExpression = ({ operator, left, right }) => {
   const logicalOperator = operator === "||" ? "or" : "and";
-  const leftExpression = decorateExpression(left.type, logicalOperator, traverser(left));
-  const rightExpression = decorateExpression(right.type, logicalOperator, traverser(right));
+  const leftExpression = decorateExpression(left.type, logicalOperator, transpile(left));
+  const rightExpression = decorateExpression(right.type, logicalOperator, transpile(right));
 
   return `${leftExpression} ${logicalOperator} ${rightExpression}`;
 };
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#member-expression
 const MemberExpression = ({ object, property }) => {
-  const objectName = traverser(object);
-  const propertyName = traverser(property);
+  const objectName = transpile(object);
+  const propertyName = transpile(property);
 
   return `${objectName}.${propertyName}`;
 };
@@ -214,7 +177,7 @@ const MemberExpression = ({ object, property }) => {
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#object-expression
 const ObjectExpression = ({ properties }) => {
   return `{
-    ${traverser(properties, { arraySeparator: ",\n" })}
+    ${transpile(properties, { arraySeparator: ",\n" })}
   }`;
 };
 
@@ -222,22 +185,18 @@ const ObjectExpression = ({ properties }) => {
 const Property = ({ key, value }) => {
   const { name } = key;
 
-  return `${name} = ${traverser(value)}`;
+  return `${name} = ${transpile(value)}`;
 };
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#sequence-expression
 const SequenceExpression = ({ expressions }) => {
-  return traverser(expressions, { arraySeparator: "\n" });
-};
-
-const SpreadProperty = () => {
-  throw new Error(`${SpreadProperty.name} is not supported yet`);
+  return transpile(expressions, { arraySeparator: "\n" });
 };
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#unary-expression
 const UnaryExpression = ({ operator, argument }) => {
   const { type } = argument;
-  const value = traverser(argument);
+  const value = transpile(argument);
   const luaOperator = operator === "!" ? "not " : operator;
   const expression = type === UnaryExpression.name || operator !== "~" ? value : `(${value})`;
 
@@ -260,20 +219,82 @@ var expressionMapper = Object.freeze({
 	ObjectExpression: ObjectExpression,
 	Property: Property,
 	SequenceExpression: SequenceExpression,
-	SpreadProperty: SpreadProperty,
 	UnaryExpression: UnaryExpression
 });
 
-var mappers = Object.assign({},
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#block-statement
+const BlockStatement = ({ body }) => {
+  return transpile(body);
+};
+
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#expression-statement
+const ExpressionStatement = ({ expression }) => {
+  return transpile(expression);
+};
+
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#if-statement
+const IfStatement = ({ test, consequent, alternate }) => {
+  const testExpression = transpile(test);
+  const statementBody = transpile(consequent);
+  const alternateStatement = transpile(alternate);
+
+  const alternateIsIfStatement = alternate && alternate.type === IfStatement.name;
+
+  let closingStatement = "end";
+  if (alternateStatement) {
+    closingStatement = alternateIsIfStatement ? `else${alternateStatement}` : `else ${alternateStatement} end`;
+  }
+
+  return `if (${testExpression}) then
+    ${statementBody}
+  ${closingStatement}`;
+};
+
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#return-statement
+const ReturnStatement = ({ argument }) => {
+  const value = transpile(argument);
+
+  return value ? `return ${value}` : "do return end";
+};
+
+
+
+var statementMapper = Object.freeze({
+	BlockStatement: BlockStatement,
+	ExpressionStatement: ExpressionStatement,
+	IfStatement: IfStatement,
+	ReturnStatement: ReturnStatement
+});
+
+const mappers = Object.assign({},
   declarationMapper,
-  statementMapper,
-  expressionMapper);
+  expressionMapper,
+  statementMapper
+);
+
+const generalPolyfills = {
+  "Math.max": values => `max(${values})`,
+  "Math.floor": value => `flr(${value})`,
+  "Object.assign": values => `merge({${values}})`,
+  "console.log": ([argument]) => `print(${argument})`
+};
+
+const arrayPolyfills = {
+  forEach: (context, args) => `foreach(${context}, ${args})`,
+  push: (context, args) => `add(${context}, ${args})`,
+  join: (context, args) => `join(${context}, ${args})`
+};
 
 const polyfills = `
-function merge(target, source)
-  for key, value in pairs(source) do
-    target[key] = value
+function merge(sources)
+  local target = sources[1]
+  del(sources, target)
+  for source in all(sources) do
+    for key, value in pairs(source) do
+      target[key] = value
+    end
   end
+
   return target
 end
 function join(table, separator)
@@ -282,7 +303,7 @@ function join(table, separator)
     result = result..separator..value
   end
 
-  if (separator == "") then
+  if (separator != "") then
     result = sub(result, 2)
   end
 
@@ -290,26 +311,27 @@ function join(table, separator)
 end
 `;
 
-var traverser = (item, { arraySeparator = "\n" } = {}) => {
-  return Array.isArray(item) ? item.map(executor).join(arraySeparator) : executor(item);
-};
+function transpile (node, { arraySeparator = "\n" } = {}) {
+  return Array.isArray(node) ? node.map(executor).join(arraySeparator) : executor(node);
+}
 
-function executor (item) {
-  if (!item) {
+function executor (node) {
+  if (!node) {
     return;
   }
 
-  const mapper = mappers[item.type];
+  // Attempt to find the specific declaration, expression or statement
+  const mapper = mappers[node.type];
 
-  const result = mapper && mapper(item);
-  return result !== undefined ? result : console.log(`Traverser: There is no handler for ${item.type}, skipping.`); // eslint-disable-line no-console
+  const result = mapper && mapper(node);
+  return result !== undefined ? result : console.error(`Transpile: There is no handler for ${node.type}, skipping.`); // eslint-disable-line no-console
 }
 
-var index = (source) => {
+function jspicl (source) {
   const tree = esprima.parse(source);
-  const lua = traverser(tree.body);
+  const lua = transpile(tree.body);
 
   return `${polyfills}${lua}`;
-};
+}
 
-module.exports = index;
+module.exports = jspicl;

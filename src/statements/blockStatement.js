@@ -1,6 +1,6 @@
-import traverser from "../traverser";
+import transpile from "../transpile";
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#block-statement
 export const BlockStatement = ({ body }) => {
-  return traverser(body);
+  return transpile(body);
 };

@@ -1,18 +1,18 @@
-import traverser from "../traverser";
+import transpile from "../transpile";
 import polyfiller from "../polyfiller";
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#call-and-new-expressions
 export const CallExpression = ({ callee, arguments: args }) => {
-  let argumentList = traverser(args, { arraySeparator: ", " });
+  const argumentList = transpile(args, { arraySeparator: ", " });
 
+  // Is it a function inside an object?
   if (callee.object) {
-    const objectName = callee.object.name;
-    const propertyName = callee.property.name;
-    let objectCallName = `${objectName}.${propertyName}`;
+    const { name: objectName } = callee.object;
+    const { name: functionName } = callee.property;
 
-    return polyfiller(objectCallName, argumentList, { general: true, array: true });
+    return polyfiller({ objectName, functionName, argumentList, general: true, array: true });
   }
-  else {
-    return `${callee.name}(${argumentList})`;
-  }
+
+  // Regular function call
+  return `${callee.name}(${argumentList})`;
 };

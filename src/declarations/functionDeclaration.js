@@ -1,9 +1,11 @@
-import traverser from "../traverser";
+import transpile from "../transpile";
 
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#function-declaration
 export const FunctionDeclaration = ({ id, body, params }) => {
   const { name = "" } = id || {};
-  const argumentList = traverser(params, { arraySeparator: ", " });
-  const functionContent = traverser(body);
+  const argumentList = transpile(params, { arraySeparator: ", " });
+  const functionContent = transpile(body);
+
   return `
 function ${name}(${argumentList})
   ${functionContent}

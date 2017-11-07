@@ -1,17 +1,36 @@
 import * as declarationMapper from "./declarations";
-import * as statementMapper from "./statements";
 import * as expressionMapper from "./expressions";
+import * as statementMapper from "./statements";
 
-export default Object.assign({},
+export const mappers = Object.assign({},
   declarationMapper,
-  statementMapper,
-  expressionMapper);
+  expressionMapper,
+  statementMapper
+);
+
+export const generalPolyfills = {
+  "Math.max": values => `max(${values})`,
+  "Math.floor": value => `flr(${value})`,
+  "Object.assign": values => `merge({${values}})`,
+  "console.log": ([argument]) => `print(${argument})`
+};
+
+export const arrayPolyfills = {
+  forEach: (context, args) => `foreach(${context}, ${args})`,
+  push: (context, args) => `add(${context}, ${args})`,
+  join: (context, args) => `join(${context}, ${args})`
+};
 
 export const polyfills = `
-function merge(target, source)
-  for key, value in pairs(source) do
-    target[key] = value
+function merge(sources)
+  local target = sources[1]
+  del(sources, target)
+  for source in all(sources) do
+    for key, value in pairs(source) do
+      target[key] = value
+    end
   end
+
   return target
 end
 function join(table, separator)
@@ -20,7 +39,7 @@ function join(table, separator)
     result = result..separator..value
   end
 
-  if (separator == "") then
+  if (separator != "") then
     result = sub(result, 2)
   end
 

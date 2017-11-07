@@ -3,7 +3,7 @@ jspicl is a Javascript to PICO-8 Lua transpiler. The Javascript code is processe
 
 ## Installation
 ```
-npm install jspicl --save-dev
+npm install jspicl
 ```
 
 ## Usage
@@ -24,7 +24,8 @@ const generatedLuaCode = jspicl(javascriptCode);
 |||
 |-|-|
 | ES2015+ | Not all ES2015+ features are supported. Run your code through a transpiler first such as [bublé](https://www.npmjs.com/package/buble) or [babel](https://www.npmjs.com/package/babel). |
-| Object.assign | Only supports two arguments currently. `Object.assign(a, b)` |
+| Array methods | Not all prototype methods have been polyfilled yet. |
+| Math.max | Only supports two arguments |
 | AST | Not all declarations, expressions and statements have been implemented. More will be added as needed. |
 
 ## Versioning

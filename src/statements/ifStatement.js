@@ -1,12 +1,17 @@
-import traverser from "../traverser";
+import transpile from "../transpile";
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#if-statement
 export const IfStatement = ({ test, consequent, alternate }) => {
-  const testExpression = traverser(test);
-  const statementBody = traverser(consequent);
-  const alternateStatement = traverser(alternate);
+  const testExpression = transpile(test);
+  const statementBody = transpile(consequent);
+  const alternateStatement = transpile(alternate);
 
-  const closingStatement = alternateStatement && `else${alternateStatement}` || "end";
+  const alternateIsIfStatement = alternate && alternate.type === IfStatement.name;
+
+  let closingStatement = "end";
+  if (alternateStatement) {
+    closingStatement = alternateIsIfStatement ? `else${alternateStatement}` : `else ${alternateStatement} end`;
+  }
 
   return `if (${testExpression}) then
     ${statementBody}
