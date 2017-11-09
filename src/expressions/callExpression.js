@@ -7,10 +7,10 @@ export const CallExpression = ({ callee, arguments: args }) => {
 
   // Is it a function inside an object?
   if (callee.object) {
-    const { name: objectName } = callee.object;
-    const { name: functionName } = callee.property;
+    const context = transpile(callee.object);
+    const functionName = transpile(callee.property);
 
-    return polyfiller({ objectName, functionName, argumentList, general: true, array: true });
+    return polyfiller({ context, functionName, argumentList, general: true, array: true });
   }
 
   // Regular function call

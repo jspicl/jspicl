@@ -76,20 +76,20 @@ const BinaryExpression = ({ operator, left, right }) => {
 
 function polyfiller (args = {}) {
   const {
-    objectName = "",
+    context = "",
     functionName = "",
     argumentList = "",
     general = false,
     array = false
   } = args;
 
-  const callExpression = objectName && `${objectName}.${functionName}` || functionName;
+  const callExpression = context && `${context}.${functionName}` || functionName;
 
   if (general && generalPolyfills.hasOwnProperty(callExpression)) {
     return generalPolyfills[callExpression](argumentList);
   }
-  else if (array && objectName && functionName && arrayPolyfills.hasOwnProperty(functionName)) {
-    return arrayPolyfills[functionName](objectName, argumentList);
+  else if (array && context && functionName && arrayPolyfills.hasOwnProperty(functionName)) {
+    return arrayPolyfills[functionName](context, argumentList);
   }
 
   return `${callExpression}(${argumentList})`;
@@ -101,10 +101,10 @@ const CallExpression = ({ callee, arguments: args }) => {
 
   // Is it a function inside an object?
   if (callee.object) {
-    const { name: objectName } = callee.object;
-    const { name: functionName } = callee.property;
+    const context = transpile(callee.object);
+    const functionName = transpile(callee.property);
 
-    return polyfiller({ objectName, functionName, argumentList, general: true, array: true });
+    return polyfiller({ context, functionName, argumentList, general: true, array: true });
   }
 
   // Regular function call

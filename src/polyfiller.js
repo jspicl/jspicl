@@ -2,20 +2,20 @@ import { arrayPolyfills, generalPolyfills } from "./constants";
 
 export default function polyfiller (args = {}) {
   const {
-    objectName = "",
+    context = "",
     functionName = "",
     argumentList = "",
     general = false,
     array = false
   } = args;
 
-  const callExpression = objectName && `${objectName}.${functionName}` || functionName;
+  const callExpression = context && `${context}.${functionName}` || functionName;
 
   if (general && generalPolyfills.hasOwnProperty(callExpression)) {
     return generalPolyfills[callExpression](argumentList);
   }
-  else if (array && objectName && functionName && arrayPolyfills.hasOwnProperty(functionName)) {
-    return arrayPolyfills[functionName](objectName, argumentList);
+  else if (array && context && functionName && arrayPolyfills.hasOwnProperty(functionName)) {
+    return arrayPolyfills[functionName](context, argumentList);
   }
 
   return `${callExpression}(${argumentList})`;
