@@ -28,27 +28,23 @@ export const arrayPolyfills = {
 export const polyfills = `
 function objectKeys(source)
   local keys = {}
-  local i = 1
   for key, value in pairs(source) do
-    keys[i] = key
-    i = 1+i
+    keys[#keys+1] = key
   end
 
   return keys
 end
 function objectValues(source)
   local values = {}
-  local i = 1
   for key, value in pairs(source) do
-    values[i] = value
-    i = 1+i
+    values[#values+1] = value
   end
 
   return values
 end
 function objectEntries(source)
   local entries = {}
-  for key,value in pairs(source) do
+  for key, value in pairs(source) do
     entries[#entries+1] = {key,value}
   end
 
