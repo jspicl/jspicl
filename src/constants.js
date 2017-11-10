@@ -16,7 +16,7 @@ export const generalPolyfills = {
   "Object.values": values => `kvpMap(${values}, function(key, value) return value end)`,
   "Object.entries": values => `kvpMap(${values}, function(key, value) return {key, value} end)`,
   "Math.random": () => "rnd(1)",
-  "console.log": ([argument]) => `print(${argument})`
+  "console.log": argument => `print(${argument})`
 };
 
 export const arrayPolyfills = {
