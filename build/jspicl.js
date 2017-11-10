@@ -276,7 +276,8 @@ const generalPolyfills = {
   "Math.max": values => `max(${values})`,
   "Math.floor": value => `flr(${value})`,
   "Object.assign": values => `merge({${values}})`,
-  "console.log": ([argument]) => `print(${argument})`
+  "console.log": ([argument]) => `print(${argument})`,
+  "Math.random": () => 'rnd(1)'
 };
 
 const arrayPolyfills = {
