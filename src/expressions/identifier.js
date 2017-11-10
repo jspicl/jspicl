@@ -1,5 +1,6 @@
 const specialCases = {
-  undefined: "nil"
+  undefined: "nil",
+  toString: "toString" // Because of fucking misshaps this will have to do
 };
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#identifier

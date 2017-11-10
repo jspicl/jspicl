@@ -16,7 +16,7 @@ export const generalPolyfills = {
   "Object.values": values => `kvpMap(${values}, function(key, value) return value end)`,
   "Object.entries": values => `kvpMap(${values}, function(key, value) return {key, value} end)`,
   "Math.random": () => "rnd(1)",
-  "console.log": ([argument]) => `print(${argument})`
+  "console.log": (argument) => `print(${argument})`
 };
 
 export const arrayPolyfills = {
@@ -24,7 +24,8 @@ export const arrayPolyfills = {
   push: (context, args) => `add(${context}, ${args})`,
   join: (context, args) => `join(${context}, ${args})`,
   map: (context, args) => `_map(${context}, ${args})`,
-  includes: (context, arg) => `includes(${context}, ${arg})`
+  includes: (context, arg) => `includes(${context}, ${arg})`,
+  toString: (context) => `toString(${context})`
 };
 
 // TODO: The polyfills should have a prefix to avoid name clashing
@@ -74,5 +75,27 @@ function _map(table, args)
     add(result, args(value))
   end
   return result
+end
+function toString(collection)
+  local output = "";
+  if #collection == 0 then
+      return output
+  end
+
+  output = tostr(collection[1])
+
+  if #collection > 1 then
+      for i = 2, #collection do
+          item = collection[i]
+          value = ""
+          if type(item) == "string" then
+              value = item
+          else
+              value = tostr(item)
+          end
+          output = output .. ", " .. value
+      end
+  end 
+  return output
 end
 `;
