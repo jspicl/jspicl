@@ -67,10 +67,10 @@ function _map(table, args)
 end
 function _filter(collection, predicate)
   local filteredValues = {}
-  for value in all(table) do
-      local result = predicate(collection[i])
+  for value in all(collection) do
+      local result = predicate(value)
       if result then
-        add(filteredValues, result)
+        add(filteredValues, value)
       end
   end
   return filteredValues
