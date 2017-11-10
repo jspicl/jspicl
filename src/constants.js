@@ -14,6 +14,7 @@ export const generalPolyfills = {
   "Object.assign": values => `merge({${values}})`,
   "Object.keys": values => `objectKeys(${values})`,
   "Object.values": values => `objectValues(${values})`,
+  "Object.entries": values => `objectEntries(${values})`,
   "Math.random": () => "rnd(1)",
   "console.log": ([argument]) => `print(${argument})`
 };
@@ -44,6 +45,14 @@ function objectValues(source)
   end
 
   return values
+end
+function objectEntries(source)
+  local entries = {}
+  for key,value in pairs(source) do
+    entries[#entries+1] = {key,value}
+  end
+
+  return entries
 end
 function merge(sources)
   local target = sources[1]
