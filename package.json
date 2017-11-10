@@ -7,7 +7,8 @@
   "scripts": {
     "start": "rollup -c",
     "prepublishOnly": "npm start",
-    "tester": "node -r @std/esm tester.js"
+    "tester": "node -r @std/esm tester.js",
+    "test": "mocha --compilers js:babel-core/register"
   },
   "repository": {
     "type": "git",
@@ -26,9 +27,11 @@
     "@std/esm": "^0.19.7",
     "babel-eslint": "^8.2.1",
     "eslint": "^4.16.0",
+    "mocha": "^5.0.0",
     "rollup": "^0.55.0",
     "rollup-plugin-commonjs": "8.2.x",
-    "rollup-plugin-node-resolve": "3.0.x"
+    "rollup-plugin-node-resolve": "3.0.x",
+    "sinon": "^4.2.1"
   },
   "@std": {
     "esm": "all"
