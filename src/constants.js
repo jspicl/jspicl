@@ -12,9 +12,9 @@ export const generalPolyfills = {
   "Math.max": values => `max(${values})`,
   "Math.floor": value => `flr(${value})`,
   "Object.assign": values => `merge({${values}})`,
-  "Object.keys": values => `objectKeys(${values})`,
-  "Object.values": values => `objectValues(${values})`,
-  "Object.entries": values => `objectEntries(${values})`,
+  "Object.keys": values => `kvpMap(${values}, function(key, value) return key end)`,
+  "Object.values": values => `kvpMap(${values}, function(key, value) return value end)`,
+  "Object.entries": values => `kvpMap(${values}, function(key, value) return {key, value} end)`,
   "Math.random": () => "rnd(1)",
   "console.log": ([argument]) => `print(${argument})`
 };
@@ -26,29 +26,13 @@ export const arrayPolyfills = {
 };
 
 export const polyfills = `
-function objectKeys(source)
-  local keys = {}
+function kvpMap(source, mapper)
+  local mappedValues = {}
   for key, value in pairs(source) do
-    keys[#keys+1] = key
+    add(mappedValues, mapper(key, value))
   end
 
-  return keys
-end
-function objectValues(source)
-  local values = {}
-  for key, value in pairs(source) do
-    values[#values+1] = value
-  end
-
-  return values
-end
-function objectEntries(source)
-  local entries = {}
-  for key, value in pairs(source) do
-    entries[#entries+1] = {key,value}
-  end
-
-  return entries
+  return mappedValues
 end
 function merge(sources)
   local target = sources[1]
