@@ -22,7 +22,7 @@ export const arrayPolyfills = {
   join: (context, args) => `join(${context}, ${args})`,
   map: (context, args) => `_map(${context}, ${args})`,
   includes: (context, arg) => `includes(${context}, ${arg})`,
-  filter: (context, args) => `filter(${context}, ${args})`
+  filter: (context, args) => `_filter(${context}, ${args})`
 };
 
 // TODO: The polyfills should have a prefix to avoid name clashing
@@ -65,14 +65,12 @@ function _map(table, args)
   end
   return result
 end
-function filter(collection, predicate)
-  filteredValues = {}
-  currentIndex = 1;
-  for i = 1, #collection do
-      value = predicate(collection[i])
-      if value then
-        filteredValues[currentIndex] = collection[i]
-        currentIndex = currentIndex + 1
+function _filter(collection, predicate)
+  local filteredValues = {}
+  for value in all(table) do
+      local result = predicate(collection[i])
+      if result then
+        add(filteredValues, result)
       end
   end
   return filteredValues
