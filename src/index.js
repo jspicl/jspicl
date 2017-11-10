@@ -7,4 +7,4 @@ export default function jspicl (source) {
   const lua = transpile(tree.body);
 
   return `${polyfills}${lua}`;
-};
+}
