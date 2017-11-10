@@ -25,7 +25,8 @@ export const arrayPolyfills = {
   join: (context, args) => `join(${context}, ${args})`,
   map: (context, args) => `_map(${context}, ${args})`,
   includes: (context, arg) => `includes(${context}, ${arg})`,
-  filter: (context, args) => `_filter(${context}, ${args})`
+  filter: (context, args) => `_filter(${context}, ${args})`,
+  reduce: (context, arg) => `_reduce(${context}, ${arg})`
 };
 
 // TODO: The polyfills should have a prefix to avoid name clashing
@@ -73,6 +74,18 @@ function _map(table, args)
   local result = {}
   for value in all(table) do
     add(result, args(value))
+  end
+  return result
+end
+function _reduce(table, callback, initialValue)
+  local result = {}
+  local prev = table[1]
+  if initialValue then
+    prev = initialValue
+  end
+  for i = 1, #table do
+    result = callback(prev, table[i])
+    prev = result
   end
   return result
 end
