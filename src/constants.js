@@ -12,8 +12,11 @@ export const generalPolyfills = {
   "Math.max": values => `max(${values})`,
   "Math.floor": value => `flr(${value})`,
   "Object.assign": values => `merge({${values}})`,
-  "console.log": ([argument]) => `print(${argument})`,
-  "Math.random": () => "rnd(1)"
+  "Object.keys": values => `kvpMap(${values}, function(key, value) return key end)`,
+  "Object.values": values => `kvpMap(${values}, function(key, value) return value end)`,
+  "Object.entries": values => `kvpMap(${values}, function(key, value) return {key, value} end)`,
+  "Math.random": () => "rnd(1)",
+  "console.log": ([argument]) => `print(${argument})`
 };
 
 export const arrayPolyfills = {
@@ -26,6 +29,14 @@ export const arrayPolyfills = {
 
 // TODO: The polyfills should have a prefix to avoid name clashing
 export const polyfills = `
+function kvpMap(source, mapper)
+  local mappedValues = {}
+  for key, value in pairs(source) do
+    add(mappedValues, mapper(key, value))
+  end
+
+  return mappedValues
+end
 function merge(sources)
   local target = sources[1]
   del(sources, target)
