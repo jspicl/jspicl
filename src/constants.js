@@ -29,6 +29,7 @@ export const arrayPolyfillMap = {
   forEach: (context, args) => `foreach(${context}, ${args})`,
   includes: (context, arg) => `_includes(${context}, ${arg})`,
   join: (context, args) => `_join(${context}, ${args})`,
+  length: context => `#${context}`,
   map: (context, args) => `_map(${context}, ${args})`,
   push: (context, args) => `add(${context}, ${args})`,
   reduce: (context, args) => `_reduce(${context}, ${args})`,

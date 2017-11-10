@@ -255,6 +255,24 @@ const getRequiredPolyfills = luaCode => {
     .join("\n");
 };
 
+const polyfillMemberExpression = (args = {}) => {
+  const {
+    computed,
+    object,
+    property
+  } = args;
+
+  const objectName = transpile(object);
+  const propertyName = transpile(property);
+
+  // TODO: Check metadata to determine where to look for the polyfill
+  if (arrayPolyfillMap.hasOwnProperty(propertyName)) {
+    return arrayPolyfillMap[propertyName](objectName);
+  }
+
+  return computed ? `${objectName}[${propertyName}]` : `${objectName}.${propertyName}`;
+};
+
 const polyfillCallExpression = (args = {}) => {
   const {
     callee,
@@ -276,7 +294,7 @@ const polyfillCallExpression = (args = {}) => {
 };
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#call-and-new-expressions
-const CallExpression = ({ callee, arguments: args }, scope) => {
+const CallExpression = ({ callee, arguments: args }) => {
   const argumentList = transpile(args, { arraySeparator: ", " });
 
   // Is it a function inside an object?
@@ -348,12 +366,8 @@ const LogicalExpression = ({ operator, left, right }) => {
 };
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#member-expression
-const MemberExpression = ({ computed, object, property }) => {
-  const objectName = transpile(object);
-  const propertyName = transpile(property);
-
-  return computed ? `${objectName}[${propertyName}]` : `${objectName}.${propertyName}`;
-};
+const MemberExpression = ({ computed, object, property }) =>
+  polyfillMemberExpression({ computed, object, property });
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#class-expression
 const MethodDefinition = ({ key, value }) =>
@@ -535,6 +549,7 @@ const arrayPolyfillMap = {
   forEach: (context, args) => `foreach(${context}, ${args})`,
   includes: (context, arg) => `_includes(${context}, ${arg})`,
   join: (context, args) => `_join(${context}, ${args})`,
+  length: context => `#${context}`,
   map: (context, args) => `_map(${context}, ${args})`,
   push: (context, args) => `add(${context}, ${args})`,
   reduce: (context, args) => `_reduce(${context}, ${args})`,

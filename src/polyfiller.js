@@ -14,6 +14,24 @@ export const getRequiredPolyfills = luaCode => {
     .join("\n");
 };
 
+export const polyfillMemberExpression = (args = {}) => {
+  const {
+    computed,
+    object,
+    property
+  } = args;
+
+  const objectName = transpile(object);
+  const propertyName = transpile(property);
+
+  // TODO: Check metadata to determine where to look for the polyfill
+  if (arrayPolyfillMap.hasOwnProperty(propertyName)) {
+    return arrayPolyfillMap[propertyName](objectName);
+  }
+
+  return computed ? `${objectName}[${propertyName}]` : `${objectName}.${propertyName}`;
+};
+
 export const polyfillCallExpression = (args = {}) => {
   const {
     callee,
