@@ -283,9 +283,12 @@ const generalPolyfills = {
 const arrayPolyfills = {
   forEach: (context, args) => `foreach(${context}, ${args})`,
   push: (context, args) => `add(${context}, ${args})`,
-  join: (context, args) => `join(${context}, ${args})`
+  join: (context, args) => `join(${context}, ${args})`,
+  map: (context, args) => `map(${context}, ${args})`,
+  includes: (context, arg) => `includes(${context}, ${arg})`
 };
 
+// TODO: The polyfills should have a prefix to avoid name clashing
 const polyfills = `
 function merge(sources)
   local target = sources[1]
@@ -309,6 +312,15 @@ function join(table, separator)
   end
 
   return result
+end
+
+function includes(arr, value)
+  for i = 1, #arr do
+    if arr[i] == value then
+      return true
+    end
+  end
+  return false
 end
 `;
 
