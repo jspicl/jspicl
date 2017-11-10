@@ -79,10 +79,10 @@ end
 function _filter(collection, predicate)
   local filteredValues = {}
   for value in all(collection) do
-      local result = predicate(value)
-      if result then
-        add(filteredValues, value)
-      end
+    local result = predicate(value)
+    if result then
+      add(filteredValues, value)
+    end
   end
   return filteredValues
 end
