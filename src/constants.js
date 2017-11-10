@@ -19,7 +19,8 @@ export const generalPolyfills = {
 export const arrayPolyfills = {
   forEach: (context, args) => `foreach(${context}, ${args})`,
   push: (context, args) => `add(${context}, ${args})`,
-  join: (context, args) => `join(${context}, ${args})`
+  join: (context, args) => `join(${context}, ${args})`,
+  map: (context, args) => `map(${context}, ${args})`
 };
 
 export const polyfills = `
@@ -44,6 +45,13 @@ function join(table, separator)
     result = sub(result, 2)
   end
 
+  return result
+end
+function map(table, args)
+  local result = {}
+  for value in all(table) do
+    add(result, args(value))
+  end
   return result
 end
 `;
