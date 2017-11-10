@@ -12,6 +12,7 @@ export const generalPolyfills = {
   "Math.max": values => `max(${values})`,
   "Math.floor": value => `flr(${value})`,
   "Object.assign": values => `merge({${values}})`,
+  "Object.keys": values => `objectKeys(${values})`,
   "console.log": ([argument]) => `print(${argument})`,
   "Math.random": () => "rnd(1)"
 };
@@ -23,6 +24,16 @@ export const arrayPolyfills = {
 };
 
 export const polyfills = `
+function objectKeys(source)
+  local keys = {}
+  local i = 1
+  for key, value in pairs(source) do
+    keys[i] = key
+    i = 1+i
+  end
+
+  return keys
+end
 function merge(sources)
   local target = sources[1]
   del(sources, target)
