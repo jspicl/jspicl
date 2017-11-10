@@ -20,7 +20,7 @@ export const arrayPolyfills = {
   forEach: (context, args) => `foreach(${context}, ${args})`,
   push: (context, args) => `add(${context}, ${args})`,
   join: (context, args) => `join(${context}, ${args})`,
-  map: (context, args) => `map(${context}, ${args})`,
+  map: (context, args) => `_map(${context}, ${args})`,
   includes: (context, arg) => `includes(${context}, ${arg})`
 };
 
@@ -57,7 +57,7 @@ function includes(arr, value)
   end
   return false
 end
-function map(table, args)
+function _map(table, args)
   local result = {}
   for value in all(table) do
     add(result, args(value))
