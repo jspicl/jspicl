@@ -13,7 +13,7 @@ export const generalPolyfills = {
   "Math.floor": value => `flr(${value})`,
   "Object.assign": values => `merge({${values}})`,
   "console.log": ([argument]) => `print(${argument})`,
-  "Math.random": () => 'rnd(1)'
+  "Math.random": () => "rnd(1)"
 };
 
 export const arrayPolyfills = {
