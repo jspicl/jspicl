@@ -284,6 +284,7 @@ const arrayPolyfills = {
   forEach: (context, args) => `foreach(${context}, ${args})`,
   push: (context, args) => `add(${context}, ${args})`,
   join: (context, args) => `join(${context}, ${args})`,
+  map: (context, args) => `map(${context}, ${args})`,
   includes: (context, arg) => `includes(${context}, ${arg})`
 };
 
