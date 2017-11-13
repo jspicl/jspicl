@@ -26,7 +26,7 @@ export const arrayPolyfills = {
   map: (context, args) => `_map(${context}, ${args})`,
   includes: (context, arg) => `includes(${context}, ${arg})`,
   filter: (context, args) => `_filter(${context}, ${args})`,
-  reduce: (context, arg) => `_reduce(${context}, ${arg})`
+  reduce: (context, args) => `_reduce(${context}, ${args})`
 };
 
 // TODO: The polyfills should have a prefix to avoid name clashing
@@ -77,15 +77,15 @@ function _map(table, args)
   end
   return result
 end
-function _reduce(table, callback, initialValue)
-  local result = {}
-  local prev = table[1]
-  if initialValue then
-    prev = initialValue
+function _reduce(table, callback, initialvalue)
+  local result = table[1]
+  local startindex = 2
+  if initialvalue then
+    result = initialvalue
+    startindex = 1
   end
-  for i = 1, #table do
-    result = callback(prev, table[i])
-    prev = result
+  for i=startindex, #table do
+    result = callback(result, table[i])
   end
   return result
 end
