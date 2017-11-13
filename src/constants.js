@@ -25,6 +25,7 @@ export const arrayPolyfills = {
   join: (context, args) => `join(${context}, ${args})`,
   map: (context, args) => `_map(${context}, ${args})`,
   includes: (context, arg) => `includes(${context}, ${arg})`,
+  toString: context => `_tostring(${context})`,
   filter: (context, args) => `_filter(${context}, ${args})`,
   reduce: (context, args) => `_reduce(${context}, ${args})`
 };
@@ -76,6 +77,35 @@ function _map(table, args)
     add(result, args(value))
   end
   return result
+end
+function _tostring(input, level)
+  level = max(level, 1)
+  local output = ""
+
+  if type(input) != "table" then
+    return tostr(input)
+  end
+
+  local indentation = ""
+  for i=2, level do
+    indentation = indentation.."  "
+  end
+    
+  for key, value in pairs(input) do
+    if type(value) == "table" then
+      output = output..indentation.."  "..key..": ".._tostring(value, level + 1).."\n"
+    elseif key != value then
+        output = output..indentation.."  "..key..": ".._tostring(value, level + 1).."\n"
+    else
+        output = output..value..", "
+    end
+  end
+  
+  if sub(output, -2) == ", " then
+      output = indentation.."  "..sub(output, 1, -3).."\n" -- remove last comma
+  end
+  
+  return "{\n"..output..indentation.."}"
 end
 function _reduce(table, callback, initialvalue)
   local result = table[1]
