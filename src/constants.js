@@ -25,7 +25,7 @@ export const arrayPolyfills = {
   join: (context, args) => `join(${context}, ${args})`,
   map: (context, args) => `_map(${context}, ${args})`,
   includes: (context, arg) => `includes(${context}, ${arg})`,
-  toString: context => `tostring(${context})`,
+  toString: context => `_tostring(${context})`,
   filter: (context, args) => `_filter(${context}, ${args})`
 };
 
