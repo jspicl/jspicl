@@ -26,7 +26,8 @@ export const arrayPolyfills = {
   map: (context, args) => `_map(${context}, ${args})`,
   includes: (context, arg) => `includes(${context}, ${arg})`,
   toString: context => `_tostring(${context})`,
-  filter: (context, args) => `_filter(${context}, ${args})`
+  filter: (context, args) => `_filter(${context}, ${args})`,
+  reduce: (context, args) => `_reduce(${context}, ${args})`
 };
 
 // TODO: The polyfills should have a prefix to avoid name clashing
@@ -105,6 +106,18 @@ function _tostring(input, level)
   end
   
   return "{\n"..output..indentation.."}"
+end
+function _reduce(table, callback, initialvalue)
+  local result = table[1]
+  local startindex = 2
+  if initialvalue then
+    result = initialvalue
+    startindex = 1
+  end
+  for i=startindex, #table do
+    result = callback(result, table[i])
+  end
+  return result
 end
 function _filter(collection, predicate)
   local filteredValues = {}
