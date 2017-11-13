@@ -25,7 +25,7 @@ export const arrayPolyfills = {
   join: (context, args) => `join(${context}, ${args})`,
   map: (context, args) => `_map(${context}, ${args})`,
   includes: (context, arg) => `includes(${context}, ${arg})`,
-  toString: context => `toString(${context})`,
+  toString: context => `tostring(${context})`,
   filter: (context, args) => `_filter(${context}, ${args})`
 };
 
@@ -77,27 +77,34 @@ function _map(table, args)
   end
   return result
 end
-function toString(collection)
-  local output = "";
-  if #collection == 0 then
-      return output
+function _tostring(input, level)
+  level = max(level, 1)
+  local output = ""
+
+  if type(input) != "table" then
+    return tostr(input)
   end
 
-  output = tostr(collection[1])
-
-  if #collection > 1 then
-      for i = 2, #collection do
-          item = collection[i]
-          value = ""
-          if type(item) == "string" then
-              value = item
-          else
-              value = tostr(item)
-          end
-          output = output .. ", " .. value
-      end
-  end 
-  return output
+  local indentation = ""
+  for i=2, level do
+    indentation = indentation.."  "
+  end
+    
+  for key, value in pairs(input) do
+    if type(value) == "table" then
+      output = output..indentation.."  "..key..": ".._tostring(value, level + 1).."\n"
+    elseif key != value then
+        output = output..indentation.."  "..key..": ".._tostring(value, level + 1).."\n"
+    else
+        output = output..value..", "
+    end
+  end
+  
+  if sub(output, -2) == ", " then
+      output = indentation.."  "..sub(output, 1, -3).."\n" -- remove last comma
+  end
+  
+  return "{\n"..output..indentation.."}"
 end
 function _filter(collection, predicate)
   local filteredValues = {}
