@@ -1,5 +1,5 @@
 import transpile from "../transpile";
-import polyfiller from "../polyfiller";
+import { mapToPolyfill } from "../polyfiller";
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#call-and-new-expressions
 export const CallExpression = ({ callee, arguments: args }) => {
@@ -10,7 +10,7 @@ export const CallExpression = ({ callee, arguments: args }) => {
     const context = transpile(callee.object);
     const functionName = transpile(callee.property);
 
-    return polyfiller({ context, functionName, argumentList, general: true, array: true });
+    return mapToPolyfill({ context, functionName, argumentList, general: true, array: true });
   }
 
   // Regular function call
