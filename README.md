@@ -11,7 +11,13 @@ npm install jspicl
 import jspicl from "jspicl";
 
 const javascriptCode = `...`;
-const generatedLuaCode = jspicl(javascriptCode);
+const { output, polyfills } = jspicl(javascriptCode);
+console.log(
+  "--- Polyfills ---\n",
+  polyfills,
+  "--- Transpiled code ---\n",
+  output
+);
 ```
 
 ## Related projects
@@ -24,8 +30,9 @@ const generatedLuaCode = jspicl(javascriptCode);
 |||
 |-|-|
 | ES2015+ | Not all ES2015+ features are supported. Run your code through a transpiler first such as [bublé](https://www.npmjs.com/package/buble) or [babel](https://www.npmjs.com/package/babel). |
+| prototype chains | Not supported|
 | Array methods | Not all prototype methods have been polyfilled yet. |
-| Math.max | Only supports two arguments |
+| Math.max | Only supports two arguments. |
 | AST | Not all declarations, expressions and statements have been implemented. More will be added as needed. |
 
 ## Versioning

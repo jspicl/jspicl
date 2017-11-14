@@ -74,7 +74,157 @@ const BinaryExpression = ({ operator, left, right }) => {
   return `${leftExpression} ${luaOperator} ${rightExpression}`;
 };
 
-function polyfiller (args = {}) {
+const _assign = `
+function _assign(sources)
+  local target = sources[1]
+  del(sources, target)
+  for source in all(sources) do
+    for key, value in pairs(source) do
+      target[key] = value
+    end
+  end
+
+  return target
+end
+`;
+
+const _filter = `
+function _filter(collection, predicate)
+  local result = {}
+  for value in all(collection) do
+    if predicate(value) then
+      add(result, value)
+    end
+  end
+
+  return result
+end
+`;
+
+const _includes = `
+function _includes(collection, searchelement)
+  for value in all(collection) do
+    if value == searchelement then
+      return true
+    end
+  end
+
+  return false
+end
+`;
+
+const _join = `
+function _join(collection, separator)
+  local result = ""
+  for value in all(collection) do
+    result = result..separator..tostr(value)
+  end
+
+  if separator != "" then
+    result = sub(result, 2)
+  end
+
+  return result
+end
+`;
+
+const _map = `
+function _map(collection, callback)
+  local result = {}
+  for value in all(collection) do
+    add(result, callback(value))
+  end
+
+  return result
+end
+`;
+
+const _objmap = `
+function _objmap(source, mapper)
+  local result = {}
+  for key, value in pairs(source) do
+    add(result, mapper(key, value))
+  end
+
+  return result
+end
+`;
+
+const _reduce = `
+function _reduce(collection, callback, initialvalue)
+  local result = collection[1]
+  local startindex = 2
+  if initialvalue then
+    result = initialvalue
+    startindex = 1
+  end
+
+  for i=startindex, #collection do
+    result = callback(result, collection[i])
+  end
+
+  return result
+end
+`;
+
+const _tostring = `
+function _tostring(input, level)
+  level = max(level, 1)
+  local output = ""
+
+  if type(input) != "table" then
+    return tostr(input)
+  end
+
+  local indentation = ""
+  for i=2, level do
+    indentation = indentation.."  "
+  end
+
+  for key, value in pairs(input) do
+    if type(value) == "table" then
+      output = output..indentation.."  "..key..": ".._tostring(value, level + 1).."\\n"
+    elseif type(key) != "number" then
+      output = output..indentation.."  "..key..": ".._tostring(value, level + 1).."\\n"
+    else
+      output = output..value..", "
+    end
+  end
+
+  if sub(output, -2) == ", " then
+    output = indentation.."  "..sub(output, 1, -3).."\\n" -- remove last comma
+  end
+
+  return "{\\n"..output..indentation.."}"
+end
+`;
+
+
+
+var polyfills = Object.freeze({
+	_assign: _assign,
+	_filter: _filter,
+	_includes: _includes,
+	_join: _join,
+	_map: _map,
+	_objmap: _objmap,
+	_reduce: _reduce,
+	_tostring: _tostring
+});
+
+function getRequiredPolyfills (luaCode) {
+  // Scan through the code to find polyfills (e.g. _filter())
+  return [...new Set(luaCode.match(/_\w+\(/g))]
+    .map(match => {
+      // Remove the '(' character from the match
+      const polyfillId = match.substr(0, match.length - 1);
+      return polyfills[polyfillId];
+    })
+    .filter(polyfill => polyfill)
+    .join("\n");
+}
+
+function mapToPolyfill (args = {}) {
   const {
     context = "",
     functionName = "",
@@ -85,11 +235,11 @@ function polyfiller (args = {}) {
 
   const callExpression = context && `${context}.${functionName}` || functionName;
 
-  if (general && generalPolyfills.hasOwnProperty(callExpression)) {
-    return generalPolyfills[callExpression](argumentList);
+  if (general && generalPolyfillMap.hasOwnProperty(callExpression)) {
+    return generalPolyfillMap[callExpression](argumentList);
   }
-  else if (array && context && functionName && arrayPolyfills.hasOwnProperty(functionName)) {
-    return arrayPolyfills[functionName](context, argumentList);
+  else if (array && context && functionName && arrayPolyfillMap.hasOwnProperty(functionName)) {
+    return arrayPolyfillMap[functionName](context, argumentList);
   }
 
   return `${callExpression}(${argumentList})`;
@@ -104,7 +254,7 @@ const CallExpression = ({ callee, arguments: args }) => {
     const context = transpile(callee.object);
     const functionName = transpile(callee.property);
 
-    return polyfiller({ context, functionName, argumentList, general: true, array: true });
+    return mapToPolyfill({ context, functionName, argumentList, general: true, array: true });
   }
 
   // Regular function call
@@ -145,7 +295,7 @@ const specialCases = {
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#identifier
 const Identifier = ({ name, value }) => {
   const identifier = (value || name).replace(/\$/g, "_");
-  return specialCases[identifier] || identifier;
+  return specialCases.hasOwnProperty(identifier) && specialCases[identifier] || identifier;
 };
 
 const specialCases$1 = {
@@ -155,13 +305,13 @@ const specialCases$1 = {
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#literal
 const Literal = ({ raw }) => specialCases$1[raw] || raw;
 
-const decorateExpression = (type, operator, expression) => type === LogicalExpression.name && operator === "and" ? `(${expression})` : expression;
+const wrapWithParanthesesIfNeeded = (type, operator, expression) => type === LogicalExpression.name && operator === "and" ? `(${expression})` : expression; // eslint-disable-line no-use-before-define
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#logical-expression
 const LogicalExpression = ({ operator, left, right }) => {
   const logicalOperator = operator === "||" ? "or" : "and";
-  const leftExpression = decorateExpression(left.type, logicalOperator, transpile(left));
-  const rightExpression = decorateExpression(right.type, logicalOperator, transpile(right));
+  const leftExpression = wrapWithParanthesesIfNeeded(left.type, logicalOperator, transpile(left));
+  const rightExpression = wrapWithParanthesesIfNeeded(right.type, logicalOperator, transpile(right));
 
   return `${leftExpression} ${logicalOperator} ${rightExpression}`;
 };
@@ -272,57 +422,27 @@ const mappers = Object.assign({},
   statementMapper
 );
 
-const generalPolyfills = {
+const generalPolyfillMap = {
+  "console.log": argument => `printh(${argument})`,
   "Math.max": values => `max(${values})`,
   "Math.floor": value => `flr(${value})`,
-  "Object.assign": values => `merge({${values}})`,
-  "console.log": ([argument]) => `print(${argument})`,
-  "Math.random": () => "rnd(1)"
+  "Math.random": () => "rnd()",
+  "Object.assign": values => `_assign({${values}})`,
+  "Object.entries": values => `_objmap(${values}, function(key, value) return {key, value} end)`,
+  "Object.keys": values => `_objmap(${values}, function(key, value) return key end)`,
+  "Object.values": values => `_objmap(${values}, function(key, value) return value end)`
 };
 
-const arrayPolyfills = {
+const arrayPolyfillMap = {
+  filter: (context, args) => `_filter(${context}, ${args})`,
   forEach: (context, args) => `foreach(${context}, ${args})`,
+  includes: (context, arg) => `_includes(${context}, ${arg})`,
+  join: (context, args) => `_join(${context}, ${args})`,
+  map: (context, args) => `_map(${context}, ${args})`,
   push: (context, args) => `add(${context}, ${args})`,
-  join: (context, args) => `join(${context}, ${args})`,
-  map: (context, args) => `map(${context}, ${args})`,
-  includes: (context, arg) => `includes(${context}, ${arg})`
+  reduce: (context, args) => `_reduce(${context}, ${args})`,
+  toString: context => `_tostring(${context})`
 };
-
-// TODO: The polyfills should have a prefix to avoid name clashing
-const polyfills = `
-function merge(sources)
-  local target = sources[1]
-  del(sources, target)
-  for source in all(sources) do
-    for key, value in pairs(source) do
-      target[key] = value
-    end
-  end
-
-  return target
-end
-function join(table, separator)
-  local result = ""
-  for value in all(table) do
-    result = result..separator..value
-  end
-
-  if (separator != "") then
-    result = sub(result, 2)
-  end
-
-  return result
-end
-
-function includes(arr, value)
-  for i = 1, #arr do
-    if arr[i] == value then
-      return true
-    end
-  end
-  return false
-end
-`;
 
 function transpile (node, { arraySeparator = "\n" } = {}) {
   return Array.isArray(node) ? node.map(executor).join(arraySeparator) : executor(node);
@@ -342,9 +462,13 @@ function executor (node) {
 
 function jspicl (source) {
   const tree = esprima.parse(source);
-  const lua = transpile(tree.body);
+  const output = transpile(tree.body);
+  const polyfills = getRequiredPolyfills(output);
 
-  return `${polyfills}${lua}`;
+  return {
+    polyfills,
+    output
+  };
 }
 
 module.exports = jspicl;
