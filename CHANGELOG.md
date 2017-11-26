@@ -1,3 +1,6 @@
+## Version 1.1
+* Basic support for classes
+
 # Version 1.0
 * Api now returns an object containing the transpiled code and polyfills instead of a string
 * Polyfills are now only included if used
