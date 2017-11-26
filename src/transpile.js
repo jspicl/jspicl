@@ -11,7 +11,11 @@ function executor (node) {
 
   // Attempt to find the specific declaration, expression or statement
   const mapper = mappers[node.type];
+  if (!mapper) {
+    const { loc: { start } } = node;
+    throw new Error(`\x1b[41m\x1b[37mThere is no handler for ${node.type}, line ${start.line} column ${start.column}\x1b[0m`);
+  }
 
   const result = mapper && mapper(node);
-  return result !== undefined ? result : console.error(`Transpile: There is no handler for ${node.type}, skipping.`); // eslint-disable-line no-console
+  return result || "";
 }
