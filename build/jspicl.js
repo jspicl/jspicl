@@ -4,6 +4,18 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var esprima = _interopDefault(require('esprima'));
 
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#class-declaration
+const ClassDeclaration = ({ id, body }) => {
+  const className = `class_${transpile(id)}`;
+
+  return `local ${className} = function (...)
+    local this = {}
+    local classinstance = ${transpile(body)}
+    classinstance.constructor(...)
+    return classinstance
+  end`;
+};
+
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#function-declaration
 const FunctionDeclaration = ({ id, body, params }) => {
   const { name = "" } = id || {};
@@ -30,6 +42,7 @@ const VariableDeclarator = ({ id, init }) => {
 
 
 var declarationMapper = Object.freeze({
+	ClassDeclaration: ClassDeclaration,
 	FunctionDeclaration: FunctionDeclaration,
 	VariableDeclaration: VariableDeclaration,
 	VariableDeclarator: VariableDeclarator
@@ -261,6 +274,17 @@ const CallExpression = ({ callee, arguments: args }) => {
   return `${callee.name}(${argumentList})`;
 };
 
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#class-declaration
+const ClassBody = ({ body }) => {
+  const hasConstructor = body.find(({ kind }) => kind === "constructor");
+  const constructor = !hasConstructor && "constructor = function () end" || "";
+
+  return `{
+    ${constructor}
+    ${transpile(body, { arraySeparator: ",\n" })}
+  }`;
+};
+
 // import transpile from "../transpile";
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#conditional-expression
@@ -324,6 +348,19 @@ const MemberExpression = ({ object, property }) => {
   return `${objectName}.${propertyName}`;
 };
 
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#class-expression
+const MethodDefinition = ({ key, value }) => {
+  return `${transpile(key)} = ${transpile(value)}`;
+};
+
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#call-and-new-expressions
+const NewExpression = ({ arguments: args, callee }) => {
+  const className = `class_${transpile(callee)}`;
+  const classArguments = transpile(args, { arraySeparator: "," });
+
+  return `${className}(${classArguments})`;
+};
+
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#object-expression
 const ObjectExpression = ({ properties }) => {
   return `{
@@ -343,6 +380,9 @@ const SequenceExpression = ({ expressions }) => {
   return transpile(expressions, { arraySeparator: "\n" });
 };
 
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#this-expression
+const ThisExpression = () => "this";
+
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#unary-expression
 const UnaryExpression = ({ operator, argument }) => {
   const { type } = argument;
@@ -360,15 +400,19 @@ var expressionMapper = Object.freeze({
 	AssignmentExpression: AssignmentExpression,
 	BinaryExpression: BinaryExpression,
 	CallExpression: CallExpression,
+	ClassBody: ClassBody,
 	ConditionalExpression: ConditionalExpression,
 	FunctionExpression: FunctionExpression,
 	Identifier: Identifier,
 	Literal: Literal,
 	LogicalExpression: LogicalExpression,
 	MemberExpression: MemberExpression,
+	MethodDefinition: MethodDefinition,
+	NewExpression: NewExpression,
 	ObjectExpression: ObjectExpression,
 	Property: Property,
 	SequenceExpression: SequenceExpression,
+	ThisExpression: ThisExpression,
 	UnaryExpression: UnaryExpression
 });
 
@@ -455,13 +499,18 @@ function executor (node) {
 
   // Attempt to find the specific declaration, expression or statement
   const mapper = mappers[node.type];
+  if (!mapper) {
+    const { loc: { start } } = node;
+    throw new Error(`\x1b[41m\x1b[37mThere is no handler for ${node.type}, line ${start.line} column ${start.column}\x1b[0m`);
+  }
 
   const result = mapper && mapper(node);
-  return result !== undefined ? result : console.error(`Transpile: There is no handler for ${node.type}, skipping.`); // eslint-disable-line no-console
+  return result || "";
 }
 
 function jspicl (source) {
-  const tree = esprima.parse(source);
+  const tree = esprima.parse(source, { loc: true, range: true });
+
   const output = transpile(tree.body);
   const polyfills = getRequiredPolyfills(output);
 
