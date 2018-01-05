@@ -16,6 +16,8 @@ const ClassDeclaration = ({ id, body }) => {
   end`;
 };
 
+const normalizeName = name => name.replace(/\$/g, "_");
+
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#function-declaration
 const FunctionDeclaration = ({ id, body, params }) => {
   const { name = "" } = id || {};
@@ -23,7 +25,7 @@ const FunctionDeclaration = ({ id, body, params }) => {
   const functionContent = transpile(body);
 
   return `
-function ${name}(${argumentList})
+function ${normalizeName(name)}(${argumentList})
   ${functionContent}
 end`;
 };
@@ -36,7 +38,7 @@ const VariableDeclarator = ({ id, init }) => {
   const { name } = id;
   const value = transpile(init) || "nil";
 
-  return `local ${name} = ${value}`;
+  return `local ${normalizeName(name)} = ${value}`;
 };
 
 
@@ -271,7 +273,7 @@ const CallExpression = ({ callee, arguments: args }) => {
   }
 
   // Regular function call
-  return `${callee.name}(${argumentList})`;
+  return `${transpile(callee)}(${argumentList})`;
 };
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#class-declaration
@@ -302,15 +304,10 @@ const ConditionalExpression = (/* { test, consequent, alternate } */) => {
 };
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#function-expression
-const FunctionExpression = ({ id, params, body }) => {
-  const { name = "" } = id || {};
-  const argumentList = transpile(params, { arraySeparator: ", " });
-  const functionContent = transpile(body);
-
-  return `function ${name}(${argumentList})
-    ${functionContent}
-  end`;
-};
+const FunctionExpression = args =>
+  FunctionDeclaration(Object.assign({}, args, {
+    id: null
+  }));
 
 const specialCases = {
   undefined: "nil"
@@ -318,7 +315,7 @@ const specialCases = {
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#identifier
 const Identifier = ({ name, value }) => {
-  const identifier = (value || name).replace(/\$/g, "_");
+  const identifier = normalizeName(value || name);
   return specialCases.hasOwnProperty(identifier) && specialCases[identifier] || identifier;
 };
 
@@ -372,7 +369,7 @@ const ObjectExpression = ({ properties }) => {
 const Property = ({ key, value }) => {
   const { name } = key;
 
-  return `${name} = ${transpile(value)}`;
+  return `${normalizeName(name)} = ${transpile(value)}`;
 };
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#sequence-expression

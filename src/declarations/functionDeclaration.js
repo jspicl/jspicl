@@ -1,4 +1,5 @@
 import transpile from "../transpile";
+import { normalizeName } from "../helpers";
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#function-declaration
 export const FunctionDeclaration = ({ id, body, params }) => {
@@ -7,7 +8,7 @@ export const FunctionDeclaration = ({ id, body, params }) => {
   const functionContent = transpile(body);
 
   return `
-function ${name}(${argumentList})
+function ${normalizeName(name)}(${argumentList})
   ${functionContent}
 end`;
 };

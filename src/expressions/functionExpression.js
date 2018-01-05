@@ -1,12 +1,7 @@
-import transpile from "../transpile";
+import { FunctionDeclaration } from "../declarations";
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#function-expression
-export const FunctionExpression = ({ id, params, body }) => {
-  const { name = "" } = id || {};
-  const argumentList = transpile(params, { arraySeparator: ", " });
-  const functionContent = transpile(body);
-
-  return `function ${name}(${argumentList})
-    ${functionContent}
-  end`;
-};
+export const FunctionExpression = args =>
+  FunctionDeclaration(Object.assign({}, args, {
+    id: null
+  }));
