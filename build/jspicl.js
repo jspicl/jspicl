@@ -466,6 +466,7 @@ const mappers = Object.assign({},
 const generalPolyfillMap = {
   "console.log": argument => `printh(${argument})`,
   "Math.max": values => `max(${values})`,
+  "Math.min": values => `min(${values})`,
   "Math.floor": value => `flr(${value})`,
   "Math.random": () => "rnd()",
   "Object.assign": values => `_assign({${values}})`,

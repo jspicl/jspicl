@@ -1,3 +1,6 @@
+### Version 1.1.2
+* Added Math.min polyfill
+
 ### Version 1.1.1
 * Bug fix: Normalize variable, property and function names
 
