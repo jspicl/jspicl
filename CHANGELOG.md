@@ -1,3 +1,6 @@
+### Version 1.1.1
+* Bug fix: Normalize variable, property and function names
+
 ## Version 1.1
 * Basic support for classes
 

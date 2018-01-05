@@ -14,5 +14,5 @@ export const CallExpression = ({ callee, arguments: args }) => {
   }
 
   // Regular function call
-  return `${callee.name}(${argumentList})`;
+  return `${transpile(callee)}(${argumentList})`;
 };
