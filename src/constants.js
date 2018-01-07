@@ -10,14 +10,18 @@ export const mappers = Object.assign({},
 
 export const generalPolyfillMap = {
   "console.log": argument => `printh(${argument})`,
+  "Math.abs": value => `abs(${value})`,
+  "Math.ceil": value => `-flr(-${value})`,
+  "Math.floor": value => `flr(${value})`,
   "Math.max": values => `max(${values})`,
   "Math.min": values => `min(${values})`,
-  "Math.floor": value => `flr(${value})`,
   "Math.random": () => "rnd()",
+  "Math.sqrt": value => `sqrt(${value})`,
+  "Math.sin": value => `-sin(${value})`,
   "Object.assign": values => `_assign({${values}})`,
-  "Object.entries": values => `_objmap(${values}, function(key, value) return {key, value} end)`,
-  "Object.keys": values => `_objmap(${values}, function(key, value) return key end)`,
-  "Object.values": values => `_objmap(${values}, function(key, value) return value end)`
+  "Object.entries": values => `_objmap(${values}, _byentries)`,
+  "Object.keys": values => `_objmap(${values}, _bykeys)`,
+  "Object.values": values => `_objmap(${values}, _byvalues)`
 };
 
 export const arrayPolyfillMap = {

@@ -5,16 +5,13 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var esprima = _interopDefault(require('esprima'));
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#class-declaration
-const ClassDeclaration = ({ id, body }) => {
-  const className = `class_${transpile(id)}`;
-
-  return `local ${className} = function (...)
+const ClassDeclaration = ({ id, body }) =>
+  `local class_${transpile(id)} = function (...)
     local this = {}
     local classinstance = ${transpile(body)}
     classinstance.constructor(...)
     return classinstance
   end`;
-};
 
 const normalizeName = name => name.replace(/\$/g, "_");
 
@@ -25,9 +22,9 @@ const FunctionDeclaration = ({ id, body, params }) => {
   const functionContent = transpile(body);
 
   return `
-function ${normalizeName(name)}(${argumentList})
-  ${functionContent}
-end`;
+  function ${normalizeName(name)}(${argumentList})
+    ${functionContent}
+  end`;
 };
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#variable-declaration
@@ -51,11 +48,10 @@ var declarationMapper = Object.freeze({
 });
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#array-expression
-const ArrayExpression = ({ elements }) => {
-  return `{
+const ArrayExpression = ({ elements }) =>
+  `{
     ${transpile(elements, { arraySeparator: ", " })}
   }`;
-};
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#assignment-expression
 const AssignmentExpression = ({ operator, left, right }) => {
@@ -155,6 +151,18 @@ end
 `;
 
 const _objmap = `
+function _byentries(key, value)
+  return {key, value}
+end
+
+function _byvalues(key, value)
+  return value
+end
+
+function _bykeys(key)
+  return key
+end
+
 function _objmap(source, mapper)
   local result = {}
   for key, value in pairs(source) do
@@ -338,17 +346,12 @@ const LogicalExpression = ({ operator, left, right }) => {
 };
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#member-expression
-const MemberExpression = ({ object, property }) => {
-  const objectName = transpile(object);
-  const propertyName = transpile(property);
-
-  return `${objectName}.${propertyName}`;
-};
+const MemberExpression = ({ object, property }) =>
+  `${transpile(object)}.${transpile(property)}`;
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#class-expression
-const MethodDefinition = ({ key, value }) => {
-  return `${transpile(key)} = ${transpile(value)}`;
-};
+const MethodDefinition = ({ key, value }) =>
+  `${transpile(key)} = ${transpile(value)}`;
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#call-and-new-expressions
 const NewExpression = ({ arguments: args, callee }) => {
@@ -359,11 +362,10 @@ const NewExpression = ({ arguments: args, callee }) => {
 };
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#object-expression
-const ObjectExpression = ({ properties }) => {
-  return `{
+const ObjectExpression = ({ properties }) =>
+  `{
     ${transpile(properties, { arraySeparator: ",\n" })}
   }`;
-};
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#object-expression
 const Property = ({ key, value }) => {
@@ -373,9 +375,7 @@ const Property = ({ key, value }) => {
 };
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#sequence-expression
-const SequenceExpression = ({ expressions }) => {
-  return transpile(expressions, { arraySeparator: "\n" });
-};
+const SequenceExpression = ({ expressions }) => transpile(expressions, { arraySeparator: "\n" });
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#this-expression
 const ThisExpression = () => "this";
@@ -414,14 +414,16 @@ var expressionMapper = Object.freeze({
 });
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#block-statement
-const BlockStatement = ({ body }) => {
-  return transpile(body);
-};
+const BlockStatement = ({ body }) => transpile(body);
+
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#do-while-statement
+const DoWhileStatement = ({ body, test }) =>
+  `repeat
+    ${transpile(body)}
+  until not (${transpile(test)})`;
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#expression-statement
-const ExpressionStatement = ({ expression }) => {
-  return transpile(expression);
-};
+const ExpressionStatement = ({ expression }) => transpile(expression);
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#if-statement
 const IfStatement = ({ test, consequent, alternate }) => {
@@ -452,6 +454,7 @@ const ReturnStatement = ({ argument }) => {
 
 var statementMapper = Object.freeze({
 	BlockStatement: BlockStatement,
+	DoWhileStatement: DoWhileStatement,
 	ExpressionStatement: ExpressionStatement,
 	IfStatement: IfStatement,
 	ReturnStatement: ReturnStatement
@@ -465,14 +468,18 @@ const mappers = Object.assign({},
 
 const generalPolyfillMap = {
   "console.log": argument => `printh(${argument})`,
+  "Math.abs": value => `abs(${value})`,
+  "Math.ceil": value => `-flr(-${value})`,
+  "Math.floor": value => `flr(${value})`,
   "Math.max": values => `max(${values})`,
   "Math.min": values => `min(${values})`,
-  "Math.floor": value => `flr(${value})`,
   "Math.random": () => "rnd()",
+  "Math.sqrt": value => `sqrt(${value})`,
+  "Math.sin": value => `-sin(${value})`,
   "Object.assign": values => `_assign({${values}})`,
-  "Object.entries": values => `_objmap(${values}, function(key, value) return {key, value} end)`,
-  "Object.keys": values => `_objmap(${values}, function(key, value) return key end)`,
-  "Object.values": values => `_objmap(${values}, function(key, value) return value end)`
+  "Object.entries": values => `_objmap(${values}, _byentries)`,
+  "Object.keys": values => `_objmap(${values}, _bykeys)`,
+  "Object.values": values => `_objmap(${values}, _byvalues)`
 };
 
 const arrayPolyfillMap = {
