@@ -1,5 +1,8 @@
 # Changelog
 
+#### Version 1.2.1
+* Bug fix: Use brackets for computed memberexpressions
+
 ### Version 1.2
 * Added support for do-while statement
 * Added polyfills for Math.abs, Math.ceil, Math.sin and Math.sqrt.

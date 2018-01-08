@@ -346,8 +346,12 @@ const LogicalExpression = ({ operator, left, right }) => {
 };
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#member-expression
-const MemberExpression = ({ object, property }) =>
-  `${transpile(object)}.${transpile(property)}`;
+const MemberExpression = ({ computed, object, property }) => {
+  const objectName = transpile(object);
+  const propertyName = transpile(property);
+
+  return computed ? `${objectName}[${propertyName}]` : `${objectName}.${propertyName}`;
+};
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#class-expression
 const MethodDefinition = ({ key, value }) =>
