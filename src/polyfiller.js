@@ -1,3 +1,4 @@
+import transpile from "./transpile";
 import { arrayPolyfillMap, generalPolyfillMap } from "./constants";
 import * as polyfills from "./polyfills";
 
@@ -20,19 +21,18 @@ function getRequiredPolyfills (luaCode) {
 
 function mapToPolyfill (args = {}) {
   const {
-    context = "",
-    functionName = "",
-    argumentList = "",
-    general = false,
-    array = false
+    callee,
+    argumentList = ""
   } = args;
 
-  const callExpression = context && `${context}.${functionName}` || functionName;
+  const callExpression = transpile(callee); // context && `${context}.${functionName}` || functionName;
+  const context = transpile(callee.object);
+  const functionName = transpile(callee.property);
 
-  if (general && generalPolyfillMap.hasOwnProperty(callExpression)) {
+  if (generalPolyfillMap.hasOwnProperty(callExpression)) {
     return generalPolyfillMap[callExpression](argumentList);
   }
-  else if (array && context && functionName && arrayPolyfillMap.hasOwnProperty(functionName)) {
+  else if (context && functionName && arrayPolyfillMap.hasOwnProperty(functionName)) {
     return arrayPolyfillMap[functionName](context, argumentList);
   }
 

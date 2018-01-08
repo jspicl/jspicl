@@ -7,10 +7,7 @@ export const CallExpression = ({ callee, arguments: args }) => {
 
   // Is it a function inside an object?
   if (callee.object) {
-    const context = transpile(callee.object);
-    const functionName = transpile(callee.property);
-
-    return mapToPolyfill({ context, functionName, argumentList, general: true, array: true });
+    return mapToPolyfill({ callee, argumentList });
   }
 
   // Regular function call
