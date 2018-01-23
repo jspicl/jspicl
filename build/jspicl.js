@@ -424,6 +424,10 @@ const BlockStatement = ({ body }) => transpile(body);
 
 BlockStatement.scopeBoundary = true;
 
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#break-statement
+const BreakStatement = (NA, { isInsideSwitch }) =>
+  isInsideSwitch ? "" : "break";
+
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#do-while-statement
 const DoWhileStatement = ({ body, test }) =>
   `repeat
@@ -458,14 +462,50 @@ const ReturnStatement = ({ argument }) => {
   return value ? `return ${value}` : "do return end";
 };
 
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#switch-statement
+const SwitchCase = ({ test, consequent }) => {
+  if (consequent.length === 0) {
+    throw new Error("Switch case fallthroughs are not supported.");
+  }
+
+  const statements = transpile(consequent, { arraySeparator: "\n" });
+  if (!test) {
+    return `\n${statements}`; // Default case
+  }
+
+  const testValue = transpile(test);
+  return `if ${testValue} == switchCase then
+    ${statements}
+  `;
+};
+
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#switch-statement
+const SwitchStatement = ({ discriminant, cases }, scope) => {
+  const condition = `local switchCase = ${transpile(discriminant)}`;
+
+  scope.isInsideSwitch = true;
+  // sort the cases so the default case ends up at the end
+  const sortedCases = cases.sort(switchCase => !switchCase.test ? 1 : 0);
+
+  return `
+    ${condition}
+    ${transpile(sortedCases, { arraySeparator: "else" })}
+    end`;
+};
+
+SwitchStatement.scopeBoundary = true;
+
 
 
 var statementMapper = Object.freeze({
 	BlockStatement: BlockStatement,
+	BreakStatement: BreakStatement,
 	DoWhileStatement: DoWhileStatement,
 	ExpressionStatement: ExpressionStatement,
 	IfStatement: IfStatement,
-	ReturnStatement: ReturnStatement
+	ReturnStatement: ReturnStatement,
+	SwitchCase: SwitchCase,
+	SwitchStatement: SwitchStatement
 });
 
 const mappers = Object.assign({},
