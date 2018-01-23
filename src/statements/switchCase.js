@@ -1,13 +1,18 @@
-import transpile from "../transpile";
+import { transpile } from "../transpile";
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#switch-statement
 export const SwitchCase = ({ test, consequent }) => {
+  if (consequent.length === 0) {
+    throw new Error("Switch case fallthroughs are not supported.");
+  }
 
-    var transpiledTest = transpile(test);
+  const statements = transpile(consequent, { arraySeparator: "\n" });
+  if (!test) {
+    return `\n${statements}`; // Default case
+  }
 
-    if (transpiledTest) {
-        return `if ${transpiledTest} then\n${transpile(consequent)}\n`; 
-    }
-
-    return `\n${transpile(consequent)} \nend\n`; 
+  const testValue = transpile(test);
+  return `if ${testValue} == switchCase then
+    ${statements}
+  `;
 };

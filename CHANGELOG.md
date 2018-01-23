@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 1.4.0
+* Added support for switch-statements.
+* Special thanks to the following contributors for making it possible:
+  - [eliseellerstedt91](https://github.com/eliseellerstedt91)
+  - [mlusiak](https://github.com/mlusiak)
+
 ### Version 1.3.0
 * Added initial support for scoping, a way for statements, declarations and expressions to gain access to variables or custom properties passed down from parent nodes.
 * transpile is now a named export

@@ -1,12 +1,17 @@
-import transpile from "../transpile";
+import { transpile } from "../transpile";
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#switch-statement
-export const SwitchStatement = ({ discriminant, cases }) => {
+export const SwitchStatement = ({ discriminant, cases }, scope) => {
+  const condition = `local switchCase = ${transpile(discriminant)}`;
 
-  var outputLua = transpile(cases[0])
-  for (var i=1; i<cases.length; i++) {
-     outputLua += "else" + transpile(cases[i])
-  }
+  scope.isInsideSwitch = true;
+  // sort the cases so the default case ends up at the end
+  const sortedCases = cases.sort(switchCase => !switchCase.test ? 1 : 0);
 
-  return outputLua
+  return `
+    ${condition}
+    ${transpile(sortedCases, { arraySeparator: "else" })}
+    end`;
 };
+
+SwitchStatement.scopeBoundary = true;
