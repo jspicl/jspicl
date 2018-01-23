@@ -1,10 +1,11 @@
 import { mappers } from "./constants";
+import { pushScopeLayer, popScopeLayer, getCurrentScope } from "./scope";
 
-export default function transpile (node, { arraySeparator = "\n" } = {}) {
-  return Array.isArray(node) ? node.map(executor).join(arraySeparator) : executor(node);
-}
+export const transpile = (node, { arraySeparator = "\n" } = {}) => {
+  return Array.isArray(node) ? node.map(executor).join(arraySeparator) : executor(node); // eslint-disable-line no-use-before-define
+};
 
-function executor (node) {
+const executor = node => {
   if (!node) {
     return;
   }
@@ -16,6 +17,9 @@ function executor (node) {
     throw new Error(`\x1b[41m\x1b[37mThere is no handler for ${node.type}, line ${start.line} column ${start.column}\x1b[0m`);
   }
 
-  const result = mapper && mapper(node);
-  return result || "";
-}
+  const scope = mapper.scopeBoundary && pushScopeLayer() || getCurrentScope();
+  const result = mapper(node, scope) || "";
+  mapper.scopeBoundary && popScopeLayer();
+
+  return result;
+};

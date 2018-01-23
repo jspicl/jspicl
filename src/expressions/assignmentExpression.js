@@ -1,4 +1,4 @@
-import transpile from "../transpile";
+import { transpile } from "../transpile";
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#assignment-expression
 export const AssignmentExpression = ({ operator, left, right }) => {

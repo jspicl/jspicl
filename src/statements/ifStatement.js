@@ -1,4 +1,4 @@
-import transpile from "../transpile";
+import { transpile } from "../transpile";
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#if-statement
 export const IfStatement = ({ test, consequent, alternate }) => {

@@ -31,11 +31,19 @@ const FunctionDeclaration = ({ id, body, params }) => {
 const VariableDeclaration = ({ declarations }) => transpile(declarations);
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#variable-declaration
-const VariableDeclarator = ({ id, init }) => {
+const VariableDeclarator = ({ id, init }, { variables }) => {
   const { name } = id;
+  const normalizedName = normalizeName(name);
   const value = transpile(init) || "nil";
 
-  return `local ${normalizeName(name)} = ${value}`;
+  // Store variable metadata in the scope
+  // for accessibility
+  variables[name] = {
+    name: normalizedName
+    // type:
+  };
+
+  return `local ${normalizedName} = ${value}`;
 };
 
 
@@ -235,8 +243,8 @@ var polyfills = Object.freeze({
 	_tostring: _tostring
 });
 
-function getRequiredPolyfills (luaCode) {
-  // Scan through the code to find polyfills (e.g. _filter())
+const getRequiredPolyfills = luaCode => {
+  // Scan through the code to find polyfilled methods (e.g. _filter())
   return [...new Set(luaCode.match(/_\w+\(/g))]
     .map(match => {
       // Remove the '(' character from the match
@@ -245,15 +253,15 @@ function getRequiredPolyfills (luaCode) {
     })
     .filter(polyfill => polyfill)
     .join("\n");
-}
+};
 
-function mapToPolyfill (args = {}) {
+const polyfillCallExpression = (args = {}) => {
   const {
     callee,
     argumentList = ""
   } = args;
 
-  const callExpression = transpile(callee); // context && `${context}.${functionName}` || functionName;
+  const callExpression = transpile(callee);
   const context = transpile(callee.object);
   const functionName = transpile(callee.property);
 
@@ -265,15 +273,15 @@ function mapToPolyfill (args = {}) {
   }
 
   return `${callExpression}(${argumentList})`;
-}
+};
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#call-and-new-expressions
-const CallExpression = ({ callee, arguments: args }) => {
+const CallExpression = ({ callee, arguments: args }, scope) => {
   const argumentList = transpile(args, { arraySeparator: ", " });
 
   // Is it a function inside an object?
   if (callee.object) {
-    return mapToPolyfill({ callee, argumentList });
+    return polyfillCallExpression({ callee, argumentList });
   }
 
   // Regular function call
@@ -291,7 +299,7 @@ const ClassBody = ({ body }) => {
   }`;
 };
 
-// import transpile from "../transpile";
+// import { transpile } from "../transpile";
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#conditional-expression
 const ConditionalExpression = (/* { test, consequent, alternate } */) => {
@@ -309,9 +317,7 @@ const ConditionalExpression = (/* { test, consequent, alternate } */) => {
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#function-expression
 const FunctionExpression = args =>
-  FunctionDeclaration(Object.assign({}, args, {
-    id: null
-  }));
+  FunctionDeclaration(Object.assign({}, args, { id: null }));
 
 const specialCases = {
   undefined: "nil"
@@ -416,6 +422,8 @@ var expressionMapper = Object.freeze({
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#block-statement
 const BlockStatement = ({ body }) => transpile(body);
 
+BlockStatement.scopeBoundary = true;
+
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#do-while-statement
 const DoWhileStatement = ({ body, test }) =>
   `repeat
@@ -493,11 +501,115 @@ const arrayPolyfillMap = {
   toString: context => `_tostring(${context})`
 };
 
-function transpile (node, { arraySeparator = "\n" } = {}) {
-  return Array.isArray(node) ? node.map(executor).join(arraySeparator) : executor(node);
+var isMergeableObject = function isMergeableObject(value) {
+	return isNonNullObject(value)
+		&& !isSpecial(value)
+};
+
+function isNonNullObject(value) {
+	return !!value && typeof value === 'object'
 }
 
-function executor (node) {
+function isSpecial(value) {
+	var stringValue = Object.prototype.toString.call(value);
+
+	return stringValue === '[object RegExp]'
+		|| stringValue === '[object Date]'
+		|| isReactElement(value)
+}
+
+// see https://github.com/facebook/react/blob/b5ac963fb791d1298e7f396236383bc955f916c1/src/isomorphic/classic/element/ReactElement.js#L21-L25
+var canUseSymbol = typeof Symbol === 'function' && Symbol.for;
+var REACT_ELEMENT_TYPE = canUseSymbol ? Symbol.for('react.element') : 0xeac7;
+
+function isReactElement(value) {
+	return value.$$typeof === REACT_ELEMENT_TYPE
+}
+
+function emptyTarget(val) {
+	return Array.isArray(val) ? [] : {}
+}
+
+function cloneUnlessOtherwiseSpecified(value, optionsArgument) {
+	var clone = !optionsArgument || optionsArgument.clone !== false;
+
+	return (clone && isMergeableObject(value))
+		? deepmerge(emptyTarget(value), value, optionsArgument)
+		: value
+}
+
+function defaultArrayMerge(target, source, optionsArgument) {
+	return target.concat(source).map(function(element) {
+		return cloneUnlessOtherwiseSpecified(element, optionsArgument)
+	})
+}
+
+function mergeObject(target, source, optionsArgument) {
+	var destination = {};
+	if (isMergeableObject(target)) {
+		Object.keys(target).forEach(function(key) {
+			destination[key] = cloneUnlessOtherwiseSpecified(target[key], optionsArgument);
+		});
+	}
+	Object.keys(source).forEach(function(key) {
+		if (!isMergeableObject(source[key]) || !target[key]) {
+			destination[key] = cloneUnlessOtherwiseSpecified(source[key], optionsArgument);
+		} else {
+			destination[key] = deepmerge(target[key], source[key], optionsArgument);
+		}
+	});
+	return destination
+}
+
+function deepmerge(target, source, optionsArgument) {
+	var sourceIsArray = Array.isArray(source);
+	var targetIsArray = Array.isArray(target);
+	var options = optionsArgument || { arrayMerge: defaultArrayMerge };
+	var sourceAndTargetTypesMatch = sourceIsArray === targetIsArray;
+
+	if (!sourceAndTargetTypesMatch) {
+		return cloneUnlessOtherwiseSpecified(source, optionsArgument)
+	} else if (sourceIsArray) {
+		var arrayMerge = options.arrayMerge || defaultArrayMerge;
+		return arrayMerge(target, source, optionsArgument)
+	} else {
+		return mergeObject(target, source, optionsArgument)
+	}
+}
+
+deepmerge.all = function deepmergeAll(array, optionsArgument) {
+	if (!Array.isArray(array)) {
+		throw new Error('first argument should be an array')
+	}
+
+	return array.reduce(function(prev, next) {
+		return deepmerge(prev, next, optionsArgument)
+	}, {})
+};
+
+var deepmerge_1 = deepmerge;
+
+const scopeStack = [{
+  variables: {}
+}];
+
+const getCurrentScope = () => scopeStack[scopeStack.length - 1];
+
+const pushScopeLayer = (scope = {}) => {
+  scopeStack.push(deepmerge_1(getCurrentScope(), scope));
+
+  return getCurrentScope();
+};
+
+const popScopeLayer = () => {
+  scopeStack.pop();
+};
+
+const transpile = (node, { arraySeparator = "\n" } = {}) => {
+  return Array.isArray(node) ? node.map(executor).join(arraySeparator) : executor(node); // eslint-disable-line no-use-before-define
+};
+
+const executor = node => {
   if (!node) {
     return;
   }
@@ -509,9 +621,12 @@ function executor (node) {
     throw new Error(`\x1b[41m\x1b[37mThere is no handler for ${node.type}, line ${start.line} column ${start.column}\x1b[0m`);
   }
 
-  const result = mapper && mapper(node);
-  return result || "";
-}
+  const scope = mapper.scopeBoundary && pushScopeLayer() || getCurrentScope();
+  const result = mapper(node, scope) || "";
+  mapper.scopeBoundary && popScopeLayer();
+
+  return result;
+};
 
 function jspicl (source) {
   const tree = esprima.parse(source, { loc: true, range: true });
