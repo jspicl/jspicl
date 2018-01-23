@@ -1,13 +1,14 @@
 # Changelog
 
+### Version 1.3.0
+* Added initial support for scoping, a way for statements, declarations and expressions to gain access to variables or custom properties passed down from parent nodes.
+* transpile is now a named export
+
 #### Version 1.2.2
 * Bug fix: Some object call expressions where manually transpiled which broke callexpressions with computed members;
 ```js
-// Before
-objA[objB.prop](); // -> objA.objB.prop()
-
-// After
-objA[objB.prop](); // -> objA[objB.prop]()
+//                                     BEFORE              AFTER
+objA[objB.prop](); // transpiles to -> objA.objB.prop()    objA[objB.prop]()
 ```
 
 #### Version 1.2.1

@@ -1,4 +1,4 @@
-import transpile from "../transpile";
+import { transpile } from "../transpile";
 
 const wrapWithParanthesesIfNeeded = (type, operator, expression) => type === LogicalExpression.name && operator === "and" ? `(${expression})` : expression; // eslint-disable-line no-use-before-define
 

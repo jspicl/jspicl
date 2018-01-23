@@ -1,5 +1,5 @@
 import esprima from "esprima";
-import transpile from "./transpile";
+import { transpile } from "./transpile";
 import { getRequiredPolyfills } from "./polyfiller";
 
 export default function jspicl (source) {

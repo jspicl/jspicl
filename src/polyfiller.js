@@ -1,14 +1,9 @@
-import transpile from "./transpile";
+import { transpile } from "./transpile";
 import { arrayPolyfillMap, generalPolyfillMap } from "./constants";
 import * as polyfills from "./polyfills";
 
-export {
-  getRequiredPolyfills,
-  mapToPolyfill
-};
-
-function getRequiredPolyfills (luaCode) {
-  // Scan through the code to find polyfills (e.g. _filter())
+export const getRequiredPolyfills = luaCode => {
+  // Scan through the code to find polyfilled methods (e.g. _filter())
   return [...new Set(luaCode.match(/_\w+\(/g))]
     .map(match => {
       // Remove the '(' character from the match
@@ -17,15 +12,15 @@ function getRequiredPolyfills (luaCode) {
     })
     .filter(polyfill => polyfill)
     .join("\n");
-}
+};
 
-function mapToPolyfill (args = {}) {
+export const polyfillCallExpression = (args = {}) => {
   const {
     callee,
     argumentList = ""
   } = args;
 
-  const callExpression = transpile(callee); // context && `${context}.${functionName}` || functionName;
+  const callExpression = transpile(callee);
   const context = transpile(callee.object);
   const functionName = transpile(callee.property);
 
@@ -37,4 +32,4 @@ function mapToPolyfill (args = {}) {
   }
 
   return `${callExpression}(${argumentList})`;
-}
+};
