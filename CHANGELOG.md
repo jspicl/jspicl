@@ -1,5 +1,10 @@
 # Changelog
 
+#### Version 1.4.1
+* Added support for unit testing.
+* Special thanks to the following contributors for making it possible:
+  - [M-Lindstrom](https://github.com/M-Lindstrom)
+
 ### Version 1.4.0
 * Added support for switch-statements.
 * Special thanks to the following contributors for making it possible:
