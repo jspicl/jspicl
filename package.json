@@ -8,7 +8,7 @@
     "start": "rollup -c",
     "prepublishOnly": "npm start",
     "tester": "node -r @std/esm tester.js",
-    "test": "mocha --compilers js:babel-core/register"
+    "test": "NODE_PATH=src mocha --require babel-core/register test/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -24,8 +24,9 @@
   "license": "MIT",
   "devDependencies": {
     "@agronkabashi/eslint-config": "^1.0.2",
-    "@std/esm": "^0.19.7",
+    "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.1",
+    "babel-preset-env": "^1.6.1",
     "eslint": "^4.16.0",
     "mocha": "^5.0.0",
     "rollup": "^0.55.0",
@@ -33,8 +34,10 @@
     "rollup-plugin-node-resolve": "3.0.x",
     "sinon": "^4.2.1"
   },
-  "@std": {
-    "esm": "all"
+  "babel": {
+    "presets": [
+      "env"
+    ]
   },
   "dependencies": {
     "esprima": "^4.0.0",
