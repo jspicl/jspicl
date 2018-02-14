@@ -1,5 +1,9 @@
 # Changelog
 
+#### Version 1.4.2
+* Added temporary workaround for length
+  - Will only work for arrays. This will break for objects with a length property.
+
 #### Version 1.4.1
 * Added support for unit testing.
 * Special thanks to the following contributors for making it possible:
