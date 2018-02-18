@@ -7,7 +7,7 @@ export default {
     file: "build/jspicl.js",
     format: "cjs"
   },
-  external: ["esprima"],
+  external: ["esprima", "deepMerge"],
   plugins: [
     nodeResolve({
       main: true

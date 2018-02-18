@@ -2,11 +2,9 @@ import * as declarationMapper from "./declarations";
 import * as expressionMapper from "./expressions";
 import * as statementMapper from "./statements";
 
-export const mappers = Object.assign({},
-  declarationMapper,
-  expressionMapper,
-  statementMapper
-);
+export const getMapper = type => {
+  return declarationMapper[type] || expressionMapper[type] || statementMapper[type];
+};
 
 export const generalPolyfillMap = {
   "console.log": argument => `printh(${argument})`,
