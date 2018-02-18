@@ -522,11 +522,9 @@ var statementMapper = Object.freeze({
 	SwitchStatement: SwitchStatement
 });
 
-const mappers = Object.assign({},
-  declarationMapper,
-  expressionMapper,
-  statementMapper
-);
+const getMapper = type => {
+  return declarationMapper[type] || expressionMapper[type] || statementMapper[type];
+};
 
 const generalPolyfillMap = {
   "console.log": argument => `printh(${argument})`,
@@ -670,9 +668,9 @@ const executor = node => {
   }
 
   // Attempt to find the specific declaration, expression or statement
-  const mapper = mappers[node.type];
+  const mapper = getMapper(node.type);
   if (!mapper) {
-    const { loc: { start } } = node;
+    const { loc: { start = {} } = {} } = node;
     throw new Error(`\x1b[41m\x1b[37mThere is no handler for ${node.type}, line ${start.line} column ${start.column}\x1b[0m`);
   }
 

@@ -1,4 +1,4 @@
-import { mappers } from "./constants";
+import { getMapper } from "./constants";
 import { pushScopeLayer, popScopeLayer, getCurrentScope } from "./scope";
 
 export const transpile = (node, { arraySeparator = "\n" } = {}) => {
@@ -11,9 +11,9 @@ const executor = node => {
   }
 
   // Attempt to find the specific declaration, expression or statement
-  const mapper = mappers[node.type];
+  const mapper = getMapper(node.type);
   if (!mapper) {
-    const { loc: { start } } = node;
+    const { loc: { start = {} } = {} } = node;
     throw new Error(`\x1b[41m\x1b[37mThere is no handler for ${node.type}, line ${start.line} column ${start.column}\x1b[0m`);
   }
 

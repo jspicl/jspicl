@@ -1,14 +1,14 @@
 {
   "name": "jspicl",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "A javascript to pico-8 lua converter",
   "main": "build/jspicl.js",
   "module": "src/index.js",
   "scripts": {
     "start": "rollup -c",
-    "prepublishOnly": "npm start",
+    "prepublishOnly": "npm test && npm start",
     "tester": "node -r @std/esm tester.js",
-    "test": "NODE_PATH=src mocha --require babel-core/register test/**/*.js"
+    "test": "NODE_ENV=test NODE_PATH=./src mocha"
   },
   "repository": {
     "type": "git",
@@ -24,25 +24,22 @@
   "license": "MIT",
   "devDependencies": {
     "@agronkabashi/eslint-config": "^1.0.2",
-    "@std/esm": "^0.21.7",
-    "babel-core": "^6.26.0",
+    "@babel/core": "^7.0.0-beta.39",
+    "@babel/preset-env": "^7.0.0-beta.39",
+    "@babel/register": "^7.0.0-beta.39",
+    "@std/esm": "^0.20.0",
     "babel-eslint": "^8.2.1",
-    "babel-preset-env": "^1.6.1",
-    "eslint": "^4.16.0",
+    "eslint": "^4.17.0",
     "mocha": "^5.0.0",
-    "rollup": "^0.55.0",
-    "rollup-plugin-commonjs": "8.2.x",
+    "rollup": "^0.55.3",
+    "rollup-plugin-commonjs": "8.3.x",
     "rollup-plugin-node-resolve": "3.0.x",
-    "sinon": "^4.2.1"
-  },
-  "babel": {
-    "presets": [
-      "env"
-    ]
+    "sinon": "^4.2.2"
   },
   "@std/esm": "all",
   "dependencies": {
-    "esprima": "^4.0.0",
-    "deepmerge": "^2.0.1"
+    "babel-cli": "^6.26.0",
+    "deepmerge": "^2.0.1",
+    "esprima": "^4.0.0"
   }
 }
