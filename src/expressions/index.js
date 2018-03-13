@@ -1,4 +1,5 @@
 export * from "./arrayExpression";
+export * from "./arrowFunctionExpression";
 export * from "./assignmentExpression";
 export * from "./binaryExpression";
 export * from "./callExpression";
