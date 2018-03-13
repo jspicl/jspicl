@@ -61,6 +61,9 @@ const ArrayExpression = ({ elements }) =>
     ${transpile(elements, { arraySeparator: ", " })}
   }`;
 
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#arrow-function-expression
+const ArrowFunctionExpression = args => FunctionDeclaration(args);
+
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#assignment-expression
 const AssignmentExpression = ({ operator, left, right }) => {
   const leftExpression = transpile(left);
@@ -414,6 +417,7 @@ const UnaryExpression = ({ operator, argument }) => {
 
 var expressionMapper = Object.freeze({
 	ArrayExpression: ArrayExpression,
+	ArrowFunctionExpression: ArrowFunctionExpression,
 	AssignmentExpression: AssignmentExpression,
 	BinaryExpression: BinaryExpression,
 	CallExpression: CallExpression,

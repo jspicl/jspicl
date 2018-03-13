@@ -1,5 +1,8 @@
 # Changelog
 
+#### Version 1.5.0
+* Added support for arrow function expressions
+
 #### Version 1.4.3
 * Added unit tests for statements
 
