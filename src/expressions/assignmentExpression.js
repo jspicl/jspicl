@@ -5,5 +5,5 @@ export const AssignmentExpression = ({ operator, left, right }) => {
   const leftExpression = transpile(left);
   const rightExpression = transpile(right);
 
-  return `${leftExpression} ${operator} ${rightExpression}`;
+  return `${leftExpression}${operator}${rightExpression}`;
 };
