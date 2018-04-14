@@ -1,123 +1,67 @@
 import assert from "assert";
 import { IfStatement } from "statements";
+const esprima = require("esprima");
 
 describe("IfStatement", () => {
   it("renders an if statement using a test expression and consequent", () => {
-    const input = {
-      test: {
-        type: "Literal",
-        raw: "testExpression"
-      },
-      consequent: {
-        type: "Literal",
-        raw: "content"
-      }
-    };
-    const output = `if (testExpression) then
+    const input = "if (testExpression) { content; }";
+    const output = `if testExpression then
     content
   end`;
+    const { body: [statement] } = esprima.parse(input);
 
-    assert.equal(IfStatement(input), output);
+    assert.equal(IfStatement(statement), output);
   });
 
   it("renders an else statement", () => {
-    const input = {
-      test: {
-        type: "Literal",
-        raw: "testExpression"
-      },
-      consequent: {
-        type: "Literal",
-        raw: "content"
-      },
-      alternate: {
-        type: "Literal",
-        raw: "alternative"
-      }
-    };
-    const output = `if (testExpression) then
+    const input = "if (testExpression) { content; } else { alternative; }";
+    const output = `if testExpression then
     content
   else alternative end`;
+    const { body: [statement] } = esprima.parse(input);
 
-    assert.equal(IfStatement(input), output);
+    assert.equal(IfStatement(statement), output);
   });
 
   it("renders an else-if statement", () => {
-    const input = {
-      test: {
-        type: "Literal",
-        raw: "testExpression"
-      },
-      consequent: {
-        type: "Literal",
-        raw: "content"
-      },
-      alternate: {
-        type: "IfStatement",
-        test: {
-          type: "Literal",
-          raw: "testExpression2"
-        },
-        consequent: {
-          type: "Literal",
-          raw: "content2"
-        }
-      }
-    };
-    const output = `if (testExpression) then
+    const input = `if (testExpression) {
+      content;
+    }
+    else if (testExpression2) {
+      content2;
+    }`;
+    const output = `if testExpression then
     content
-  elseif (testExpression2) then
+  elseif testExpression2 then
     content2
   end`;
+    const { body: [statement] } = esprima.parse(input);
 
-    assert.equal(IfStatement(input), output);
+    assert.equal(IfStatement(statement), output);
   });
 
   it("renders multiple else-if statements and one else statement", () => {
-    const input = {
-      test: {
-        type: "Literal",
-        raw: "testExpression"
-      },
-      consequent: {
-        type: "Literal",
-        raw: "content"
-      },
-      alternate: {
-        type: "IfStatement",
-        test: {
-          type: "Literal",
-          raw: "testExpression2"
-        },
-        consequent: {
-          type: "Literal",
-          raw: "content2"
-        },
-        alternate: {
-          type: "IfStatement",
-          test: {
-            type: "Literal",
-            raw: "testExpression3"
-          },
-          consequent: {
-            type: "Literal",
-            raw: "content3"
-          },
-          alternate: {
-            type: "Literal",
-            raw: "content4"
-          }
-        }
-      }
-    };
-    const output = `if (testExpression) then
+    const input = `if (testExpression) {
+      content;
+    }
+    else if (testExpression2) {
+      content2;
+    }
+    else if (testExpression3) {
+      content3;
+    }
+    else {
+      content4;
+    }`;
+    const { body: [statement] } = esprima.parse(input);
+    const output = `if testExpression then
     content
-  elseif (testExpression2) then
+  elseif testExpression2 then
     content2
-  elseif (testExpression3) then
+  elseif testExpression3 then
     content3
   else content4 end`;
 
-    assert.equal(IfStatement(input), output);
+    assert.equal(IfStatement(statement), output);
   });
 });
