@@ -31,14 +31,14 @@ const FunctionDeclaration = ({ id, body, params }) => {
 const VariableDeclaration = ({ declarations }) => transpile(declarations);
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#variable-declaration
-const VariableDeclarator = ({ id, init }, { variables }) => {
+const VariableDeclarator = ({ id, init }, scope) => {
   const { name } = id;
   const normalizedName = normalizeName(name);
   const value = transpile(init) || "nil";
 
   // Store variable metadata in the scope
   // for accessibility
-  variables[name] = {
+  scope.variables[name] = {
     name: normalizedName
     // type:
   };
@@ -48,11 +48,11 @@ const VariableDeclarator = ({ id, init }, { variables }) => {
 
 
 
-var declarationMapper = Object.freeze({
-	ClassDeclaration: ClassDeclaration,
-	FunctionDeclaration: FunctionDeclaration,
-	VariableDeclaration: VariableDeclaration,
-	VariableDeclarator: VariableDeclarator
+var declarationMapper = /*#__PURE__*/Object.freeze({
+  ClassDeclaration: ClassDeclaration,
+  FunctionDeclaration: FunctionDeclaration,
+  VariableDeclaration: VariableDeclaration,
+  VariableDeclarator: VariableDeclarator
 });
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#array-expression
@@ -69,7 +69,7 @@ const AssignmentExpression = ({ operator, left, right }) => {
   const leftExpression = transpile(left);
   const rightExpression = transpile(right);
 
-  return `${leftExpression} ${operator} ${rightExpression}`;
+  return `${leftExpression}${operator}${rightExpression}`;
 };
 
 const operatorTable = {
@@ -235,15 +235,15 @@ end
 
 
 
-var polyfills = Object.freeze({
-	_assign: _assign,
-	_filter: _filter,
-	_includes: _includes,
-	_join: _join,
-	_map: _map,
-	_objmap: _objmap,
-	_reduce: _reduce,
-	_tostring: _tostring
+var polyfills = /*#__PURE__*/Object.freeze({
+  _assign: _assign,
+  _filter: _filter,
+  _includes: _includes,
+  _join: _join,
+  _map: _map,
+  _objmap: _objmap,
+  _reduce: _reduce,
+  _tostring: _tostring
 });
 
 const getRequiredPolyfills = luaCode => {
@@ -413,28 +413,36 @@ const UnaryExpression = ({ operator, argument }) => {
   return operator === "void" ? "nil" : `${luaOperator}${expression}`;
 };
 
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#update-expression
+const UpdateExpression = ({ argument, operator }) => {
+  const identifier = transpile(argument);
+
+  return `${identifier}${operator[0]}=1`;
+};
 
 
-var expressionMapper = Object.freeze({
-	ArrayExpression: ArrayExpression,
-	ArrowFunctionExpression: ArrowFunctionExpression,
-	AssignmentExpression: AssignmentExpression,
-	BinaryExpression: BinaryExpression,
-	CallExpression: CallExpression,
-	ClassBody: ClassBody,
-	ConditionalExpression: ConditionalExpression,
-	FunctionExpression: FunctionExpression,
-	Identifier: Identifier,
-	Literal: Literal,
-	LogicalExpression: LogicalExpression,
-	MemberExpression: MemberExpression,
-	MethodDefinition: MethodDefinition,
-	NewExpression: NewExpression,
-	ObjectExpression: ObjectExpression,
-	Property: Property,
-	SequenceExpression: SequenceExpression,
-	ThisExpression: ThisExpression,
-	UnaryExpression: UnaryExpression
+
+var expressionMapper = /*#__PURE__*/Object.freeze({
+  ArrayExpression: ArrayExpression,
+  ArrowFunctionExpression: ArrowFunctionExpression,
+  AssignmentExpression: AssignmentExpression,
+  BinaryExpression: BinaryExpression,
+  CallExpression: CallExpression,
+  ClassBody: ClassBody,
+  ConditionalExpression: ConditionalExpression,
+  FunctionExpression: FunctionExpression,
+  Identifier: Identifier,
+  Literal: Literal,
+  LogicalExpression: LogicalExpression,
+  MemberExpression: MemberExpression,
+  MethodDefinition: MethodDefinition,
+  NewExpression: NewExpression,
+  ObjectExpression: ObjectExpression,
+  Property: Property,
+  SequenceExpression: SequenceExpression,
+  ThisExpression: ThisExpression,
+  UnaryExpression: UnaryExpression,
+  UpdateExpression: UpdateExpression
 });
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#block-statement
@@ -468,10 +476,18 @@ const IfStatement = ({ test, consequent, alternate }) => {
     closingStatement = alternateIsIfStatement ? `else${alternateStatement}` : `else ${alternateStatement} end`;
   }
 
-  return `if (${testExpression}) then
+  return `if ${testExpression} then
     ${statementBody}
   ${closingStatement}`;
 };
+
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#while-statement
+const ForStatement = ({ body, init, test, update }) =>
+  `${transpile(init)}
+  while ${transpile(test)} do
+    ${transpile(body)}
+    ${transpile(update, { arraySeparator: "\n" })}
+  end`;
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#return-statement
 const ReturnStatement = ({ argument }) => {
@@ -513,17 +529,25 @@ const SwitchStatement = ({ discriminant, cases }, scope) => {
 
 SwitchStatement.scopeBoundary = true;
 
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#for-statement
+const WhileStatement = ({ body, test }) =>
+  `while ${transpile(test)} do
+    ${transpile(body)}
+  end`;
 
 
-var statementMapper = Object.freeze({
-	BlockStatement: BlockStatement,
-	BreakStatement: BreakStatement,
-	DoWhileStatement: DoWhileStatement,
-	ExpressionStatement: ExpressionStatement,
-	IfStatement: IfStatement,
-	ReturnStatement: ReturnStatement,
-	SwitchCase: SwitchCase,
-	SwitchStatement: SwitchStatement
+
+var statementMapper = /*#__PURE__*/Object.freeze({
+  BlockStatement: BlockStatement,
+  BreakStatement: BreakStatement,
+  DoWhileStatement: DoWhileStatement,
+  ExpressionStatement: ExpressionStatement,
+  IfStatement: IfStatement,
+  ForStatement: ForStatement,
+  ReturnStatement: ReturnStatement,
+  SwitchCase: SwitchCase,
+  SwitchStatement: SwitchStatement,
+  WhileStatement: WhileStatement
 });
 
 const getMapper = type => {
@@ -587,60 +611,60 @@ function emptyTarget(val) {
 	return Array.isArray(val) ? [] : {}
 }
 
-function cloneUnlessOtherwiseSpecified(value, optionsArgument) {
-	var clone = !optionsArgument || optionsArgument.clone !== false;
-
-	return (clone && isMergeableObject(value))
-		? deepmerge(emptyTarget(value), value, optionsArgument)
+function cloneUnlessOtherwiseSpecified(value, options) {
+	return (options.clone !== false && options.isMergeableObject(value))
+		? deepmerge(emptyTarget(value), value, options)
 		: value
 }
 
-function defaultArrayMerge(target, source, optionsArgument) {
+function defaultArrayMerge(target, source, options) {
 	return target.concat(source).map(function(element) {
-		return cloneUnlessOtherwiseSpecified(element, optionsArgument)
+		return cloneUnlessOtherwiseSpecified(element, options)
 	})
 }
 
-function mergeObject(target, source, optionsArgument) {
+function mergeObject(target, source, options) {
 	var destination = {};
-	if (isMergeableObject(target)) {
+	if (options.isMergeableObject(target)) {
 		Object.keys(target).forEach(function(key) {
-			destination[key] = cloneUnlessOtherwiseSpecified(target[key], optionsArgument);
+			destination[key] = cloneUnlessOtherwiseSpecified(target[key], options);
 		});
 	}
 	Object.keys(source).forEach(function(key) {
-		if (!isMergeableObject(source[key]) || !target[key]) {
-			destination[key] = cloneUnlessOtherwiseSpecified(source[key], optionsArgument);
+		if (!options.isMergeableObject(source[key]) || !target[key]) {
+			destination[key] = cloneUnlessOtherwiseSpecified(source[key], options);
 		} else {
-			destination[key] = deepmerge(target[key], source[key], optionsArgument);
+			destination[key] = deepmerge(target[key], source[key], options);
 		}
 	});
 	return destination
 }
 
-function deepmerge(target, source, optionsArgument) {
+function deepmerge(target, source, options) {
+	options = options || {};
+	options.arrayMerge = options.arrayMerge || defaultArrayMerge;
+	options.isMergeableObject = options.isMergeableObject || isMergeableObject;
+
 	var sourceIsArray = Array.isArray(source);
 	var targetIsArray = Array.isArray(target);
-	var options = optionsArgument || { arrayMerge: defaultArrayMerge };
 	var sourceAndTargetTypesMatch = sourceIsArray === targetIsArray;
 
 	if (!sourceAndTargetTypesMatch) {
-		return cloneUnlessOtherwiseSpecified(source, optionsArgument)
+		return cloneUnlessOtherwiseSpecified(source, options)
 	} else if (sourceIsArray) {
-		var arrayMerge = options.arrayMerge || defaultArrayMerge;
-		return arrayMerge(target, source, optionsArgument)
+		return options.arrayMerge(target, source, options)
 	} else {
-		return mergeObject(target, source, optionsArgument)
+		return mergeObject(target, source, options)
 	}
 }
 
-deepmerge.all = function deepmergeAll(array, optionsArgument) {
+deepmerge.all = function deepmergeAll(array, options) {
 	if (!Array.isArray(array)) {
 		throw new Error('first argument should be an array')
 	}
 
 	return array.reduce(function(prev, next) {
-		return deepmerge(prev, next, optionsArgument)
+		return deepmerge(prev, next, options)
 	}, {})
 };
 

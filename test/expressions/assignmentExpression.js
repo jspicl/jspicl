@@ -1,22 +1,17 @@
 import assert from "assert";
 import { AssignmentExpression } from "expressions";
+const esprima = require("esprima");
 
 describe("AssignmentExpression", () => {
-  it("renders two expressions separated by an operator  ", () => {
-    const input = {
-      left: {
-        type: "Literal",
-        raw: "1"
-      },
-      right: {
-        type: "Literal",
-        raw: "2"
-      },
-      operator: "+"
-    };
+  ["*=", "+=", "-=", "%=", "/="].forEach(operator =>
+    it(`renders two expressions separated by an ${operator}`, () => {
+      const input = `variable ${operator} value`;
+      const output = `variable${operator}value`;
+      const { body } = esprima.parse(input);
+      const [{ expression: statement }] = body;
 
-    const output = "1 + 2";
+      assert.equal(AssignmentExpression(statement), output);
+    })
+  );
 
-    assert.equal(AssignmentExpression(input), output);
-  });
 });

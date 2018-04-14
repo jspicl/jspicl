@@ -13,7 +13,7 @@ export const IfStatement = ({ test, consequent, alternate }) => {
     closingStatement = alternateIsIfStatement ? `else${alternateStatement}` : `else ${alternateStatement} end`;
   }
 
-  return `if (${testExpression}) then
+  return `if ${testExpression} then
     ${statementBody}
   ${closingStatement}`;
 };

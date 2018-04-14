@@ -17,3 +17,4 @@ export * from "./property";
 export * from "./sequenceExpression";
 export * from "./thisExpression";
 export * from "./unaryExpression";
+export * from "./updateExpression";
