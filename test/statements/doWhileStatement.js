@@ -1,23 +1,16 @@
 import assert from "assert";
 import { DoWhileStatement } from "statements";
+const esprima = require("esprima");
 
 describe("DoWhileStatement", () => {
   it("transpiles body and test expression", () => {
-    const input = {
-      body: {
-        type: "Literal",
-        raw: "body"
-      },
-      test: {
-        type: "Literal",
-        raw: "value"
-      }
-    };
+    const input = "while (testExpression) { body; }";
+    const { body: [statement] } = esprima.parse(input);
 
     const output = `repeat
     body
-  until not (value)`;
+  until not (testExpression)`;
 
-    assert.equal(DoWhileStatement(input), output);
+    assert.equal(DoWhileStatement(statement), output);
   });
 });
