@@ -3,6 +3,8 @@ export * from "./breakStatement";
 export * from "./doWhileStatement";
 export * from "./expressionStatement";
 export * from "./ifStatement";
+export * from "./forStatement";
 export * from "./returnStatement";
 export * from "./switchCase";
 export * from "./switchStatement";
+export * from "./whileStatement";
