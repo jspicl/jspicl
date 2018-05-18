@@ -1,6 +1,7 @@
 export * from "./blockStatement";
 export * from "./breakStatement";
 export * from "./doWhileStatement";
+export * from "./emptyStatement";
 export * from "./expressionStatement";
 export * from "./ifStatement";
 export * from "./forStatement";

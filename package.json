@@ -1,6 +1,6 @@
 {
   "name": "jspicl",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "A javascript to pico-8 lua converter",
   "main": "build/jspicl.js",
   "module": "src/index.js",
@@ -24,17 +24,17 @@
   "license": "MIT",
   "devDependencies": {
     "@agronkabashi/eslint-config": "^1.0.2",
-    "@babel/core": "^7.0.0-beta.44",
-    "@babel/preset-env": "^7.0.0-beta.44",
-    "@babel/register": "^7.0.0-beta.44",
+    "@babel/core": "^7.0.0-beta.47",
+    "@babel/preset-env": "^7.0.0-beta.47",
+    "@babel/register": "^7.0.0-beta.47",
     "@std/esm": "^0.26.0",
     "babel-eslint": "^8.2.3",
     "eslint": "^4.19.1",
-    "mocha": "^5.1.0",
-    "rollup": "^0.57.1",
+    "mocha": "^5.1.1",
+    "rollup": "^0.59.1",
     "rollup-plugin-commonjs": "9.1.x",
     "rollup-plugin-node-resolve": "3.3.x",
-    "sinon": "^4.5.0"
+    "sinon": "^5.0.7"
   },
   "@std/esm": "all",
   "dependencies": {
