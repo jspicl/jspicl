@@ -5,4 +5,7 @@ export * from "./_join";
 export * from "./_map";
 export * from "./_objmap";
 export * from "./_reduce";
+export * from "./_split";
+export * from "./_substr";
+export * from "./_substring";
 export * from "./_tostring";

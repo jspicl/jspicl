@@ -201,6 +201,43 @@ function _reduce(collection, callback, initialvalue)
 end
 `;
 
+const _split = `
+function _split(str, separator)
+  local indices = {}
+  local i = 1
+  while i <= #str do
+    if sub(str, i, i + #separator - 1) == separator then
+      add(indices, i)
+    end
+    i+=1
+  end
+
+  local result = {}
+  local lastoffset = 1
+  foreach(indices, function (offset)
+    add(result, sub(str, lastoffset, offset - 1))
+    lastoffset = offset + #separator
+  end)
+
+  add(result, sub(str, lastoffset))
+
+  if separator == "" then
+    del(result, "")
+  end
+
+  return result
+end`;
+
+const _substr = `
+function _substr(str, indexStart, length)
+  return sub(str, indexStart + 1, indexStart + (length or #str))
+end`;
+
+const _substring = `
+function _substring(str, indexStart, indexEnd)
+  return sub(str, indexStart + 1, indexEnd)
+end`;
+
 const _tostring = `
 function _tostring(input, level)
   level = max(level, 1)
@@ -243,6 +280,9 @@ var polyfills = /*#__PURE__*/Object.freeze({
   _map: _map,
   _objmap: _objmap,
   _reduce: _reduce,
+  _split: _split,
+  _substr: _substr,
+  _substring: _substring,
   _tostring: _tostring
 });
 
@@ -460,6 +500,8 @@ const DoWhileStatement = ({ body, test }) =>
     ${transpile(body)}
   until not (${transpile(test)})`;
 
+const EmptyStatement = () => "";
+
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#expression-statement
 const ExpressionStatement = ({ expression }) => transpile(expression);
 
@@ -541,6 +583,7 @@ var statementMapper = /*#__PURE__*/Object.freeze({
   BlockStatement: BlockStatement,
   BreakStatement: BreakStatement,
   DoWhileStatement: DoWhileStatement,
+  EmptyStatement: EmptyStatement,
   ExpressionStatement: ExpressionStatement,
   IfStatement: IfStatement,
   ForStatement: ForStatement,
@@ -579,6 +622,9 @@ const arrayPolyfillMap = {
   map: (context, args) => `_map(${context}, ${args})`,
   push: (context, args) => `add(${context}, ${args})`,
   reduce: (context, args) => `_reduce(${context}, ${args})`,
+  split: (context, args) => `_split(${context}, ${args})`,
+  substr: (context, args) => `_substr(${context}, ${args})`,
+  substring: (context, args) => `_substring(${context}, ${args})`,
   toString: context => `_tostring(${context})`
 };
 

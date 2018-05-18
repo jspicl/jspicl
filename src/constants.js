@@ -31,5 +31,8 @@ export const arrayPolyfillMap = {
   map: (context, args) => `_map(${context}, ${args})`,
   push: (context, args) => `add(${context}, ${args})`,
   reduce: (context, args) => `_reduce(${context}, ${args})`,
+  split: (context, args) => `_split(${context}, ${args})`,
+  substr: (context, args) => `_substr(${context}, ${args})`,
+  substring: (context, args) => `_substring(${context}, ${args})`,
   toString: context => `_tostring(${context})`
 };
