@@ -1,6 +1,6 @@
 {
   "name": "jspicl",
-  "version": "1.7.0",
+  "version": "2.0.0",
   "description": "A javascript to pico-8 lua converter",
   "main": "build/jspicl.js",
   "module": "src/index.js",
@@ -41,5 +41,8 @@
     "babel-cli": "^6.26.0",
     "deepmerge": "^2.1.0",
     "esprima": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=6"
   }
 }

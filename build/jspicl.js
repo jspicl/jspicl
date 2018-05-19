@@ -288,14 +288,15 @@ var polyfills = /*#__PURE__*/Object.freeze({
 
 const getRequiredPolyfills = luaCode => {
   // Scan through the code to find polyfilled methods (e.g. _filter())
-  return [...new Set(luaCode.match(/_\w+\(/g))]
-    .map(match => {
+  return [...new Set(luaCode.match(/(?<!\.)\b_\w+\(/g))]
+    .reduce((result, match) => {
       // Remove the '(' character from the match
       const polyfillId = match.substr(0, match.length - 1);
-      return polyfills[polyfillId];
-    })
-    .filter(polyfill => polyfill)
-    .join("\n");
+      const code = polyfills[polyfillId];
+      code && (result[polyfillId] = code);
+
+      return result;
+    }, {});
 };
 
 const polyfillMemberExpression = (args = {}) => {
