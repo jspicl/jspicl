@@ -1,5 +1,5 @@
 # jspicl
-jspicl is a Javascript to PICO-8 Lua transpiler. It depends on Esprima to generate an AST which is then used to convert the original code into the LUA subset of which PICO-8 supports.
+jspicl is a Javascript to PICO-8 Lua transpiler. It creates an AST out of the JavaScript code and then transpiles it down to the LUA subset of which PICO-8 supports.
 
 ## Installation
 ```
@@ -13,10 +13,16 @@ import jspicl from "jspicl";
 const javascriptCode = `...`;
 const { output, polyfills } = jspicl(javascriptCode);
 console.log(
-  polyfills,
+  Object.values(polyfills).join("\n"),
   output
 );
 ```
+
+## Return value
+| Property       | Type   | Description                     |
+|----------------|--------|---------------------------------|
+| output         | string | The transpiled javascript code  |
+| polyfills      | object | Table of required polyfills with their corresponding lua code. |
 
 ## Related projects
 [rollup-plugin-jspicl](https://github.com/AgronKabashi/rollup-plugin-jspicl) - Rollup plugin wrapper for jspicl

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.0
+Breaking change: polyfill property in the return object from jspicl is now a table of all included polyfills.
+
+### 1.7.0
+* Added polyfills for .split, .substr and .substring methods on strings
+
 ### 1.6.0
 * Added support for while and for-loops
 
