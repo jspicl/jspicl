@@ -1,12 +1,21 @@
 import esprima from "esprima";
 import { transpile } from "./transpile";
 import { getRequiredPolyfills } from "./polyfiller";
+import prettify from "./prettify";
 
-export default function jspicl (source) {
+const defaultOptions = {
+  prettify: true
+};
+
+export default function jspicl (source, options = defaultOptions) {
   const tree = esprima.parse(source, { loc: true, range: true });
 
-  const output = transpile(tree.body);
+  let output = transpile(tree.body);
   const polyfills = getRequiredPolyfills(output);
+
+  if (options.prettify) {
+    output = prettify(output);
+  }
 
   return {
     polyfills,
