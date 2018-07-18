@@ -18,6 +18,11 @@ console.log(
 );
 ```
 
+In order to generate a nice lua output you need to explicitly let jspicl know by passing in an options object.
+```js
+const { output, polyfills } = jspicl(javascriptCode, { prettify: true });
+```
+
 ## Return value
 | Property       | Type   | Description                     |
 |----------------|--------|---------------------------------|

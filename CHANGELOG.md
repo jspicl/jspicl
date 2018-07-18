@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.1.0
+* Added option to prettify the generated lua code.
+
 ## 2.0.0
 Breaking change: polyfill property in the return object from jspicl is now a table of all included polyfills.
 
