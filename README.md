@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/AgronKabashi/assets/51844924e69fdef3129a04573f60b262f41cbea4/jspicl/logo-366x250.png" width="320">
+</p>
+
 # jspicl
 jspicl is a Javascript to PICO-8 Lua transpiler. It creates an AST out of the JavaScript code and then transpiles it down to the LUA subset of which PICO-8 supports.
 
@@ -23,7 +27,7 @@ In order to generate a nice lua output you need to explicitly let jspicl know by
 const { output, polyfills } = jspicl(javascriptCode, { prettify: true });
 ```
 
-## Return value
+### Return value
 | Property       | Type   | Description                     |
 |----------------|--------|---------------------------------|
 | output         | string | The transpiled javascript code  |
@@ -32,7 +36,7 @@ const { output, polyfills } = jspicl(javascriptCode, { prettify: true });
 ## Related projects
 [rollup-plugin-jspicl](https://github.com/AgronKabashi/rollup-plugin-jspicl) - Rollup plugin wrapper for jspicl
 
-[jspicl-mario-sample](https://github.com/AgronKabashi/jspicl-mario-sample) - Mario sample game using jspicl
+[games](https://github.com/topics/jspicl-sample) - Games created with jspicl
 
 ## Known limitations
 
