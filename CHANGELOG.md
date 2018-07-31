@@ -1,68 +1,93 @@
 # Changelog
 
-## 2.1.0
+## Version 2.2.0
+*2018-07-31*
+* Added support for conditional expressions (a ? b : c)
+
+## Version 2.1.1
+*2018-07-27*
+* Added logo to readme.
+
+## Version 2.1.0
+*2018-07-18*
 * Added option to prettify the generated lua code.
 
-## 2.0.0
+## Version 2.0.0
+*2018-05-19*
 Breaking change: polyfill property in the return object from jspicl is now a table of all included polyfills.
 
-### 1.7.0
+## Version 1.7.0
+*2018-05-18*
 * Added polyfills for .split, .substr and .substring methods on strings
 
-### 1.6.0
+## Version 1.6.0
+*2018-04-14*
 * Added support for while and for-loops
 
-### 1.5.0
+## Version 1.5.0
+*2018-03-13*
 * Added support for arrow function expressions
 
-#### 1.4.3
+## Version 1.4.3
+*2018-02-19*
 * Added unit tests for statements
 
-#### 1.4.2
+## Version 1.4.2
+*2018-02-14*
 * Added temporary workaround for length
   - Will only work for arrays. This will break for objects with a length property.
 
-#### 1.4.1
+## Version 1.4.1
+*2018-02-02*
 * Added support for unit testing.
 * Special thanks to the following contributors for making it possible:
   - [M-Lindstrom](https://github.com/M-Lindstrom)
 
-### 1.4.0
+## Version 1.4.0
+*2018-01-23*
 * Added support for switch-statements.
 * Special thanks to the following contributors for making it possible:
   - [eliseellerstedt91](https://github.com/eliseellerstedt91)
   - [mlusiak](https://github.com/mlusiak)
 
-### 1.3.0
+## Version 1.3.0
+*2018-01-23*
 * Added initial support for scoping, a way for statements, declarations and expressions to gain access to variables or custom properties passed down from parent nodes.
 * transpile is now a named export
 
-#### 1.2.2
+## Version 1.2.2
+*2018-01-08*
 * Bug fix: Some object call expressions where manually transpiled which broke callexpressions with computed members;
 ```js
 //                                     BEFORE              AFTER
 objA[objB.prop](); // transpiles to -> objA.objB.prop()    objA[objB.prop]()
 ```
 
-#### 1.2.1
+## Version 1.2.1
+*2018-01-08*
 * Bug fix: Use brackets for computed memberexpressions
 
-### 1.2
+## Version 1.2
+*2018-01-07*
 * Added support for do-while statement
 * Added polyfills for Math.abs, Math.ceil, Math.sin and Math.sqrt.
 * Optimized token count for Object.entries/keys/values.  Higher initial cost but more efficient when used often.
 * Cleaned up declarations, statements and expressions. Removed redudant curly braces where not needed.
 
-#### 1.1.2
+## Version 1.1.2
+*2018-01-05*
 * Added Math.min polyfill
 
-#### 1.1.1
+## Version 1.1.1
+*2018-01-05*
 * Bug fix: Normalize variable, property and function names
 
-### 1.1
+## Version 1.1
+*2017-11-26*
 * Basic support for classes
 
-## 1.0
+## Version 1.0
+*2017-11-14*
 * Api now returns an object containing the transpiled code and polyfills instead of a string
 * Polyfills are now only included if used
 * Added several polyfills/remaps:
@@ -88,55 +113,68 @@ objA[objB.prop](); // transpiles to -> objA.objB.prop()    objA[objB.prop]()
   - [reruined](https://github.com/reruined)
   - [sebastianhallen](https://github.com/sebastianhallen)
 
-#### 0.4.2
+## Version 0.4.2
+*2017-11-10*
 * Added Math.random polyfill
 
-#### 0.4.1
+## Version 0.4.1
+*2017-11-09*
 * Bugfix: Nested callExpressions - transpile callee object and property properly
 * Added vscode f5 run & debug launch settings
 
-### 0.4.0
+## Version 0.4.0
+*2017-11-08*
 * Stabilization & cleanup
 * Updated limitations in README
 * traverser renamed to transpile
 * added eslint rules and dependencies
 * mappers are now methods instead of strings. Alleviates customizations.
-* Object.assign now supports multiple sources. Fixes ##19.
+* Object.assign now supports multiple sources. Fixes #19.
 * spreadProperty removed
 * bugfix: `ifStatement` did not generate closing tag for else
 * bugfix: `join` polyfill didn't remove separator character
 * bugfix: `binaryExpression` generated incorrect output for the right expression
 
-### 0.3.0
+## Version 0.3.0
+*2017-10-13*
 * Added special cases for `Identifier` and `Literal` names
 * Added tester.js to try out transpilation.
 
-#### 0.2.7
+## Version 0.2.7
+*2017-10-13*
 * Added support for empty return statements
 
-#### 0.2.6
+## Version 0.2.6
+*2017-06-05*
 * Added decorator for logical expressions to include parantheses if needed.
 
-#### 0.2.5
+## Version 0.2.5
+*2017-05-22*
 * Bug fix: fixed unary expression for `!`
 
-#### 0.2.4
+## Version 0.2.4
+*2017-05-22*
 * Added warning for conditional expressions
 * Increased code readability in traverser.js
 
-#### 0.2.3
+## Version 0.2.3
+*2017-04-26*
 * Added support for logical operators
 
-### 0.2.0
+## Version 0.2.0
+*2017-04-12*
 * Added polyfill support. Added in this version:
 * Object.assign
 * Array.prototype.join
 
-#### 0.1.1
+## Version 0.1.1
+*2017-04-07*
 * Added support for sequence expression
 
-#### 0.0.2
+## Version 0.0.2
+*2017-04-06*
 * Updated readme to include limitations
 
-#### 0.0.1
+## Version 0.0.1
+*2017-04-06*
 * Initial version
