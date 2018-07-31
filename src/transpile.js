@@ -2,7 +2,8 @@ import { getMapper } from "./constants";
 import { pushScopeLayer, popScopeLayer, getCurrentScope } from "./scope";
 
 export const transpile = (node, { arraySeparator = "\n" } = {}) => {
-  return Array.isArray(node) ? node.map(executor).join(arraySeparator) : executor(node); // eslint-disable-line no-use-before-define
+  const nodes = Array.isArray(node) ? node : [node];
+  return nodes.map(executor).join(arraySeparator); // eslint-disable-line no-use-before-define
 };
 
 const executor = node => {

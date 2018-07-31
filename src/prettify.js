@@ -1,9 +1,8 @@
 const indentIncrease = [
   line => /^\bfor\b\s/.test(line),
   line => /^\bforeach\b/.test(line),
-  line => /^\bfunction\b/.test(line),
-  line => /^\blocal function\b\s/.test(line),
-  line => /^\bif\b\s/.test(line),
+  line => /\bfunction\b/.test(line),
+  line => /^\bif\b\s/.test(line) && /\bthen\b$/.test(line),
   line => /^while\s/.test(line),
   line => /^repeat\s/.test(line),
   line => /{$/.test(line),

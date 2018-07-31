@@ -2,8 +2,8 @@ import assert from "assert";
 import { BlockStatement } from "statements";
 
 describe("BlockStatement", () => {
-  it("returns undefined if body is missing", () => {
-    assert.equal(BlockStatement({}), undefined);
+  it("returns empty string if body is missing", () => {
+    assert.equal(BlockStatement({}), "");
   });
 
   it("processes body", () => {

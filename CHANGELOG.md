@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 2.2.1
+*2018-07-31*
+* Bug fix: Class declaration would generate invalid syntax if a class had methods but no constructor. The manual injection of an empty constructor has been removed and replaced with a check instead. Token count remains unchanged.
+* Bug fix: prettify was incorrectly indenting lines after a single-line if-statement.
+
 ## Version 2.2.0
 *2018-07-31*
 * Added support for conditional expressions (a ? b : c)

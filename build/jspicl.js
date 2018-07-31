@@ -9,7 +9,7 @@ const ClassDeclaration = ({ id, body }) =>
   `local class_${transpile(id)} = function (...)
     local this = {}
     local classinstance = ${transpile(body)}
-    classinstance.constructor(...)
+    if (classinstance.constructor) classinstance.constructor(...)
     return classinstance
   end`;
 
@@ -351,15 +351,10 @@ const CallExpression = ({ callee, arguments: args }) => {
 };
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#class-declaration
-const ClassBody = ({ body }) => {
-  const hasConstructor = body.find(({ kind }) => kind === "constructor");
-  const constructor = !hasConstructor && "constructor = function () end" || "";
-
-  return `{
-    ${constructor}
+const ClassBody = ({ body }) =>
+  `{
     ${transpile(body, { arraySeparator: ",\n" })}
   }`;
-};
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#conditional-expression
 const ConditionalExpression = ({ test, consequent, alternate }) => {
@@ -727,7 +722,8 @@ const popScopeLayer = () => {
 };
 
 const transpile = (node, { arraySeparator = "\n" } = {}) => {
-  return Array.isArray(node) ? node.map(executor).join(arraySeparator) : executor(node); // eslint-disable-line no-use-before-define
+  const nodes = Array.isArray(node) ? node : [node];
+  return nodes.map(executor).join(arraySeparator); // eslint-disable-line no-use-before-define
 };
 
 const executor = node => {
@@ -752,9 +748,8 @@ const executor = node => {
 const indentIncrease = [
   line => /^\bfor\b\s/.test(line),
   line => /^\bforeach\b/.test(line),
-  line => /^\bfunction\b/.test(line),
-  line => /^\blocal function\b\s/.test(line),
-  line => /^\bif\b\s/.test(line),
+  line => /\bfunction\b/.test(line),
+  line => /^\bif\b\s/.test(line) && /\bthen\b$/.test(line),
   line => /^while\s/.test(line),
   line => /^repeat\s/.test(line),
   line => /{$/.test(line),
