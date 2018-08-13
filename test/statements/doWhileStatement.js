@@ -4,12 +4,12 @@ const esprima = require("esprima");
 
 describe("DoWhileStatement", () => {
   it("transpiles body and test expression", () => {
-    const input = "while (testExpression) { body; }";
+    const input = "while (testexpression) { body; }";
     const { body: [statement] } = esprima.parse(input);
 
     const output = `repeat
     body
-  until not (testExpression)`;
+  until not (testexpression)`;
 
     assert.equal(DoWhileStatement(statement), output);
   });

@@ -1,6 +1,6 @@
 const indentIncrease = [
   line => /^\bfor\b\s/.test(line),
-  line => /^\bforeach\b/.test(line),
+  line => /^\bforeach\b/.test(line) && !/\)$/.test(line),
   line => /\bfunction\b/.test(line),
   line => /^\bif\b\s/.test(line) && /\bthen\b$/.test(line),
   line => /^while\s/.test(line),
@@ -13,7 +13,7 @@ const indentDecrease = [
   line => /^end[)]?/.test(line),
   line => /end$/.test(line),
   line => /^else/.test(line),
-  line => /^{/.test(line),
+  // line => /^{/.test(line),
   line => /^}/.test(line)
 ];
 

@@ -8,23 +8,23 @@ export const getMapper = type => {
 
 export const generalPolyfillMap = {
   "console.log": argument => `printh(${argument})`,
-  "Math.abs": value => `abs(${value})`,
-  "Math.ceil": value => `-flr(-${value})`,
-  "Math.floor": value => `flr(${value})`,
-  "Math.max": values => `max(${values})`,
-  "Math.min": values => `min(${values})`,
-  "Math.random": () => "rnd()",
-  "Math.sqrt": value => `sqrt(${value})`,
-  "Math.sin": value => `-sin(${value})`,
-  "Object.assign": values => `_assign({${values}})`,
-  "Object.entries": values => `_objmap(${values}, _byentries)`,
-  "Object.keys": values => `_objmap(${values}, _bykeys)`,
-  "Object.values": values => `_objmap(${values}, _byvalues)`
+  "math.abs": value => `abs(${value})`,
+  "math.ceil": value => `-flr(-${value})`,
+  "math.floor": value => `flr(${value})`,
+  "math.max": values => `max(${values})`,
+  "math.min": values => `min(${values})`,
+  "math.random": () => "rnd()",
+  "math.sqrt": value => `sqrt(${value})`,
+  "math.sin": value => `-sin(${value})`,
+  "object.assign": values => `_assign({${values}})`,
+  "object.entries": values => `_objmap(${values}, _byentries)`,
+  "object.keys": values => `_objmap(${values}, _bykeys)`,
+  "object.values": values => `_objmap(${values}, _byvalues)`
 };
 
 export const arrayPolyfillMap = {
   filter: (context, args) => `_filter(${context}, ${args})`,
-  forEach: (context, args) => `foreach(${context}, ${args})`,
+  foreach: (context, args) => `foreach(${context}, ${args})`,
   includes: (context, arg) => `_includes(${context}, ${arg})`,
   join: (context, args) => `_join(${context}, ${args})`,
   length: context => `#${context}`,
@@ -34,5 +34,5 @@ export const arrayPolyfillMap = {
   split: (context, args) => `_split(${context}, ${args})`,
   substr: (context, args) => `_substr(${context}, ${args})`,
   substring: (context, args) => `_substring(${context}, ${args})`,
-  toString: context => `_tostring(${context})`
+  tostring: context => `_tostring(${context})`
 };

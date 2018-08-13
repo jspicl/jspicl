@@ -7,8 +7,7 @@ export const FunctionDeclaration = ({ id, body, params }) => {
   const argumentList = transpile(params, { arraySeparator: ", " });
   const functionContent = transpile(body);
 
-  return `
-  function ${normalizeName(name)}(${argumentList})
+  return `function ${normalizeName(name)}(${argumentList})
     ${functionContent}
   end`;
 };

@@ -1,1 +1,1 @@
-export const normalizeName = name => name.replace(/\$/g, "_");
+export const normalizeName = name => name.toLowerCase().replace(/\$/g, "_");

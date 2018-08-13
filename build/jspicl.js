@@ -13,7 +13,7 @@ const ClassDeclaration = ({ id, body }) =>
     return classinstance
   end`;
 
-const normalizeName = name => name.replace(/\$/g, "_");
+const normalizeName = name => name.toLowerCase().replace(/\$/g, "_");
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#function-declaration
 const FunctionDeclaration = ({ id, body, params }) => {
@@ -21,8 +21,7 @@ const FunctionDeclaration = ({ id, body, params }) => {
   const argumentList = transpile(params, { arraySeparator: ", " });
   const functionContent = transpile(body);
 
-  return `
-  function ${normalizeName(name)}(${argumentList})
+  return `function ${normalizeName(name)}(${argumentList})
     ${functionContent}
   end`;
 };
@@ -588,23 +587,23 @@ const getMapper = type => {
 
 const generalPolyfillMap = {
   "console.log": argument => `printh(${argument})`,
-  "Math.abs": value => `abs(${value})`,
-  "Math.ceil": value => `-flr(-${value})`,
-  "Math.floor": value => `flr(${value})`,
-  "Math.max": values => `max(${values})`,
-  "Math.min": values => `min(${values})`,
-  "Math.random": () => "rnd()",
-  "Math.sqrt": value => `sqrt(${value})`,
-  "Math.sin": value => `-sin(${value})`,
-  "Object.assign": values => `_assign({${values}})`,
-  "Object.entries": values => `_objmap(${values}, _byentries)`,
-  "Object.keys": values => `_objmap(${values}, _bykeys)`,
-  "Object.values": values => `_objmap(${values}, _byvalues)`
+  "math.abs": value => `abs(${value})`,
+  "math.ceil": value => `-flr(-${value})`,
+  "math.floor": value => `flr(${value})`,
+  "math.max": values => `max(${values})`,
+  "math.min": values => `min(${values})`,
+  "math.random": () => "rnd()",
+  "math.sqrt": value => `sqrt(${value})`,
+  "math.sin": value => `-sin(${value})`,
+  "object.assign": values => `_assign({${values}})`,
+  "object.entries": values => `_objmap(${values}, _byentries)`,
+  "object.keys": values => `_objmap(${values}, _bykeys)`,
+  "object.values": values => `_objmap(${values}, _byvalues)`
 };
 
 const arrayPolyfillMap = {
   filter: (context, args) => `_filter(${context}, ${args})`,
-  forEach: (context, args) => `foreach(${context}, ${args})`,
+  foreach: (context, args) => `foreach(${context}, ${args})`,
   includes: (context, arg) => `_includes(${context}, ${arg})`,
   join: (context, args) => `_join(${context}, ${args})`,
   length: context => `#${context}`,
@@ -614,7 +613,7 @@ const arrayPolyfillMap = {
   split: (context, args) => `_split(${context}, ${args})`,
   substr: (context, args) => `_substr(${context}, ${args})`,
   substring: (context, args) => `_substring(${context}, ${args})`,
-  toString: context => `_tostring(${context})`
+  tostring: context => `_tostring(${context})`
 };
 
 var isMergeableObject = function isMergeableObject(value) {
@@ -747,7 +746,7 @@ const executor = node => {
 
 const indentIncrease = [
   line => /^\bfor\b\s/.test(line),
-  line => /^\bforeach\b/.test(line),
+  line => /^\bforeach\b/.test(line) && !/\)$/.test(line),
   line => /\bfunction\b/.test(line),
   line => /^\bif\b\s/.test(line) && /\bthen\b$/.test(line),
   line => /^while\s/.test(line),
@@ -760,7 +759,7 @@ const indentDecrease = [
   line => /^end[)]?/.test(line),
   line => /end$/.test(line),
   line => /^else/.test(line),
-  line => /^{/.test(line),
+  // line => /^{/.test(line),
   line => /^}/.test(line)
 ];
 

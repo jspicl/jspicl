@@ -4,8 +4,8 @@ const esprima = require("esprima");
 
 describe("IfStatement", () => {
   it("renders an if statement using a test expression and consequent", () => {
-    const input = "if (testExpression) { content; }";
-    const output = `if testExpression then
+    const input = "if (testexpression) { content; }";
+    const output = `if testexpression then
     content
   end`;
     const { body: [statement] } = esprima.parse(input);
@@ -14,8 +14,8 @@ describe("IfStatement", () => {
   });
 
   it("renders an else statement", () => {
-    const input = "if (testExpression) { content; } else { alternative; }";
-    const output = `if testExpression then
+    const input = "if (testexpression) { content; } else { alternative; }";
+    const output = `if testexpression then
     content
   else alternative end`;
     const { body: [statement] } = esprima.parse(input);
@@ -24,15 +24,15 @@ describe("IfStatement", () => {
   });
 
   it("renders an else-if statement", () => {
-    const input = `if (testExpression) {
+    const input = `if (testexpression) {
       content;
     }
-    else if (testExpression2) {
+    else if (testexpression2) {
       content2;
     }`;
-    const output = `if testExpression then
+    const output = `if testexpression then
     content
-  elseif testExpression2 then
+  elseif testexpression2 then
     content2
   end`;
     const { body: [statement] } = esprima.parse(input);
@@ -41,24 +41,24 @@ describe("IfStatement", () => {
   });
 
   it("renders multiple else-if statements and one else statement", () => {
-    const input = `if (testExpression) {
+    const input = `if (testexpression) {
       content;
     }
-    else if (testExpression2) {
+    else if (testexpression2) {
       content2;
     }
-    else if (testExpression3) {
+    else if (testexpression3) {
       content3;
     }
     else {
       content4;
     }`;
     const { body: [statement] } = esprima.parse(input);
-    const output = `if testExpression then
+    const output = `if testexpression then
     content
-  elseif testExpression2 then
+  elseif testexpression2 then
     content2
-  elseif testExpression3 then
+  elseif testexpression3 then
     content3
   else content4 end`;
 

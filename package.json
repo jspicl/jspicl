@@ -1,6 +1,6 @@
 {
   "name": "jspicl",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "A javascript to pico-8 lua converter",
   "main": "build/jspicl.js",
   "module": "src/index.js",
@@ -25,6 +25,7 @@
   "devDependencies": {
     "@agronkabashi/eslint-config": "^1.0.2",
     "@babel/core": "^7.0.0-beta.55",
+    "@babel/polyfill": "^7.0.0-beta.53",
     "@babel/preset-env": "^7.0.0-beta.55",
     "@babel/register": "^7.0.0-beta.55",
     "@std/esm": "^0.26.0",

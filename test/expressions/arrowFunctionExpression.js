@@ -5,8 +5,7 @@ const esprima = require("esprima");
 describe("ArrowFunctionExpression", () => {
   it("renders a function with content", () => {
     const input = "() => { content; }";
-    const output = `
-  function ()
+    const output = `function ()
     content
   end`;
     const { body } = esprima.parse(input);
@@ -17,8 +16,7 @@ describe("ArrowFunctionExpression", () => {
 
   it("renders a function that accepts arguments", () => {
     const input = "(arg1) => { content; }";
-    const output = `
-  function (arg1)
+    const output = `function (arg1)
     content
   end`;
     const { body } = esprima.parse(input);
