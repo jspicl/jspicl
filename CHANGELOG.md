@@ -1,6 +1,10 @@
 # Changelog
 
-## Version 2.2.1
+## Version 2.2.3
+*2018-08-14*
+* Tests would not re-run in watch mode. Replaced babel for esm.
+
+## Version 2.2.2
 *2018-08-13*
 * Bug fix: Identifier names were not output in lowercase.
 

@@ -1,6 +1,5 @@
--u tdd
 --timeout 999999
 --colors
---require @babel/register
+--require esm
 --recursive
 test/**/*.js

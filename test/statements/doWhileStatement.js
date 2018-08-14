@@ -1,6 +1,6 @@
 import assert from "assert";
 import { DoWhileStatement } from "statements";
-const esprima = require("esprima");
+import esprima from "esprima";
 
 describe("DoWhileStatement", () => {
   it("transpiles body and test expression", () => {

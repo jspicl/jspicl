@@ -1,6 +1,6 @@
 import assert from "assert";
 import { ConditionalExpression } from "expressions";
-const esprima = require("esprima");
+import esprima from "esprima";
 
 describe("ConditionalExpression", () => {
   it("renders a conditional expression as an inline function with if/else statement", () => {

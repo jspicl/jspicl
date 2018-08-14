@@ -4,8 +4,8 @@ import prettify from "../src/prettify";
 
 describe("prettify", () => {
   it("indents lua code", () => {
-    const input = fs.readFileSync(`${__dirname}/luacode.lua`).toString();
-    const expected = fs.readFileSync(`${__dirname}/expected.lua`).toString();
+    const input = fs.readFileSync("test/luacode.lua").toString();
+    const expected = fs.readFileSync("test/expected.lua").toString();
 
     assert.equal(prettify(input), expected);
   });
