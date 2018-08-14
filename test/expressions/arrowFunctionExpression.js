@@ -1,6 +1,6 @@
 import assert from "assert";
 import { ArrowFunctionExpression } from "expressions";
-const esprima = require("esprima");
+import esprima from "esprima";
 
 describe("ArrowFunctionExpression", () => {
   it("renders a function with content", () => {

@@ -1,6 +1,6 @@
 import assert from "assert";
 import { AssignmentExpression } from "expressions";
-const esprima = require("esprima");
+import esprima from "esprima";
 
 describe("AssignmentExpression", () => {
   ["*=", "+=", "-=", "%=", "/="].forEach(operator =>

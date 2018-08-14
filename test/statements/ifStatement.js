@@ -1,6 +1,6 @@
 import assert from "assert";
 import { IfStatement } from "statements";
-const esprima = require("esprima");
+import esprima from "esprima";
 
 describe("IfStatement", () => {
   it("renders an if statement using a test expression and consequent", () => {

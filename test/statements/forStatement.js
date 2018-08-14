@@ -1,6 +1,6 @@
 import assert from "assert";
 import { ForStatement } from "statements";
-const esprima = require("esprima");
+import esprima from "esprima";
 
 describe("ForStatement", () => {
   it("renders a while statement", () => {

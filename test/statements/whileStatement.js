@@ -1,6 +1,6 @@
 import assert from "assert";
 import { WhileStatement } from "statements";
-const esprima = require("esprima");
+import esprima from "esprima";
 
 describe("WhileStatememt", () => {
   it("renders a while statement with a test expression and body", () => {
