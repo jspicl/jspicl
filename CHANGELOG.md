@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 2.2.4
+*2018-08-15*
+* Regression: Esprima was incorrectly listed as devdependency ever since 2.1.0
+
 ## Version 2.2.3
 *2018-08-14*
 * Tests would not re-run in watch mode. Replaced babel for esm.

@@ -1,6 +1,6 @@
 {
   "name": "jspicl",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "description": "A javascript to pico-8 lua converter",
   "main": "build/jspicl.js",
   "module": "src/index.js",
@@ -27,7 +27,6 @@
     "babel-eslint": "^8.2.6",
     "eslint": "^5.2.0",
     "esm": "^3.0.76",
-    "esprima": "^4.0.1",
     "mocha": "^5.2.0",
     "rollup": "^0.63.4",
     "rollup-plugin-commonjs": "9.1.x",
@@ -41,7 +40,8 @@
     }
   },
   "dependencies": {
-    "deepmerge": "^2.1.1"
+    "deepmerge": "^2.1.1",
+    "esprima": "^4.0.1"
   },
   "engines": {
     "node": ">=6"
