@@ -1,7 +1,5 @@
-import { transpile } from "../transpile";
-
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#conditional-expression
-export const ConditionalExpression = ({ test, consequent, alternate }) => {
+export const ConditionalExpression = ({ test, consequent, alternate }, { transpile }) => {
   const testExpression = transpile(test);
   const consequentPath = transpile(consequent);
   const alternatePath = transpile(alternate);

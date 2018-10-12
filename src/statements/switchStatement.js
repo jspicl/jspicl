@@ -1,7 +1,5 @@
-import { transpile } from "../transpile";
-
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#switch-statement
-export const SwitchStatement = ({ discriminant, cases }, scope) => {
+export const SwitchStatement = ({ discriminant, cases }, { scope, transpile }) => {
   const condition = `local switchCase = ${transpile(discriminant)}`;
 
   scope.isInsideSwitch = true;

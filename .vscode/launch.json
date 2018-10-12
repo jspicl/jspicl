@@ -7,6 +7,19 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Debug tester.js",
+      "env": {
+        "NODE_PATH": "./src"
+      },
+      "program": "${workspaceFolder}/tester.js",
+      "runtimeArgs": [
+        "-r",
+        "esm"
+      ],
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Mocha Tests",
       "env": {
         "NODE_ENV": "test",

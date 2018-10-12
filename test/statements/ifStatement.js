@@ -1,8 +1,11 @@
 import assert from "assert";
 import { IfStatement } from "statements";
 import esprima from "esprima";
+import createJspiclTranspiler from "transpile";
 
 describe("IfStatement", () => {
+  const transpile = createJspiclTranspiler();
+
   it("renders an if statement using a test expression and consequent", () => {
     const input = "if (testexpression) { content; }";
     const output = `if testexpression then
@@ -10,7 +13,7 @@ describe("IfStatement", () => {
   end`;
     const { body: [statement] } = esprima.parse(input);
 
-    assert.equal(IfStatement(statement), output);
+    assert.equal(IfStatement(statement, { transpile }), output);
   });
 
   it("renders an else statement", () => {
@@ -20,7 +23,7 @@ describe("IfStatement", () => {
   else alternative end`;
     const { body: [statement] } = esprima.parse(input);
 
-    assert.equal(IfStatement(statement), output);
+    assert.equal(IfStatement(statement, { transpile }), output);
   });
 
   it("renders an else-if statement", () => {
@@ -37,7 +40,7 @@ describe("IfStatement", () => {
   end`;
     const { body: [statement] } = esprima.parse(input);
 
-    assert.equal(IfStatement(statement), output);
+    assert.equal(IfStatement(statement, { transpile }), output);
   });
 
   it("renders multiple else-if statements and one else statement", () => {
@@ -62,6 +65,6 @@ describe("IfStatement", () => {
     content3
   else content4 end`;
 
-    assert.equal(IfStatement(statement), output);
+    assert.equal(IfStatement(statement, { transpile }), output);
   });
 });
