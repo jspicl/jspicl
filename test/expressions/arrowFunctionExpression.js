@@ -1,8 +1,11 @@
 import assert from "assert";
 import { ArrowFunctionExpression } from "expressions";
 import esprima from "esprima";
+import createJspiclTranspiler from "transpile";
 
 describe("ArrowFunctionExpression", () => {
+  const transpile = createJspiclTranspiler();
+
   it("renders a function with content", () => {
     const input = "() => { content; }";
     const output = `function ()
@@ -11,7 +14,7 @@ describe("ArrowFunctionExpression", () => {
     const { body } = esprima.parse(input);
     const [{ expression: statement }] = body;
 
-    assert.equal(ArrowFunctionExpression(statement), output);
+    assert.equal(ArrowFunctionExpression(statement, { transpile }), output);
   });
 
   it("renders a function that accepts arguments", () => {
@@ -22,6 +25,6 @@ describe("ArrowFunctionExpression", () => {
     const { body } = esprima.parse(input);
     const [{ expression: statement }] = body;
 
-    assert.equal(ArrowFunctionExpression(statement), output);
+    assert.equal(ArrowFunctionExpression(statement, { transpile }), output);
   });
 });

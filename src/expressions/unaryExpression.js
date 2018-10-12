@@ -1,7 +1,5 @@
-import { transpile } from "../transpile";
-
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#unary-expression
-export const UnaryExpression = ({ operator, argument }) => {
+export const UnaryExpression = ({ operator, argument }, { transpile }) => {
   const { type } = argument;
   const value = transpile(argument);
   const luaOperator = operator === "!" ? "not " : operator;

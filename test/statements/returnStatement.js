@@ -1,9 +1,12 @@
 import assert from "assert";
 import { ReturnStatement } from "statements";
+import createJspiclTranspiler from "transpile";
 
 describe("ReturnStatement", () => {
+  const transpile = createJspiclTranspiler();
+
   it("handles return statements with no argument", () => {
-    assert.equal(ReturnStatement({}), "do return end");
+    assert.equal(ReturnStatement({}, { transpile }), "do return end");
   });
 
   it("returns 'value' if argument is supplied", () => {
@@ -14,6 +17,6 @@ describe("ReturnStatement", () => {
       }
     };
 
-    assert.equal(ReturnStatement(input), `return ${input.argument.raw}`);
+    assert.equal(ReturnStatement(input, { transpile }), `return ${input.argument.raw}`);
   });
 });

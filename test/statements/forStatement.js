@@ -1,8 +1,11 @@
 import assert from "assert";
 import { ForStatement } from "statements";
 import esprima from "esprima";
+import createJspiclTranspiler from "transpile";
 
 describe("ForStatement", () => {
+  const transpile = createJspiclTranspiler();
+
   it("renders a while statement", () => {
     const input = "for(var i=0; i<1; i++) {content}";
     const output = `local i = 0
@@ -12,7 +15,7 @@ describe("ForStatement", () => {
   end`;
     const { body: [statement] } = esprima.parse(input);
 
-    assert.equal(ForStatement(statement), output);
+    assert.equal(ForStatement(statement, { transpile }), output);
   });
 
   it("handles multiple initializations", () => {
@@ -25,7 +28,7 @@ local j = 2
   end`;
     const { body: [statement] } = esprima.parse(input);
 
-    assert.equal(ForStatement(statement), output);
+    assert.equal(ForStatement(statement, { transpile }), output);
   });
 
   it("handles multiple updateExpressions", () => {
@@ -39,6 +42,6 @@ j-=1
   end`;
     const { body: [statement] } = esprima.parse(input);
 
-    assert.equal(ForStatement(statement), output);
+    assert.equal(ForStatement(statement, { transpile }), output);
   });
 });

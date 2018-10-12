@@ -1,13 +1,16 @@
 import assert from "assert";
 import { SwitchCase } from "statements";
+import createJspiclTranspiler from "transpile";
 
 describe("SwitchCase", () => {
+  const transpile = createJspiclTranspiler();
+
   it("throws an error if it's a fallthrough statement", () => {
     const input = {
       consequent: []
     };
 
-    assert.throws(() => SwitchCase(input));
+    assert.throws(() => SwitchCase(input, { transpile }));
   });
 
   it("renders a case", () => {
@@ -28,7 +31,7 @@ describe("SwitchCase", () => {
     content
   `;
 
-    assert.equal(SwitchCase(input), output);
+    assert.equal(SwitchCase(input, { transpile }), output);
   });
 
   it("renders a default case", () => {
@@ -44,6 +47,6 @@ describe("SwitchCase", () => {
     const output = `
 content`;
 
-    assert.equal(SwitchCase(input), output);
+    assert.equal(SwitchCase(input, { transpile }), output);
   });
 });

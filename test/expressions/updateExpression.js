@@ -1,8 +1,11 @@
 import assert from "assert";
 import { UpdateExpression } from "expressions";
 import esprima from "esprima";
+import createJspiclTranspiler from "transpile";
 
 describe("UpdateExpression", () => {
+  const transpile = createJspiclTranspiler();
+
   [
     ["++", "+="],
     ["--", "-="]
@@ -12,7 +15,7 @@ describe("UpdateExpression", () => {
       const output = `variable${luaOperator}1`;
       const { body: [{ expression: statement }] } = esprima.parse(input);
 
-      assert.equal(UpdateExpression(statement), output);
+      assert.equal(UpdateExpression(statement, { transpile }), output);
     })
   );
 });

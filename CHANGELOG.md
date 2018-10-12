@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 2.3.0
+*2018-10-12*
+* Restructured code to eliminate circular dependencies.
+* Transpilation functionality was broken out into a separate library, [trastpiler](https://github.com/AgronKabashi/trastpiler).
+* Automated input, output and external dependencies for rollup build.
+* Transpile is not globally shared anymore, but customizable and instanced.
+
 ## Version 2.2.4
 *2018-08-15*
 * Regression: Esprima was incorrectly listed as devdependency ever since 2.1.0

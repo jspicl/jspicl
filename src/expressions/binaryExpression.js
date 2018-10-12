@@ -1,12 +1,10 @@
-import { transpile } from "../transpile";
-
 const operatorTable = {
   "!==": "!=",
   "===": "=="
 };
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#binary-expression
-export const BinaryExpression = ({ operator, left, right }) => {
+export const BinaryExpression = ({ operator, left, right }, { transpile }) => {
   let leftExpression = transpile(left);
   let rightExpression = transpile(right);
   const luaOperator = operatorTable[operator] || operator;

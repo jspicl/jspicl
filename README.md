@@ -27,11 +27,44 @@ In order to generate a nice lua output you need to explicitly let jspicl know by
 const { output, polyfills } = jspicl(javascriptCode, { prettify: true });
 ```
 
+### Options
+| Property              | Type                      | Description                                   |
+|-----------------------|---------------------------|-----------------------------------------------|
+| input                 | string                    | JavaScript code to transpile into PICO-8 LUA  |
+| options               | object                    |  |
+| &ndash; prettify      | boolean                   | Format output |
+| &ndash; customMappers | HashMap<string, function> | Custom handlers for transpiling expressions, declarations or statements. |
+
 ### Return value
 | Property       | Type   | Description                     |
 |----------------|--------|---------------------------------|
 | output         | string | The transpiled javascript code  |
 | polyfills      | object | Table of required polyfills with their corresponding lua code. |
+
+## Customized transpilation
+jspicl does not support all expressions or statements out of the box but it is
+extensible enough to allow for these to be added. It also allows existing ones to
+be replaced if the implementation is considered unsatisfactory.
+This is done by supplying a `customMappers` option.
+
+```js
+const customMappers = {
+  // Replace the default while-statement implementation
+  WhileStatement: ({ body, test }, { transpile }) =>
+    `while ${transpile(test)} do
+      -- We have full control of the output!
+      ${transpile(body)}
+    end`,
+
+  // Add support for throw statements
+  ThrowStatement: ({ argument }, { transpile }) =>
+    `assert(true, ${transpile(argument)})`,
+
+  // ...
+};
+
+const { output } = jspicl(javascriptCode, { customMappers });
+```
 
 ## Related projects
 [rollup-plugin-jspicl](https://github.com/AgronKabashi/rollup-plugin-jspicl) - Rollup plugin wrapper for jspicl
