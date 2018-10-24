@@ -1,6 +1,6 @@
 {
   "name": "jspicl",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "A javascript to pico-8 lua converter",
   "main": "lib/jspicl.js",
   "module": "src/index.js",

@@ -22,18 +22,43 @@ console.log(
 );
 ```
 
-In order to generate a nice lua output you need to explicitly let jspicl know by passing in an options object.
+By default, jspicl formats the LUA output for you but if performance ever becomes an issue you can turn this off through the options argument.
 ```js
-const { output, polyfills } = jspicl(javascriptCode, { prettify: true });
+const { output, polyfills } = jspicl(javascriptCode, { prettify: false });
 ```
 
 ### Options
-| Property              | Type                      | Description                                   |
-|-----------------------|---------------------------|-----------------------------------------------|
-| input                 | string                    | JavaScript code to transpile into PICO-8 LUA  |
-| options               | object                    |  |
-| &ndash; prettify      | boolean                   | Format output |
-| &ndash; customMappers | HashMap<string, function> | Custom handlers for transpiling expressions, declarations or statements. |
+<table>
+<thead>
+  <tr>
+    <th>Property</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>input</td>
+    <td>string</td>
+    <td>JavaScript code to transpile into PICO-8 LUA</td>
+  </tr>
+  <tr>
+    <td>options</td>
+    <td>object</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;prettify</td>
+    <td>boolean</td>
+    <td>Format output</td>
+  </tr>
+  <tr>
+    <td valign="top">&nbsp;&nbsp;&nbsp;&nbsp;customMappers</td>
+    <td valign="top">HashMap&lt;string, function&gt;</td>
+    <td>Custom handlers for transpiling expressions, declarations or statements.</td>
+  </tr>
+</tbody>
+</table>
 
 ### Return value
 | Property       | Type   | Description                     |
@@ -45,7 +70,7 @@ const { output, polyfills } = jspicl(javascriptCode, { prettify: true });
 jspicl does not support all expressions or statements out of the box but it is
 extensible enough to allow for these to be added. It also allows existing ones to
 be replaced if the implementation is considered unsatisfactory.
-This is done by supplying a `customMappers` option.
+This is done by supplying a `customMappers` option. The only requirement imposed on AST node is that they contain a string property called `type` since this is used to identify the appropriate declaration, expression or statement.
 
 ```js
 const customMappers = {
