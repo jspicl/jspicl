@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 2.3.1
+*2018-10-24*
+* Bug fix: FunctionExpression was not passing on the transpilation config causing the AST traversal to break.
+* Added test cases for FunctionExpression.
+
 ## Version 2.3.0
 *2018-10-12*
 * Restructured code to eliminate circular dependencies.
