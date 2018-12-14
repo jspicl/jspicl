@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 2.3.2
+*2018-12-14*
+* Added scope declarations for FunctionDeclaration, FunctionExpression and ArrowFunctionExpression and corresponding test cases.
+* Unary operator ~ is not supported. Added test case for this.
+
 ## Version 2.3.1
 *2018-10-24*
 * Bug fix: FunctionExpression was not passing on the transpilation config causing the AST traversal to break.

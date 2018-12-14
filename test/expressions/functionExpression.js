@@ -6,6 +6,10 @@ import createJspiclTranspiler from "transpile";
 describe("FunctionExpression", () => {
   const transpile = createJspiclTranspiler();
 
+  it("adds a scope boundary", () => {
+    assert.equal(FunctionExpression.scopeBoundary, true);
+  });
+
   it("renders a function with content", () => {
     const input = "(function a() { content; })";
     const output = `function ()

@@ -1,14 +1,16 @@
 {
   "name": "jspicl",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "A javascript to pico-8 lua converter",
   "main": "lib/jspicl.js",
   "module": "src/index.js",
   "scripts": {
+    "prestart": "rm -rf build",
     "start": "rollup -c",
     "prepublishOnly": "npm test && npm start",
     "tester": "node -r esm tester.js",
-    "test": "NODE_ENV=test NODE_PATH=./src mocha"
+    "test": "NODE_ENV=test NODE_PATH=./src mocha",
+    "codecoverage": "nyc npm t"
   },
   "repository": {
     "type": "git",
@@ -17,21 +19,26 @@
   "keywords": [
     "pico-8",
     "javascript",
+    "buildtool",
     "lua",
-    "ast"
+    "ast",
+    "transpile",
+    "transpiler"
   ],
   "author": "Agron Kabashi",
   "license": "MIT",
   "devDependencies": {
     "@agronkabashi/eslint-config": "^1.0.2",
     "babel-eslint": "^10.0.1",
-    "eslint": "^5.6.1",
+    "babel-plugin-istanbul": "^5.1.0",
+    "eslint": "^5.10.0",
     "esm": "^3.0.84",
     "mocha": "^5.2.0",
-    "rollup": "^0.63.4",
-    "rollup-plugin-commonjs": "9.1.x",
-    "rollup-plugin-node-resolve": "3.3.x",
-    "sinon": "^6.3.5"
+    "nyc": "^13.1.0",
+    "rollup": "^0.67.4",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "sinon": "^7.2.2"
   },
   "esm": {
     "mode": "all",
@@ -42,7 +49,7 @@
   "dependencies": {
     "deepmerge": "^2.1.1",
     "esprima": "^4.0.1",
-    "trastpiler": "^1.0.0"
+    "trastpiler": "^1.0.1"
   },
   "engines": {
     "node": ">=6"

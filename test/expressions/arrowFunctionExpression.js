@@ -6,6 +6,10 @@ import createJspiclTranspiler from "transpile";
 describe("ArrowFunctionExpression", () => {
   const transpile = createJspiclTranspiler();
 
+  it("adds a scope boundary", () => {
+    assert.equal(ArrowFunctionExpression.scopeBoundary, true);
+  });
+
   it("renders a function with content", () => {
     const input = "() => { content; }";
     const output = `function ()

@@ -6,3 +6,5 @@ export const FunctionExpression = (node, config) =>
     ...node,
     id: null
   }, config);
+
+FunctionExpression.scopeBoundary = true;

@@ -10,3 +10,5 @@ export const FunctionDeclaration = ({ id, body, params }, { transpile }) => {
     ${functionContent}
   end`;
 };
+
+FunctionDeclaration.scopeBoundary = true;
