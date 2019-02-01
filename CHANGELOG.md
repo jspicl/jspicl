@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 2.3.3
+*2019-02-01*
+* No change in functionality, badges included in README
+
 ## Version 2.3.2
 *2018-12-14*
 * Added scope declarations for FunctionDeclaration, FunctionExpression and ArrowFunctionExpression and corresponding test cases.
