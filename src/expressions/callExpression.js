@@ -1,4 +1,4 @@
-import { getPolyfilledCallExpression } from "../polyfiller";
+import { getPolyfilledCallExpression } from "polyfiller";
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#call-and-new-expressions
 export const CallExpression = ({ callee, arguments: args }, { transpile }) => {

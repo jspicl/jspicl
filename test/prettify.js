@@ -1,6 +1,6 @@
 import assert from "assert";
 import fs from "fs";
-import prettify from "../src/prettify";
+import prettify from "prettify";
 
 describe("prettify", () => {
   it("indents lua code", () => {

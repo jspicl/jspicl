@@ -1,4 +1,4 @@
-import { normalizeName } from "../helpers";
+import { normalizeName } from "helpers";
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#function-declaration
 export const FunctionDeclaration = ({ id, body, params }, { transpile }) => {
