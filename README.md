@@ -77,7 +77,8 @@ const { output, polyfills } = jspicl(javascriptCode, { prettify: false });
 jspicl does not support all expressions or statements out of the box but it is
 extensible enough to allow for these to be added. It also allows existing ones to
 be replaced if the implementation is considered unsatisfactory.
-This is done by supplying a `customMappers` option. The only requirement imposed on AST node is that they contain a string property called `type` since this is used to identify the appropriate declaration, expression or statement.
+This is done by supplying a `customMappers` option. The only requirement imposed on
+the AST node is that it contains a string property called `type` since this is used to identify the appropriate declaration, expression or statement.
 
 ```js
 const customMappers = {
@@ -88,9 +89,15 @@ const customMappers = {
       ${transpile(body)}
     end`,
 
-  // Add support for throw statements
-  ThrowStatement: ({ argument }, { transpile }) =>
-    `assert(true, ${transpile(argument)})`,
+  // Add support for missing features
+  ForOfStatement: ({ left, right, body }) => {
+    // https://esprima.readthedocs.io/en/latest/syntax-tree-format.html#for-of-statement
+  },
+
+  // Custom statements, declarations and expressions are also valid
+  // as long as they are included in the AST
+  SuperDuperComment: () =>
+    `-- You're doing great!`
 
   // ...
 };
