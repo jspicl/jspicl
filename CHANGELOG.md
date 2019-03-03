@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 2.4.0
+*2019-03-03*
+* Add support for ThrowStatement, README updated accordingly. [Issue #64](https://github.com/AgronKabashi/jspicl/issues/64)
+* Bug fix: Parantheses were not properly retained for IIFEs. [Issue #65](https://github.com/AgronKabashi/jspicl/issues/65)
+* Exclude global and local 'use strict' directices. [Issue #66](https://github.com/AgronKabashi/jspicl/issues/66)
+* Special thanks to the following user(s) for reporting these issues:
+  - [Zaoqi](https://github.com/zaoqi)
+
 ## Version 2.3.3
 *2019-02-01*
 * No change in functionality, badges included in README

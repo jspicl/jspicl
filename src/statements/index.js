@@ -8,4 +8,5 @@ export * from "./forStatement";
 export * from "./returnStatement";
 export * from "./switchCase";
 export * from "./switchStatement";
+export * from "./throwStatement";
 export * from "./whileStatement";

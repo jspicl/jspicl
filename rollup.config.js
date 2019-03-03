@@ -1,3 +1,4 @@
+import includePaths from "rollup-plugin-includepaths";
 import nodeResolve from "rollup-plugin-node-resolve";
 import commonjs from "rollup-plugin-commonjs";
 import {
@@ -14,9 +15,10 @@ export default {
   },
   external: Object.keys(dependencies),
   plugins: [
-    nodeResolve({
-      main: true
+    includePaths({
+      paths: ["src"]
     }),
+    nodeResolve(),
     commonjs()
   ]
 };

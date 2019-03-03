@@ -1,4 +1,4 @@
-import { normalizeName } from "../helpers";
+import { normalizeName } from "helpers";
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#variable-declaration
 export const VariableDeclarator = ({ id, init }, { scope, transpile }) => {

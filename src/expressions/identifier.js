@@ -1,4 +1,4 @@
-import { normalizeName } from "../helpers";
+import { normalizeName } from "helpers";
 
 const specialCases = {
   undefined: "nil"

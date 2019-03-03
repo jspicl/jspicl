@@ -1,4 +1,6 @@
-import { getPolyfilledCallExpression } from "../polyfiller";
+import { getPolyfilledCallExpression } from "polyfiller";
+import { FunctionExpression } from "./functionExpression";
+import { wrapWithParantheses } from "helpers";
 
 // http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#call-and-new-expressions
 export const CallExpression = ({ callee, arguments: args }, { transpile }) => {
@@ -10,5 +12,9 @@ export const CallExpression = ({ callee, arguments: args }, { transpile }) => {
   }
 
   // Regular function call
-  return `${transpile(callee)}(${argumentList})`;
+  const calleeExpression = wrapWithParantheses(
+    callee.type === FunctionExpression.name,
+    transpile(callee)
+  );
+  return `${calleeExpression}(${argumentList})`;
 };
