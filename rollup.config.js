@@ -18,9 +18,7 @@ export default {
     includePaths({
       paths: ["src"]
     }),
-    nodeResolve({
-      main: true
-    }),
+    nodeResolve(),
     commonjs()
   ]
 };
