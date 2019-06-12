@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 2.4.1
+*2019-06-13*
+* Updated dependencies to reduce vulnerabilities.
+
 ## Version 2.4.0
 *2019-03-03*
 * Add support for ThrowStatement, README updated accordingly. [Issue #64](https://github.com/AgronKabashi/jspicl/issues/64)
