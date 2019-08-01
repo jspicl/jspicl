@@ -12,6 +12,9 @@ jspicl is a Javascript to PICO-8 Lua transpiler. It creates an AST out of the Ja
 ![](https://img.shields.io/npm/l/jspicl.svg?style=for-the-badge)
 #
 
+## CLI
+Consider using [jspicl-cli](https://github.com/AgronKabashi/jspicl-cli) instead to simplify your project setup. It includes several additional features such as watch mode (reloading your game when code changes), using PNGs as your game's spritesheet etc.
+
 ## Installation
 ```
 npm install jspicl --save
@@ -105,11 +108,6 @@ const customMappers = {
 const { output } = jspicl(javascriptCode, { customMappers });
 ```
 
-## Related projects
-[rollup-plugin-jspicl](https://github.com/AgronKabashi/rollup-plugin-jspicl) - Rollup plugin wrapper for jspicl
-
-[games](https://github.com/topics/jspicl-sample) - Games created with jspicl
-
 ## Known limitations
 
 |||
@@ -123,5 +121,7 @@ const { output } = jspicl(javascriptCode, { customMappers });
 ## Versioning
 This project uses semantic versioning
 
-## License
-MIT
+## Related projects
+[jspicl CLI](https://github.com/AgronKabashi/jspicl-cli) - Command line interface for jspicl
+
+[games](https://github.com/topics/jspicl-sample) - Games created with jspicl

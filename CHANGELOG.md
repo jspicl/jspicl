@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 2.4.2
+*2019-08-01*
+* Updated trastpiler to 1.0.2
+* Updated 3rd party dependencies to address their vulnerabilities
+
 ## Version 2.4.1
 *2019-06-13*
 * Updated dependencies to reduce vulnerabilities.
