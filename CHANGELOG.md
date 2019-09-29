@@ -1,6 +1,10 @@
 # Changelog
 
-## Version 2.4.2
+## Version 2.4.4
+*2019-09-29*
+* 3rd party security vulnerability update.
+
+## Version 2.4.3
 *2019-09-29*
 * Added Github Action for verifying pull requests
 
