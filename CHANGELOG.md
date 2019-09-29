@@ -1,6 +1,10 @@
 # Changelog
 
 ## Version 2.4.2
+*2019-09-29*
+* Added Github Action for verifying pull requests
+
+## Version 2.4.2
 *2019-08-01*
 * Updated trastpiler to 1.0.2
 * Updated 3rd party dependencies to address their vulnerabilities
