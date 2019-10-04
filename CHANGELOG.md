@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 2.5.0
+*2019-10-04*
+* Ensure that default options are not "discarded" when custom options are supplied.
+* 3rd party dependencies updated.
+
 ## Version 2.4.4
 *2019-09-29*
 * 3rd party security vulnerability update.
