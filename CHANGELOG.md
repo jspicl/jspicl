@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 2.6.0
+*2020-03-01*
+* Addressed an issue wherein `join` with separators longer than one character would not generate a correct string.
+* Added array functions `findIndex`, `pop` and `sort`
+
 ## Version 2.5.0
 *2019-10-04*
 * Ensure that default options are not "discarded" when custom options are supplied.
