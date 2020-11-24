@@ -1,16 +1,54 @@
 {
-  "name": "jspicl",
-  "version": "2.6.0",
-  "description": "A javascript to pico-8 lua converter",
-  "main": "lib/jspicl.js",
-  "module": "src/index.js",
+  "name": "@jspicl/jspicl",
+  "version": "3.0.0",
+  "description": "A javascript to PICO-8 LUA converter",
+  "license": "MIT",
+  "typings": "dist/index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/jspicl.esm.js",
+  "type": "module",
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
-    "prestart": "rm -rf build",
-    "start": "rollup -c",
-    "prepublishOnly": "npm test && npm start",
-    "tester": "NODE_PATH=./src node -r esm tester.js",
-    "test": "NODE_ENV=test NODE_PATH=./src mocha",
-    "codecoverage": "nyc npm t"
+    "prepublishOnly": "npm test && npm run build",
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why",
+    "codecoverage": "npm t -- --coverage=true",
+    "storybook": "start-storybook -p 6006 --no-dll",
+    "build-storybook": "build-storybook --no-dll"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "size-limit": [
+    {
+      "path": "dist/jspicl.cjs.production.min.js",
+      "limit": "35 KB"
+    },
+    {
+      "path": "dist/jspicl.esm.js",
+      "limit": "35 KB"
+    }
+  ],
+  "prettier": {
+    "arrowParens": "always",
+    "bracketSpacing": false,
+    "endOfLine": "lf",
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": false,
+    "tabWidth": 2,
+    "trailingComma": "none",
+    "useTabs": false
   },
   "repository": {
     "type": "git",
@@ -26,32 +64,27 @@
     "transpiler"
   ],
   "author": "Agron Kabashi",
-  "license": "MIT",
   "devDependencies": {
-    "@agronkabashi/eslint-config": "^1.1.0",
-    "babel-eslint": "^10.0.3",
-    "babel-plugin-istanbul": "^5.2.0",
-    "eslint": "^6.5.1",
-    "esm": "^3.2.25",
-    "mocha": "^5.2.0",
-    "nyc": "^14.1.1",
-    "rollup": "^1.23.0",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-includepaths": "^0.2.3",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "sinon": "^7.5.0"
-  },
-  "esm": {
-    "mode": "all",
-    "cjs": {
-      "paths": true
-    }
+    "@babel/core": "^7.12.3",
+    "@size-limit/preset-small-lib": "^4.8.0",
+    "@storybook/addon-actions": "^6.1.1",
+    "@storybook/addon-essentials": "^6.1.1",
+    "@storybook/addon-links": "^6.1.1",
+    "@storybook/html": "^6.1.1",
+    "@types/esprima": "^4.0.2",
+    "babel-loader": "^8.2.1",
+    "husky": "^4.3.0",
+    "react-is": "^17.0.1",
+    "size-limit": "^4.8.0",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.0.3",
+    "typescript": "^4.0.5"
   },
   "dependencies": {
     "esprima": "^4.0.1",
     "trastpiler": "^1.0.2"
   },
   "engines": {
-    "node": ">=6"
+    "node": ">=15"
   }
 }
