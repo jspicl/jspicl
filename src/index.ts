@@ -1,7 +1,7 @@
 import * as esprima from "esprima";
 import {createJspiclTranspiler} from "./transpile";
 import {getRequiredPolyfills} from "./polyfills/get-required-polyfills";
-import {JspiclOptions} from "./types";
+import {JspiclOptions, JspiclOutput} from "./types";
 import {prettify} from "./prettify";
 
 export * from "./types";
@@ -10,7 +10,10 @@ const defaultOptions: JspiclOptions = {
   prettify: true
 };
 
-export function jspicl(source: string, overrideOptions?: JspiclOptions) {
+export function jspicl(
+  source: string,
+  overrideOptions?: JspiclOptions
+): JspiclOutput {
   const options = {
     ...defaultOptions,
     ...overrideOptions

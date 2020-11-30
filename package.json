@@ -20,9 +20,7 @@
     "prepare": "tsdx build",
     "size": "size-limit",
     "analyze": "size-limit --why",
-    "codecoverage": "npm t -- --coverage=true",
-    "storybook": "start-storybook -p 6006 --no-dll",
-    "build-storybook": "build-storybook --no-dll"
+    "codecoverage": "npm t -- --coverage=true"
   },
   "husky": {
     "hooks": {
@@ -67,10 +65,6 @@
   "devDependencies": {
     "@babel/core": "^7.12.3",
     "@size-limit/preset-small-lib": "^4.8.0",
-    "@storybook/addon-actions": "^6.1.1",
-    "@storybook/addon-essentials": "^6.1.1",
-    "@storybook/addon-links": "^6.1.1",
-    "@storybook/html": "^6.1.1",
     "@types/esprima": "^4.0.2",
     "babel-loader": "^8.2.1",
     "husky": "^4.3.0",
