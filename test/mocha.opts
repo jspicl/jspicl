@@ -1,5 +1,0 @@
---timeout 999999
---colors
---require esm
---recursive
-test/**/*.js

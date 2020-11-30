@@ -3,3 +3,5 @@ node_modules
 .DS_STORE
 .esm-cache
 .nyc_output
+coverage
+dist
