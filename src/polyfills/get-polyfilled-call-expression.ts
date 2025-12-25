@@ -1,5 +1,5 @@
-import {TranspileFunction} from "../types";
-import {arrayPolyfillMap, genericPolyfillMap} from "./constants";
+import type {TranspileFunction} from "../types.js";
+import {arrayPolyfillMap, genericPolyfillMap} from "./constants.js";
 
 type CallExpressionArguments = {
   transpile: TranspileFunction;

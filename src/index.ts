@@ -1,19 +1,15 @@
-import * as esprima from "esprima";
-import {createJspiclTranspiler} from "./transpile";
-import {getRequiredPolyfills} from "./polyfills/get-required-polyfills";
-import {JspiclOptions, JspiclOutput} from "./types";
-import {prettify} from "./prettify";
+import esprima from "esprima";
+import {createJspiclTranspiler} from "./transpile.js";
+import {getRequiredPolyfills} from "./polyfills/get-required-polyfills.js";
+import type {Options, Output} from "./types.js";
+import {prettify} from "./prettify.js";
+import type {ASTNode} from "trastpiler";
 
-export * from "./types";
-
-const defaultOptions: JspiclOptions = {
+const defaultOptions: Options = {
   prettify: true
 };
 
-export function jspicl(
-  source: string,
-  overrideOptions?: JspiclOptions
-): JspiclOutput {
+export function jspicl(source: string, overrideOptions?: Options): Output {
   const options = {
     ...defaultOptions,
     ...overrideOptions
@@ -22,7 +18,7 @@ export function jspicl(
   const transpile = createJspiclTranspiler(options.customMappers);
   const {body} = esprima.parseScript(source, {loc: true, range: true});
 
-  let code: string = transpile(body);
+  let code: string = transpile(body as ASTNode[]);
 
   if (options.prettify) {
     code = prettify(code);

@@ -11,7 +11,8 @@ export const genericPolyfillMap: Record<string, (args: string) => string> = {
   "object.assign": (args) => `_assign({${args}})`,
   "object.entries": (args) => `_objmap(${args}, _byentries)`,
   "object.keys": (args) => `_objmap(${args}, _bykeys)`,
-  "object.values": (args) => `_objmap(${args}, _byvalues)`
+  "object.values": (args) => `_objmap(${args}, _byvalues)`,
+  "string.fromcharcode": (args) => `chr(${args})`
 };
 
 export const arrayPolyfillMap: Record<

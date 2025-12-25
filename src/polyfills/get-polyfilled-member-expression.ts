@@ -1,5 +1,5 @@
-import {TranspileFunction} from "../types";
-import {arrayPolyfillMap} from "./constants";
+import type {TranspileFunction} from "../types.js";
+import {arrayPolyfillMap} from "./constants.js";
 
 type MemberExpressionArgument = {
   transpile: TranspileFunction;

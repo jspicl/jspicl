@@ -1,4 +1,4 @@
-import * as defaultPolyfillImplementations from "./default-implementations";
+import * as defaultPolyfillImplementations from "./default-implementations/index.js";
 const polyfillMatcher = /(?<!\.)\b_\w+\(/g;
 
 export function getRequiredPolyfills(luaCode: string) {

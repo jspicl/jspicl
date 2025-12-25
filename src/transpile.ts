@@ -1,13 +1,13 @@
-import createTranspiler from "trastpiler";
-import * as globalMappers from "./syntax-tree";
+import {createTranspiler} from "trastpiler";
+import * as globalMappers from "./ast/index.js";
 
 export function createJspiclTranspiler(
-  customMappers?: Object,
-  initialScopeData?: Object
+  customMappers?: Record<string, any>,
+  initialScopeData?: Record<string, any>
 ) {
   return createTranspiler({
     initialScopeData,
-    mappers: {
+    handlers: {
       ...globalMappers,
       ...customMappers
     }

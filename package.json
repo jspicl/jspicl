@@ -3,43 +3,30 @@
   "version": "3.0.0",
   "description": "A javascript to PICO-8 LUA converter",
   "license": "MIT",
-  "typings": "dist/index.d.ts",
-  "main": "dist/index.js",
-  "module": "dist/jspicl.esm.js",
   "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/types.js"
+    }
+  },
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "prepublishOnly": "npm test && npm run build",
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test",
-    "lint": "tsdx lint",
-    "prepare": "tsdx build",
-    "size": "size-limit",
-    "analyze": "size-limit --why",
-    "codecoverage": "npm t -- --coverage=true"
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "yarn clean && yarn test && yarn build"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
-  },
-  "size-limit": [
-    {
-      "path": "dist/jspicl.cjs.production.min.js",
-      "limit": "35 KB"
-    },
-    {
-      "path": "dist/jspicl.esm.js",
-      "limit": "35 KB"
-    }
-  ],
   "prettier": {
     "arrowParens": "always",
     "bracketSpacing": false,
@@ -66,22 +53,16 @@
   ],
   "author": "Agron Kabashi",
   "devDependencies": {
-    "@babel/core": "^7.12.3",
-    "@size-limit/preset-small-lib": "^4.8.0",
-    "@types/esprima": "^4.0.2",
-    "babel-loader": "^8.2.1",
-    "husky": "^4.3.0",
-    "react-is": "^17.0.1",
-    "size-limit": "^4.8.0",
-    "tsdx": "^0.14.1",
-    "tslib": "^2.0.3",
-    "typescript": "^4.0.5"
+    "@types/esprima": "^4.0.6",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0",
+    "vitest": "^4.0.15"
   },
   "dependencies": {
     "esprima": "^4.0.1",
-    "trastpiler": "^1.0.2"
+    "trastpiler": "^2.0.0"
   },
   "engines": {
-    "node": ">=15"
+    "node": ">=22"
   }
 }

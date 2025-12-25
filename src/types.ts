@@ -1,25 +1,25 @@
-export declare type JspiclOptions = {
+export type Options = {
   prettify?: boolean;
-  customMappers?: Record<string, AstNodeParser>;
+  customMappers?: Record<string, AstNodeVisitor>;
 };
 
-export declare type JspiclOutput = {
+export type Output = {
   code: string;
   polyfills: Record<string, string>;
 };
 
-export declare type AstNode = {
+export type AstNode = {
   type: string;
   [key: string]: any;
 };
 
-export declare type TranspileOptions = {arraySeparator?: string};
-export declare type TranspileFunction = (
+export type TranspileOptions = {arraySeparator?: string};
+export type TranspileFunction = (
   node: AstNode,
   options?: TranspileOptions
 ) => string;
 
-export declare type AstNodeParserOptions = {
+export type AstNodeVisitorOptions = {
   transpile: TranspileFunction;
   scope: {
     variables: Record<string, any>;
@@ -27,7 +27,7 @@ export declare type AstNodeParserOptions = {
   };
 };
 
-export declare type AstNodeParser = {
-  (node: Omit<AstNode, "type">, options: AstNodeParserOptions): string;
+export type AstNodeVisitor = {
+  (node: Omit<AstNode, "type">, options: AstNodeVisitorOptions): string;
   scopeBoundary?: boolean;
 };
