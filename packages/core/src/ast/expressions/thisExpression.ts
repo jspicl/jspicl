@@ -1,0 +1,4 @@
+import type {AstNodeVisitor} from "../../types.js";
+
+// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#this-expression
+export const ThisExpression: AstNodeVisitor = () => "this";
