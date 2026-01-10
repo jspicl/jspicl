@@ -1,0 +1,146 @@
+#!/usr/bin/env node
+require("../dist/cli.js").runCLI();
+// const buble = require("rollup-plugin-buble");
+// const includePaths = require("rollup-plugin-includepaths");
+// const path = require("path");
+// const yargs = require("yargs");
+// const rollup = require("rollup");
+// const jspiclPlugin = require("./plugin.js");
+
+// const options = {
+//   input: {
+//     description: "Path to entry point",
+//     demandOption: true,
+//     requiresArg: true
+//   },
+//   output: {
+//     description: "Path the generated PICO-8 cardridge",
+//     demandOption: true,
+//     requiresArg: true
+//   },
+//   spritesheetImagePath: {
+//     description: "Path to a spritesheet",
+//     demandOption: true,
+//     requiresArg: true
+//   },
+//   cartridgePath: {
+//     demandOption: true,
+//     description: "Path to existing cardridge",
+//     requiresArg: true
+//   },
+
+//   includeBanner: {
+//     description: "Include jspicl info in code",
+//     requiresArg: true
+//   },
+//   jsOutput: {
+//     description: "Path to JavaScript output"
+//   },
+//   luaOutput: {
+//     description: "Path to LUA output"
+//   },
+//   showStats: {
+//     description: "Display build stats",
+//     requiresArg: true
+//   },
+//   pipeOutputToConsole: {
+//     description: "Output console.log to terminal"
+//   },
+//   reloadOnSave: {
+//     description: "Re-run cartridge when updated"
+//   },
+
+//   polyfillTransform: {
+//     description: "Path to a module that exports a transformation method",
+//     requiresArg: true
+//   },
+//   customPicoPath: {
+//     description: "Path to PICO-8 executable",
+//     requiresArg: true
+//   },
+//   prettify: {
+//     description: "Format LUA code"
+//   },
+//   watch: {
+//     description: "Reload cartridge on rebuilds"
+//   }
+//   // customMappers: {
+//   //
+//   //   requiresArg: true,
+//   //   coerce: p => require(path.resolve(p)).default
+//   // }
+// };
+
+// const config = yargs
+//   .option(options)
+//   .strict()
+//   .help(false)
+//   .version(false)
+//   .wrap(null).argv;
+
+// if (config.jsOutput && typeof config.jsOutput === "boolean") {
+//   const filename = path.basename(config.output, path.extname(config.output));
+//   config.jsOutput = path.resolve(
+//     path.join(path.dirname(config.output), `${filename}.js`)
+//   );
+// }
+
+// if (config.luaOutput && typeof config.luaOutput === "boolean") {
+//   const filename = path.basename(config.output, path.extname(config.output));
+//   config.luaOutput = path.resolve(
+//     path.join(path.dirname(config.output), `${filename}.lua`)
+//   );
+// }
+
+// // console.dir(config);
+
+// function getInputOptions({input, output, ...jspiclOptions}) {
+//   return {
+//     input,
+//     plugins: [
+//       includePaths({
+//         paths: [path.resolve(input)]
+//       }),
+//       buble(),
+//       {
+//         renderChunk: (source) =>
+//           source.replace(/\/\/ <!-- DEBUG[^//]*\/\/\s-->/g, "")
+//       },
+//       jspiclPlugin(jspiclOptions)
+//     ]
+//   };
+// }
+
+// function getOutputOptions({output}) {
+//   return {
+//     file: output,
+//     format: "esm",
+//     freeze: false
+//   };
+// }
+
+// function getWatchOptions(config) {
+//   return {
+//     ...getInputOptions(config),
+//     output: [getOutputOptions(config)],
+//     watch: {
+//       clearScreen: true,
+//       chokidar: true,
+//       exclude: "node_modules/**"
+//     }
+//   };
+// }
+
+// (async function build() {
+//   try {
+//     if (config.watch) {
+//       console.clear();
+//       rollup.watch(getWatchOptions(config));
+//     } else {
+//       const bundle = await rollup.rollup(getInputOptions(config));
+//       await bundle.write(getOutputOptions(config));
+//     }
+//   } catch (e) {
+//     console.error(e.message);
+//   }
+// })();
