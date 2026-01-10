@@ -1,0 +1,75 @@
+{
+  "name": "@jspicl/cli",
+  "version": "3.0.0",
+  "description": "CLI for simplifying PICO-8 game development in JavaScript",
+  "author": "Agron Kabashi",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "jspicl": "bin/cli"
+  },
+  "files": [
+    "dist",
+    "bin"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "yarn clean && yarn test && yarn build"
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "bracketSpacing": false,
+    "endOfLine": "lf",
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": false,
+    "tabWidth": 2,
+    "trailingComma": "none",
+    "useTabs": false
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jspicl/jspicl"
+  },
+  "keywords": [
+    "jspicl",
+    "pico-8",
+    "cli",
+    "build-tool",
+    "javascript",
+    "lua",
+    "transpiler",
+    "game-development"
+  ],
+  "devDependencies": {
+    "@types/lodash.debounce": "^4.0.9",
+    "@types/node": "^22.0.0",
+    "@types/pngjs": "^6.0.5",
+    "@types/yargs": "^17.0.33",
+    "typescript": "^5.7.0"
+  },
+  "dependencies": {
+    "@jspicl/core": "workspace:^",
+    "chokidar": "^5.0.0",
+    "esbuild": "^0.25.0",
+    "lodash.debounce": "^4.0.8",
+    "mkdirp": "^3.0.1",
+    "pngjs": "^7.0.0",
+    "yargs": "^18.0.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
