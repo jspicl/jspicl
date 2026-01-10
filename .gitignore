@@ -1,7 +1,30 @@
+# Dependencies
 node_modules
-.baseDir.*
-.DS_STORE
-.esm-cache
-.nyc_output
-coverage
+
+# Build output
 dist
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+# IDE
+.vscode
+.idea
+
+# OS
+.DS_Store
+
+# Test coverage
+coverage
+.nyc_output
+
+# Misc
+.baseDir.*
+.esm-cache
+*.log
