@@ -1,0 +1,70 @@
+{
+  "name": "@jspicl/core",
+  "version": "3.0.0",
+  "description": "A javascript to PICO-8 LUA converter",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/types.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "yarn clean && yarn test && yarn build"
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "bracketSpacing": false,
+    "endOfLine": "lf",
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": false,
+    "tabWidth": 2,
+    "trailingComma": "none",
+    "useTabs": false
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AgronKabashi/jspicl"
+  },
+  "keywords": [
+    "pico-8",
+    "cli",
+    "build-tool",
+    "buildtool",
+    "javascript",
+    "lua",
+    "ast",
+    "transpile",
+    "transpiler",
+    "game-development"
+  ],
+  "author": "Agron Kabashi",
+  "devDependencies": {
+    "@types/esprima": "^4.0.6",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0"
+  },
+  "dependencies": {
+    "esprima": "^4.0.1",
+    "trastpiler": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
