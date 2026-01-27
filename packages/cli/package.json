@@ -5,24 +5,18 @@
   "author": "Agron Kabashi",
   "license": "MIT",
   "type": "module",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    }
-  },
   "bin": {
-    "jspicl": "bin/cli"
+    "jspicl": "dist/cli.js"
   },
   "files": [
-    "dist",
-    "bin"
+    "dist"
   ],
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --noEmit && esbuild src/index.ts --bundle --platform=node --format=esm --packages=external --banner:js='#!/usr/bin/env node' --outfile=dist/cli.js",
     "clean": "rm -rf dist",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -58,12 +52,12 @@
     "@types/node": "^22.0.0",
     "@types/pngjs": "^6.0.5",
     "@types/yargs": "^17.0.33",
+    "esbuild": "^0.25.0",
     "typescript": "^5.7.0"
   },
   "dependencies": {
     "@jspicl/core": "workspace:^",
     "chokidar": "^5.0.0",
-    "esbuild": "^0.25.0",
     "lodash.debounce": "^4.0.8",
     "mkdirp": "^3.0.1",
     "pngjs": "^7.0.0",
