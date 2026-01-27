@@ -26,12 +26,14 @@ const tokens = [
   /\(/, // paranthesis
   /\[/, // left bracket
   /\{/ // left curly brace
-].join("|");
-
-const regex = new RegExp(`(${tokens})`, "gi");
+]
+  .map((r) => r.source)
+  .join("|");
 
 /** Calculates the token count for the passed in Lua code*/
 export function getTokenCount(luaCode: string) {
+  const regex = new RegExp(`(${tokens})`, "gi");
+
   return (luaCode.match(regex) || []).filter(
     (token) => token !== "local" && token !== "end"
   ).length;

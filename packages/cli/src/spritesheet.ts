@@ -17,22 +17,24 @@ const toClosestColor = (pixels: Buffer) => (_: any, offset: number) => {
 
   let minDistance = Number.MAX_VALUE;
   let closestPaletteColor = 0;
-  PICO8_PALETTE.forEach((color: {r: number; g: number; b: number}, i: number) => {
-    const diff =
-      (color.r - pixel.r) ** 2 +
-      (color.g - pixel.g) ** 2 +
-      (color.b - pixel.b) ** 2;
+  PICO8_PALETTE.forEach(
+    (color: {r: number; g: number; b: number}, i: number) => {
+      const diff =
+        (color.r - pixel.r) ** 2 +
+        (color.g - pixel.g) ** 2 +
+        (color.b - pixel.b) ** 2;
 
-    if (diff < minDistance) {
-      minDistance = diff;
-      closestPaletteColor = i;
+      if (diff < minDistance) {
+        minDistance = diff;
+        closestPaletteColor = i;
+      }
     }
-  });
+  );
 
   return closestPaletteColor.toString(hexBase);
 };
 
-export function getSpritesheetFromImage(imagePath: string) {
+export function getSpritesheetFromImage(imagePath: string): Promise<string> {
   if (!imagePath) {
     throw new Error("Image path is missing");
   }

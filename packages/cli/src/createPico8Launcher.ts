@@ -2,7 +2,7 @@ import path from "path";
 import {spawn, exec, ChildProcess} from "child_process";
 import {fileURLToPath} from "url";
 import {logSuccess, logWarning} from "./logging.js";
-import type {LauncherOptions} from "../types.js";
+import type {LauncherOptions} from "./types.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -12,10 +12,7 @@ const osMatrix: Record<string, {execPath: string; reloadCommand?: string}> = {
   },
   darwin: {
     execPath: "/Applications/PICO-8.app/Contents/MacOS/pico8",
-    reloadCommand: `osascript "${path.join(
-      __dirname,
-      "reload-pico8.applescript"
-    )}"`
+    reloadCommand: path.resolve(__dirname, "../scripts/reload-pico8-bin")
   },
   linux: {
     execPath: "~/pico-8/pico8"
@@ -24,7 +21,7 @@ const osMatrix: Record<string, {execPath: string; reloadCommand?: string}> = {
 
 export function createPico8Launcher({
   watch,
-  customPicoPath,
+  picoPath,
   reloadOnSave,
   pipeOutputToConsole
 }: LauncherOptions) {
@@ -53,7 +50,7 @@ export function createPico8Launcher({
       logSuccess("Running cartridge in PICO-8");
       // Use customized path if available, otherwise fallback to the default one for the current OS
       picoProcess = launchPico8(
-        customPicoPath || execPath,
+        picoPath || execPath,
         cartridgePath,
         pipeOutputToConsole
       );

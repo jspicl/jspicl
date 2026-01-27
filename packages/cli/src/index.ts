@@ -1,17 +1,22 @@
-#!/usr/bin/env node
 import yargs from "yargs";
 import {hideBin} from "yargs/helpers";
 
+import path from "node:path";
+
 import process from "process";
 
-import esbuild, {type BuildContext} from "esbuild";
-import {cliArguments} from "./launcher/cli-arguments.js";
-import {watchPlugin} from "./watch-plugin.js";
-import debounce from "lodash.debounce";
-import {logSuccess} from "./api/logging.js";
-import {createPico8Launcher} from "./api/pico8-launcher.js";
+import esbuild, {type BuildOptions} from "esbuild";
+import {cliArguments} from "./arguments.js";
+import {logError, logInfo, logStats, logSuccess, logToFile} from "./logging.js";
+import type {LauncherOptions} from "./types.js";
+import {createPico8Launcher} from "./createPico8Launcher.js";
+import {watchPlugin} from "./watchPlugin.js";
 
-function getCommandlineArguments() {
+function getCommandlineArguments(): {
+  input: string;
+  output: string;
+  options: LauncherOptions;
+} {
   const argv = yargs(hideBin(process.argv))
     .options(cliArguments)
     .usage("jspicl-cli input output [<args>]")
@@ -26,71 +31,82 @@ function getCommandlineArguments() {
     ...restArguments
   } = argv;
 
-  return {input: String(input), output: String(output), options: restArguments};
+  return {
+    input: path.resolve(input.toString()),
+    output: path.resolve(output.toString()),
+    options: restArguments as LauncherOptions
+  };
 }
 
 export async function startBuildService(
   input: string,
   output: string,
-  options: any
+  options: LauncherOptions
 ) {
-  console.log(options);
+  console.log(input, options);
 
   const runPico = createPico8Launcher(options);
 
-  const ctx = await esbuild.context({
+  const jsOutput = path.resolve(options.jsOutput || "build/jsOutput.js");
+
+  const config: BuildOptions = {
     entryPoints: [input],
     bundle: true,
-    platform: "node",
+    platform: "neutral",
+    treeShaking: false,
     format: "esm",
-    outfile: "build/jsOutput.js",
-    footer: {js: "_init();_update();_update60();_draw();"},
-    plugins: options.watch
-      ? [
-          watchPlugin(input, {
-            onChange: () => {
-              logSuccess("Change detected, rebuilding cartridge");
-              rebuild();
-            }
-          }),
+    outfile: jsOutput,
+    plugins: [
+      watchPlugin({
+        spritesheetImagePath: options.spritesheetImagePath,
+        jsOutput,
+        output,
 
-          watchPlugin("build/jsOutput.js", {
-            onChange: (path: string) => {
-              console.log(
-                "Output path changed, launching pico8 transpilation",
-                path,
-                output
-              );
-              runPico(path);
-            }
-          })
-        ]
-      : undefined
-  });
+        onBuildError: (errors) => {
+          logError(`Build failed with errors:\n${errors}`);
+        },
 
-  const rebuild = debounce(async () => ctx.rebuild());
+        onBuildEnd: (cartridgeContent, transpiledSource) => {
+          options.luaOutput &&
+            logToFile(transpiledSource.lua, options.luaOutput);
+          logToFile(cartridgeContent, output);
 
-  // Initial build
-  await ctx.rebuild();
+          logSuccess("Build completed");
+          runPico(output);
 
-  return ctx;
+          // Statistics
+          options.showStats &&
+            logStats(
+              transpiledSource.lua,
+              transpiledSource.polyfillOutput,
+              cartridgeContent
+            );
+        }
+      })
+    ]
+  };
+
+  if (options.watch) {
+    const context = await esbuild.context(config);
+    await context.watch();
+  } else {
+    await esbuild.build(config);
+  }
 }
 
-export async function runCLI() {
+async function runCLI() {
   const {input, output, options} = getCommandlineArguments();
 
-  let ctx: BuildContext | undefined;
-
   process.on("SIGINT", () => {
-    console.log("SIGINT CALLED");
-    ctx?.dispose();
+    logInfo("Shutting down...");
     process.exit(0);
   });
 
   try {
-    ctx = await startBuildService(input, output, options);
+    await startBuildService(input, output, options);
   } catch (error) {
-    console.error("Error", error);
-    ctx?.dispose();
+    logError(String(error));
   }
 }
+
+runCLI();

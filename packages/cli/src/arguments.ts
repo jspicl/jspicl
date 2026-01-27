@@ -1,21 +1,17 @@
-import path from "path";
+import path from "node:path";
 import type {Options} from "yargs";
+import type {LauncherOptions} from "./types.js";
 
-export const cliArguments: Record<string, Options> = {
+export const cliArguments: Record<keyof LauncherOptions, Options> = {
   spritesheetImagePath: {
     description: "Path to a spritesheet",
     type: "string",
     requiresArg: true,
-    coerce: (p: string) => path.resolve(p)
-  },
-  cartridgePath: {
-    description: "Path to existing cardridge",
-    type: "string",
-    requiresArg: true,
+    demandOption: true,
     coerce: (p: string) => path.resolve(p)
   },
   jsOutput: {
-    description: "Path to JavaScript output",
+    description: "Custom path to the JavaScript output",
     type: "string",
     requiresArg: true
   },
@@ -24,13 +20,12 @@ export const cliArguments: Record<string, Options> = {
     type: "string",
     requiresArg: true
   },
-  customPicoPath: {
+  picoPath: {
     description: "Path to PICO-8 executable",
     type: "string",
     requiresArg: true,
     coerce: (p: string) => path.resolve(p)
   },
-
   includeBanner: {
     description: "Include jspicl info in code",
     default: true,
@@ -62,11 +57,5 @@ export const cliArguments: Record<string, Options> = {
   watch: {
     description: "Reload cartridge on rebuilds",
     type: "boolean"
-  },
-  config: {
-    alias: "c",
-    requiresArg: true,
-    type: "string",
-    coerce: (configPath) => require(path.resolve(configPath)).default
   }
 };
