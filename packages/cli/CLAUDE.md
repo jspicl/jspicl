@@ -10,17 +10,31 @@ The CLI package (`@jspicl/cli`) provides a command-line interface for the jspicl
 
 ## Commands
 
-- `yarn build` - Build the CLI package
+- `yarn build` - Type-check with tsc, then bundle with esbuild to `dist/cli.js`
+- `yarn typecheck` - Type-check only (no output)
 - `yarn clean` - Remove the dist folder
 - `yarn test` - Run tests (currently none exist for CLI)
 
 ## Architecture
 
+### Build System
+
+The CLI uses esbuild for bundling with tsc for type-checking:
+
+```bash
+tsc --noEmit && esbuild src/index.ts --bundle --platform=node --format=esm --packages=external --banner:js='#!/usr/bin/env node' --outfile=dist/cli.js
+```
+
+- `tsc --noEmit` - Type-checks without emitting files
+- `esbuild` - Bundles to single file with shebang
+- `--packages=external` - Keeps dependencies external (installed via npm)
+- Output: `dist/cli.js` (~6.8kb)
+
 ### Entry Flow
 
-1. `bin/cli` - Shebang entry point that calls `dist/index.js`
-2. `src/index.ts` - Main CLI entry, parses args with yargs, starts esbuild
-3. esbuild bundles JS, then jspicl transpiles to Lua
+1. `dist/cli.js` - Bundled CLI entry point (includes shebang)
+2. Parses args with yargs, starts esbuild context
+3. esbuild bundles user's JS, then jspicl transpiles to Lua
 4. Output written to .p8 cartridge file
 
 ### Directory Structure

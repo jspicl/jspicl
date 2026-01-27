@@ -1,5 +1,16 @@
 # CLAUDE.md
 
+## FIRST ACTION - READ SESSION FILES
+
+**STOP. Before doing anything else, you MUST read the session files:**
+
+1. `packages/core/SESSIONS.md`
+2. `packages/cli/SESSIONS.md`
+
+Do this immediately and proactively at the start of every session - do not wait for the user to ask. These files contain critical context about recent work.
+
+---
+
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview

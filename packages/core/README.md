@@ -1,24 +1,22 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/AgronKabashi/assets/51844924e69fdef3129a04573f60b262f41cbea4/jspicl/logo-366x250.png" width="320">
-</p>
+# @jspicl/core
 
-jspicl is a Javascript to PICO-8 Lua transpiler. It creates an AST out of the JavaScript code and then transpiles it down to the LUA subset of which PICO-8 supports.
+The core transpiler library for jspicl. Converts JavaScript to PICO-8 Lua.
 
-<a href="https://www.npmjs.com/package/@jspicl/jspicl" target="_blank" rel="noopener noreferrer">
-  <img alt="npm version" src="https://img.shields.io/npm/v/@jspicl/jspicl.svg?style=for-the-badge" />
-  <img alt="License" src="https://img.shields.io/npm/l/@jspicl/jspicl.svg?style=for-the-badge">
+<a href="https://www.npmjs.com/package/@jspicl/core" target="_blank" rel="noopener noreferrer">
+  <img alt="npm version" src="https://img.shields.io/npm/v/@jspicl/core.svg?style=for-the-badge" />
+  <img alt="License" src="https://img.shields.io/npm/l/@jspicl/core.svg?style=for-the-badge">
 </a>
 
 ## Installation
 
 ```bash
-yarn add @jspicl/jspicl
+npm install @jspicl/core
 ```
 
 ## Usage
 
 ```javascript
-import {jspicl} from "@jspicl/jspicl";
+import {jspicl} from "@jspicl/core";
 
 const javascript = `
 function _init() {
@@ -68,10 +66,10 @@ An object containing:
 
 ### Types
 
-Types can be imported from `@jspicl/jspicl/types`:
+Types can be imported from `@jspicl/core/types`:
 
 ```typescript
-import type {JspiclOptions, JspiclOutput, AstNodeParser} from "@jspicl/jspicl/types";
+import type {JspiclOptions, JspiclOutput, AstNodeParser} from "@jspicl/core/types";
 ```
 
 ## Custom Mappers
@@ -79,7 +77,7 @@ import type {JspiclOptions, JspiclOutput, AstNodeParser} from "@jspicl/jspicl/ty
 You can provide custom mappers to override how specific AST node types are transpiled:
 
 ```javascript
-import {jspicl} from "@jspicl/jspicl";
+import {jspicl} from "@jspicl/core";
 
 const customMappers = {
   Literal: ({raw}) => {

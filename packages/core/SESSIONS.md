@@ -1,5 +1,18 @@
 # Session Log - @jspicl/core
 
+## 2026-01-11
+
+### Monorepo restructuring
+
+The repository was restructured from a single package to a Yarn workspaces monorepo:
+
+- Core transpiler moved to `packages/core/`
+- CLI split into separate `packages/cli/` package
+- Root-level CLAUDE.md added for monorepo guidance
+- Switched from Yarn PnP to node_modules linker (`.yarnrc.yml`)
+
+See git history for the 15 commits detailing the restructure.
+
 ## 2026-01-10
 
 ### Fixed: Tests running from dist/
