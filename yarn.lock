@@ -418,7 +418,7 @@ __metadata:
     typescript: "npm:^5.7.0"
     yargs: "npm:^18.0.0"
   bin:
-    jspicl: bin/cli
+    jspicl: dist/cli.js
   languageName: unknown
   linkType: soft
 

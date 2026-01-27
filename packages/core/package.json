@@ -12,6 +12,9 @@
     "./types": {
       "types": "./dist/types.d.ts",
       "import": "./dist/types.js"
+    },
+    "./pic8-api.d.ts": {
+      "types": "./dist/pico8-api.d.ts"
     }
   },
   "files": [
