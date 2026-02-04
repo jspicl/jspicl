@@ -2,7 +2,6 @@ import path from "path";
 import {spawn, exec, ChildProcess} from "child_process";
 import {fileURLToPath} from "url";
 import {logSuccess, logWarning} from "./logging.js";
-import type {LauncherOptions} from "./types.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -19,12 +18,12 @@ const osMatrix: Record<string, {execPath: string; reloadCommand?: string}> = {
   }
 };
 
-export function createPico8Launcher({
-  watch,
-  picoPath,
-  reloadOnSave,
-  pipeOutputToConsole
-}: LauncherOptions) {
+export function createPico8Launcher(
+  watch: boolean,
+  customPicoPath?: string,
+  reloadOnSave?: boolean,
+  pipeOutputToConsole?: boolean
+) {
   let picoProcess: ChildProcess | null;
   const {execPath, reloadCommand} = osMatrix[process.platform];
 
@@ -50,7 +49,7 @@ export function createPico8Launcher({
       logSuccess("Running cartridge in PICO-8");
       // Use customized path if available, otherwise fallback to the default one for the current OS
       picoProcess = launchPico8(
-        picoPath || execPath,
+        customPicoPath || execPath,
         cartridgePath,
         pipeOutputToConsole
       );

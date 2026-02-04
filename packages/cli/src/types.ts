@@ -1,3 +1,5 @@
+import type {Options as JspiclOptions} from "@jspicl/core/types";
+
 export interface PicoSections extends Record<string, string> {
   lua: string;
   gff: string;
@@ -7,16 +9,19 @@ export interface PicoSections extends Record<string, string> {
   sfx: string;
 }
 
-export interface LauncherOptions {
+export interface Config {
+  spritesheetImagePath: string;
+  jsOutput: string;
   picoPath?: string;
   includeBanner?: boolean;
-  jsOutput?: string;
   luaOutput?: string;
   pipeOutputToConsole?: boolean;
-  polyfillTransform?: string;
-  prettify?: boolean;
+  polyfillTransform?: (polyfills: Record<string, string>) => string;
   reloadOnSave?: boolean;
   showStats?: boolean;
-  spritesheetImagePath: string;
-  watch?: boolean;
+  jspicl?: JspiclOptions;
+}
+export interface CommandLineOptions {
+  watch: boolean;
+  config: Config;
 }

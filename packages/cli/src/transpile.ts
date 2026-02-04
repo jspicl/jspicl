@@ -1,12 +1,9 @@
 import {jspicl} from "@jspicl/core";
 import {JSPICL_BANNER} from "./constants.js";
+import type {Config} from "./types.js";
 
-export function transpile(javascriptCode: string, options: any) {
-  const {
-    includeBanner,
-    polyfillTransform,
-    jspicl: jspiclOptions = {}
-  } = options;
+export function transpile(javascriptCode: string, config: Config) {
+  const {includeBanner, polyfillTransform, jspicl: jspiclOptions = {}} = config;
 
   const jspiclBanner = (includeBanner && `${JSPICL_BANNER}`) || "";
 

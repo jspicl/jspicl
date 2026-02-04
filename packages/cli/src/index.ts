@@ -8,14 +8,14 @@ import process from "process";
 import esbuild, {type BuildOptions} from "esbuild";
 import {cliArguments} from "./arguments.js";
 import {logError, logInfo, logStats, logSuccess, logToFile} from "./logging.js";
-import type {LauncherOptions} from "./types.js";
+import type {CommandLineOptions} from "./types.js";
 import {createPico8Launcher} from "./createPico8Launcher.js";
 import {watchPlugin} from "./watchPlugin.js";
 
 function getCommandlineArguments(): {
   input: string;
   output: string;
-  options: LauncherOptions;
+  options: CommandLineOptions;
 } {
   const argv = yargs(hideBin(process.argv))
     .options(cliArguments)
@@ -34,22 +34,26 @@ function getCommandlineArguments(): {
   return {
     input: path.resolve(input.toString()),
     output: path.resolve(output.toString()),
-    options: restArguments as LauncherOptions
+    options: restArguments as CommandLineOptions
   };
 }
 
 export async function startBuildService(
   input: string,
   output: string,
-  options: LauncherOptions
+  cliOptions: CommandLineOptions
 ) {
-  console.log(input, options);
+  const {watch, config} = cliOptions;
+  const runPico = createPico8Launcher(
+    watch,
+    config.picoPath,
+    config.reloadOnSave,
+    config.pipeOutputToConsole
+  );
 
-  const runPico = createPico8Launcher(options);
+  const jsOutput = path.resolve(config.jsOutput || "build/jsOutput.js");
 
-  const jsOutput = path.resolve(options.jsOutput || "build/jsOutput.js");
-
-  const config: BuildOptions = {
+  const buildConfig: BuildOptions = {
     entryPoints: [input],
     bundle: true,
     platform: "neutral",
@@ -58,8 +62,7 @@ export async function startBuildService(
     outfile: jsOutput,
     plugins: [
       watchPlugin({
-        spritesheetImagePath: options.spritesheetImagePath,
-        jsOutput,
+        config,
         output,
 
         onBuildError: (errors) => {
@@ -67,15 +70,14 @@ export async function startBuildService(
         },
 
         onBuildEnd: (cartridgeContent, transpiledSource) => {
-          options.luaOutput &&
-            logToFile(transpiledSource.lua, options.luaOutput);
+          config.luaOutput && logToFile(transpiledSource.lua, config.luaOutput);
           logToFile(cartridgeContent, output);
 
           logSuccess("Build completed");
           runPico(output);
 
           // Statistics
-          options.showStats &&
+          config.showStats &&
             logStats(
               transpiledSource.lua,
               transpiledSource.polyfillOutput,
@@ -86,11 +88,11 @@ export async function startBuildService(
     ]
   };
 
-  if (options.watch) {
-    const context = await esbuild.context(config);
+  if (watch) {
+    const context = await esbuild.context(buildConfig);
     await context.watch();
   } else {
-    await esbuild.build(config);
+    await esbuild.build(buildConfig);
   }
 }
 

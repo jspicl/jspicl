@@ -6,10 +6,10 @@ import {
 } from "./cartridge.js";
 import {getSpritesheetFromImage} from "./spritesheet.js";
 import {transpile} from "./transpile.js";
+import type {Config} from "./types.js";
 
 type WatchPluginOptions = {
-  spritesheetImagePath: string;
-  jsOutput: string;
+  config: Config;
   output: string;
   onBuildEnd?: (
     cartridgeContent: string,
@@ -22,8 +22,9 @@ export const watchPlugin = (options: WatchPluginOptions): Plugin => ({
   name: "watcher",
   setup(build) {
     build.onEnd(async (result: BuildResult) => {
-      const {onBuildEnd, onBuildError, spritesheetImagePath, jsOutput, output} =
-        options;
+      const {onBuildEnd, onBuildError, config, output} = options;
+
+      const {jsOutput, spritesheetImagePath} = config;
 
       if (result.errors.length) {
         const errors = result.errors.map((error) => error.text).join("\n");
@@ -35,7 +36,7 @@ export const watchPlugin = (options: WatchPluginOptions): Plugin => ({
       console.clear();
 
       const jsContent = fs.readFileSync(jsOutput, "utf-8");
-      const transpiledSource = transpile(jsContent, options);
+      const transpiledSource = transpile(jsContent, config);
       const cartridgeSections = getPicoSectionsFromCartridge(output);
       const gfxSection = await getSpritesheetFromImage(spritesheetImagePath);
 
