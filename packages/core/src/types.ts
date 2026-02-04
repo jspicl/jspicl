@@ -1,4 +1,6 @@
-import type {TranspileFunction} from "trastpiler";
+import type {ASTNode as GenericASTNode, TranspileFunction} from "trastpiler";
+
+export type ASTNode = Expression | Statement | Declaration | GenericASTNode;
 
 export type Options = {
   prettify?: boolean;
@@ -10,11 +12,6 @@ export type Output = {
   polyfills: Record<string, string>;
 };
 
-export type AstNode = {
-  type: string;
-  [key: string]: any;
-};
-
 export type AstNodeVisitorOptions = {
   transpile: TranspileFunction;
   scope: {
@@ -23,7 +20,7 @@ export type AstNodeVisitorOptions = {
   };
 };
 
-export type AstNodeVisitor = {
-  (node: Omit<AstNode, "type">, options: AstNodeVisitorOptions): string;
+export type AstNodeVisitor<T extends ASTNode = GenericASTNode> = {
+  (node: T, options: AstNodeVisitorOptions): string;
   scopeBoundary?: boolean;
 };

@@ -1,9 +1,8 @@
 import esprima from "esprima";
 import {createJspiclTranspiler} from "./transpile.js";
 import {getRequiredPolyfills} from "./polyfills/getRequiredPolyfills.js";
-import type {Options, Output} from "./types.js";
+import type {ASTNode, Options, Output} from "./types.js";
 import {prettify} from "./prettify.js";
-import type {ASTNode} from "trastpiler";
 
 const defaultOptions: Options = {
   prettify: true
