@@ -1,7 +1,6 @@
 import type {AstNodeVisitor} from "../../types.js";
 
-// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#if-statement
-const IfStatement: AstNodeVisitor = (
+const IfStatement: AstNodeVisitor<IfStatement> = (
   {test, consequent, alternate},
   {transpile}
 ) => {
@@ -9,8 +8,7 @@ const IfStatement: AstNodeVisitor = (
   const statementBody = transpile(consequent);
   const alternateStatement = transpile(alternate);
 
-  const alternateIsIfStatement =
-    alternate && alternate.type === IfStatement.name;
+  const alternateIsIfStatement = alternate && alternate.type === "IfStatement";
 
   let closingStatement = "end";
   if (alternateStatement) {

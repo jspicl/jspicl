@@ -1,9 +1,12 @@
-import {normalizeName} from "../../helpers/normalizeName.js";
+import {normalizeName} from "../../utils/normalizeName.js";
 import type {AstNodeVisitor} from "../../types.js";
 
-// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#object-expression
-export const Property: AstNodeVisitor = ({key, value}, {transpile}) => {
-  const {name, value: alternativeName = ""} = key; // The key could be a Literal or an Identifier
+export const Property: AstNodeVisitor<Property> = (
+  {key, value},
+  {transpile}
+) => {
+  // const {name} = key as Identifier;
+  const name = transpile(key).replace(/"/g, "");
 
-  return `${normalizeName(name || alternativeName)} = ${transpile(value)}`;
+  return `${normalizeName(name)} = ${transpile(value)}`;
 };

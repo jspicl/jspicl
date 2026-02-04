@@ -1,7 +1,9 @@
 import type {AstNodeVisitor} from "../../types.js";
 
-// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#class-declaration
-export const ClassDeclaration: AstNodeVisitor = ({id, body}, {transpile}) =>
+export const ClassDeclaration: AstNodeVisitor<ClassDeclaration> = (
+  {id, body},
+  {transpile}
+) =>
   `local class_${transpile(id)} = function (...)
     local this = {}
     local classinstance = ${transpile(body)}

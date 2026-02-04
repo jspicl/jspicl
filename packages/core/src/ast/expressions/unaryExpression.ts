@@ -1,7 +1,6 @@
 import type {AstNodeVisitor} from "../../types.js";
 
-// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#unary-expression
-export const UnaryExpression: AstNodeVisitor = (
+export const UnaryExpression: AstNodeVisitor<UnaryExpression> = (
   {operator, argument},
   {transpile}
 ) => {

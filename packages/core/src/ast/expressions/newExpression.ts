@@ -1,7 +1,6 @@
 import type {AstNodeVisitor} from "../../types.js";
 
-// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#call-and-new-expressions
-export const NewExpression: AstNodeVisitor = (
+export const NewExpression: AstNodeVisitor<NewExpression> = (
   {arguments: args, callee},
   {transpile}
 ) => {

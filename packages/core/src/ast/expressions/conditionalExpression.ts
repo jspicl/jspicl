@@ -1,7 +1,6 @@
 import type {AstNodeVisitor} from "../../types.js";
 
-// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#conditional-expression
-export const ConditionalExpression: AstNodeVisitor = (
+export const ConditionalExpression: AstNodeVisitor<ConditionalExpression> = (
   {test, consequent, alternate},
   {transpile}
 ) => {

@@ -5,8 +5,7 @@ const operatorTable: Record<string, string> = {
   "===": "=="
 };
 
-// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#binary-expression
-export const BinaryExpression: AstNodeVisitor = (
+export const BinaryExpression: AstNodeVisitor<BinaryExpression> = (
   {operator, left, right},
   {transpile}
 ) => {
@@ -15,11 +14,11 @@ export const BinaryExpression: AstNodeVisitor = (
   const luaOperator = operatorTable[operator] || operator;
 
   if (luaOperator === "*" || luaOperator === "/" || luaOperator === "%") {
-    if (left.type === BinaryExpression.name) {
+    if (left.type === "BinaryExpression") {
       leftExpression = `(${leftExpression})`;
     }
 
-    if (right.type === BinaryExpression.name) {
+    if (right.type === "BinaryExpression") {
       rightExpression = `(${rightExpression})`;
     }
   }

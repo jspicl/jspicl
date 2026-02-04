@@ -2,7 +2,7 @@ import esprima from "esprima";
 import {ExpressionStatement} from "./expressionStatement.js";
 import {createJspiclTranspiler} from "../../transpile.js";
 import {describe, it, expect} from "vitest";
-import type {ASTNode} from "trastpiler";
+import type {ASTNode} from "../../types.js";
 
 describe("ExpressionStatement", () => {
   const transpile = createJspiclTranspiler();

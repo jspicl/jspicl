@@ -1,10 +1,8 @@
 import {getPolyfilledCallExpression} from "../../polyfills/getPolyfilledCallExpression.js";
-import {FunctionExpression} from "./functionExpression.js";
-import {wrapWithParantheses} from "../../helpers/wrapWithParantheses.js";
+import {wrapWithParantheses} from "../../utils/wrapWithParantheses.js";
 import type {AstNodeVisitor} from "../../types.js";
 
-// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#call-and-new-expressions
-export const CallExpression: AstNodeVisitor = (
+export const CallExpression: AstNodeVisitor<CallExpression> = (
   {callee, arguments: args},
   {transpile}
 ) => {
@@ -17,7 +15,7 @@ export const CallExpression: AstNodeVisitor = (
 
   // Regular function call
   const calleeExpression = wrapWithParantheses(
-    callee.type === FunctionExpression.name,
+    callee.type === "FunctionExpression",
     transpile(callee)
   );
   return `${calleeExpression}(${argumentList})`;

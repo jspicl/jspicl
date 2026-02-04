@@ -1,11 +1,6 @@
 import type {AstNodeVisitor} from "../../types.js";
 
-type SwitchCase = {
-  test: any | null;
-};
-
-// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#switch-statement
-export const SwitchStatement: AstNodeVisitor = (
+export const SwitchStatement: AstNodeVisitor<SwitchStatement> = (
   {discriminant, cases},
   {scope, transpile}
 ) => {

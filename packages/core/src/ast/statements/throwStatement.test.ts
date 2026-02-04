@@ -11,25 +11,47 @@ describe("ThrowStatement", () => {
       variables: {}
     }
   };
+
   it("renders an assert with empty error message", () => {
-    expect(ThrowStatement({}, parserOptions)).toBe('assert(false, "")');
+    expect(
+      ThrowStatement(
+        {
+          type: "ThrowStatement",
+          argument: {
+            type: "Literal",
+            value: "",
+            raw: '""'
+          }
+        },
+        parserOptions
+      )
+    ).toBe('assert(false, "\\"\\"")');
   });
 
   it("renders an assert with an error message", () => {
     const {
       body: [argument]
     } = esprima.parseScript("Error('Error message')");
-    expect(ThrowStatement({argument}, parserOptions)).toBe(
-      "assert(false, \"error('Error message')\")"
-    );
+    expect(
+      ThrowStatement(
+        {
+          type: "ThrowStatement",
+          argument: argument as unknown as Expression
+        },
+        parserOptions
+      )
+    ).toBe("assert(false, \"error('Error message')\")");
   });
 
   it("renders an assert with a custom object", () => {
     const {
       body: [argument]
     } = esprima.parseScript(`(${JSON.stringify({message: "Error message"})})`);
-    expect(ThrowStatement({argument}, parserOptions)).toBe(
-      'assert(false, "{\\n    message = \\"Error message\\"\\n  }")'
-    );
+    expect(
+      ThrowStatement(
+        {type: "ThrowStatement", argument: argument as unknown as Expression},
+        parserOptions
+      )
+    ).toBe('assert(false, "{\\n    message = \\"Error message\\"\\n  }")');
   });
 });

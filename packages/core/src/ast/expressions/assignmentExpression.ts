@@ -1,7 +1,6 @@
 import type {AstNodeVisitor} from "../../types.js";
 
-// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#assignment-expression
-export const AssignmentExpression: AstNodeVisitor = (
+export const AssignmentExpression: AstNodeVisitor<AssignmentExpression> = (
   {operator, left, right},
   {transpile}
 ) => {

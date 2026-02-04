@@ -1,15 +1,13 @@
-import {FunctionExpression} from "../expressions/functionExpression.js";
-import {wrapWithParantheses} from "../../helpers/wrapWithParantheses.js";
+import {wrapWithParantheses} from "../../utils/wrapWithParantheses.js";
 import type {AstNodeVisitor} from "../../types.js";
 
-// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#expression-statement
-export const ExpressionStatement: AstNodeVisitor = (
+export const ExpressionStatement: AstNodeVisitor<ExpressionStatement> = (
   {expression, directive},
   {transpile}
 ) =>
   !directive
     ? wrapWithParantheses(
-        expression.type === FunctionExpression.name,
+        expression.type === "FunctionExpression",
         transpile(expression)
       )
     : "";

@@ -1,7 +1,6 @@
 import type {AstNodeVisitor} from "../../types.js";
 
-// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#while-statement
-export const ForStatement: AstNodeVisitor = (
+export const ForStatement: AstNodeVisitor<ForStatement> = (
   {body, init, test, update},
   {transpile}
 ) =>

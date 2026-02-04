@@ -1,7 +1,9 @@
 import type {AstNodeVisitor} from "../../types.js";
 
-// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#object-expression
-export const ObjectExpression: AstNodeVisitor = ({properties}, {transpile}) =>
+export const ObjectExpression: AstNodeVisitor<ObjectExpression> = (
+  {properties},
+  {transpile}
+) =>
   `{
     ${transpile(properties, {arraySeparator: ",\n"})}
   }`;
