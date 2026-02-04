@@ -31,7 +31,9 @@ describe("FunctionDeclaration", () => {
       body: [statement]
     } = esprima.parseScript(input);
 
-    expect(FunctionDeclaration(statement, parserOptions)).toBe(output);
+    expect(
+      FunctionDeclaration(statement as FunctionDeclaration, parserOptions)
+    ).toBe(output);
   });
 
   it("renders a function that accepts arguments", () => {
@@ -43,7 +45,9 @@ describe("FunctionDeclaration", () => {
       body: [statement]
     } = esprima.parseScript(input);
 
-    expect(FunctionDeclaration(statement, parserOptions)).toBe(output);
+    expect(
+      FunctionDeclaration(statement as FunctionDeclaration, parserOptions)
+    ).toBe(output);
   });
 
   it("normalizes function names to lowercase", () => {
@@ -53,7 +57,9 @@ describe("FunctionDeclaration", () => {
     const {
       body: [statement]
     } = esprima.parseScript(input);
-    expect(FunctionDeclaration(statement, parserOptions)).toBe(output);
+    expect(
+      FunctionDeclaration(statement as FunctionDeclaration, parserOptions)
+    ).toBe(output);
   });
 
   it("replaces $ with _ in function names", () => {
@@ -65,6 +71,56 @@ describe("FunctionDeclaration", () => {
       body: [statement]
     } = esprima.parseScript(input);
 
-    expect(FunctionDeclaration(statement, parserOptions)).toBe(output);
+    expect(
+      FunctionDeclaration(statement as FunctionDeclaration, parserOptions)
+    ).toBe(output);
+  });
+
+  it("handles object destructuring in parameters", () => {
+    const input = "function foo({a, b}) { return a + b; }";
+    const output = `function foo(__p0)
+    local a = __p0.a
+local b = __p0.b
+return a + b
+  end`;
+    const {
+      body: [statement]
+    } = esprima.parseScript(input);
+
+    expect(
+      FunctionDeclaration(statement as FunctionDeclaration, parserOptions)
+    ).toBe(output);
+  });
+
+  it("handles array destructuring in parameters", () => {
+    const input = "function bar([x, y]) { return x + y; }";
+    const output = `function bar(__p0)
+    local x = __p0[1]
+local y = __p0[2]
+return x + y
+  end`;
+    const {
+      body: [statement]
+    } = esprima.parseScript(input);
+
+    expect(
+      FunctionDeclaration(statement as FunctionDeclaration, parserOptions)
+    ).toBe(output);
+  });
+
+  it("handles mixed regular and destructured parameters", () => {
+    const input = "function baz(a, {b, c}, d) { return a + b + c + d; }";
+    const output = `function baz(a, __p1, d)
+    local b = __p1.b
+local c = __p1.c
+return a + b + c + d
+  end`;
+    const {
+      body: [statement]
+    } = esprima.parseScript(input);
+
+    expect(
+      FunctionDeclaration(statement as FunctionDeclaration, parserOptions)
+    ).toBe(output);
   });
 });

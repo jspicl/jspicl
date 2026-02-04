@@ -1,21 +1,50 @@
-import {normalizeName} from "../../helpers/normalizeName.js";
-import type {AstNodeVisitor} from "../../types.js";
+import assert from "node:assert";
+import {normalizeName} from "../../utils/normalizeName.js";
+import type {AstNodeVisitor, AstNodeVisitorOptions} from "../../types.js";
 
-// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#variable-declaration
-export const VariableDeclarator: AstNodeVisitor = (
+const createDeclaration = (
+  name: string,
+  value: string,
+  scope: AstNodeVisitorOptions["scope"]
+): string => {
+  const normalizedName = normalizeName(name);
+  scope.variables[name] = {name: normalizedName};
+  return `local ${normalizedName} = ${value}`;
+};
+
+export const VariableDeclarator: AstNodeVisitor<VariableDeclarator> = (
   {id, init},
   {scope, transpile}
 ) => {
-  const {name} = id;
-  const normalizedName = normalizeName(name);
-  const value = transpile(init) || "nil";
+  const initValue = transpile(init) || "nil";
+  assert;
 
-  // Store variable metadata in the scope
-  // for accessibility
-  scope.variables[name] = {
-    name: normalizedName
-    // type:
-  };
+  if (id.type === "ArrayPattern") {
+    return id.elements
+      .map((element: ArrayPatternElement, i: number) =>
+        element
+          ? createDeclaration(
+              transpile(element),
+              `${initValue}[${i + 1}]`,
+              scope
+            )
+          : null
+      )
+      .filter(Boolean)
+      .join("\n");
+  }
 
-  return `local ${normalizedName} = ${value}`;
+  if (id.type === "ObjectPattern") {
+    return id.properties
+      .map((property: Property) =>
+        createDeclaration(
+          transpile(property.value),
+          `${initValue}.${transpile(property.key)}`,
+          scope
+        )
+      )
+      .join("\n");
+  }
+
+  return createDeclaration(id.name, initValue, scope);
 };

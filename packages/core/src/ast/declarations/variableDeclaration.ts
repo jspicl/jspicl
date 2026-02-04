@@ -1,7 +1,6 @@
 import type {AstNodeVisitor} from "../../types.js";
 
-// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#variable-declaration
-export const VariableDeclaration: AstNodeVisitor = (
+export const VariableDeclaration: AstNodeVisitor<VariableDeclaration> = (
   {declarations},
   {transpile}
 ) => transpile(declarations);

@@ -61,4 +61,52 @@ describe("VariableDeclaration", () => {
 
     expect(VariableDeclaration(declaration, parserOptions)).toBe(output);
   });
+
+  describe("Object patterns", () => {
+    it("transpiles object destructuring", () => {
+      const input = "const {a} = b";
+      const output = "local a = b.a";
+
+      const {
+        body: [declaration]
+      } = esprima.parseScript(input);
+
+      expect(VariableDeclaration(declaration, parserOptions)).toBe(output);
+    });
+
+    it("transpiles multiple object destructuring", () => {
+      const input = "const {a,b} = c";
+      const output = "local a = c.a\nlocal b = c.b";
+
+      const {
+        body: [declaration]
+      } = esprima.parseScript(input);
+
+      expect(VariableDeclaration(declaration, parserOptions)).toBe(output);
+    });
+
+    it("handles renaming of variables destructuring", () => {
+      const input = "const {a: x,b: y} = c";
+      const output = "local x = c.a\nlocal y = c.b";
+
+      const {
+        body: [declaration]
+      } = esprima.parseScript(input);
+
+      expect(VariableDeclaration(declaration, parserOptions)).toBe(output);
+    });
+  });
+
+  describe("Array patterns", () => {
+    it("transpiles array destructuring", () => {
+      const input = "const [a, b] = c";
+      const output = "local a = c[1]\nlocal b = c[2]";
+
+      const {
+        body: [declaration]
+      } = esprima.parseScript(input);
+
+      expect(VariableDeclaration(declaration, parserOptions)).toBe(output);
+    });
+  });
 });
