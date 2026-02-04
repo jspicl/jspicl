@@ -1,5 +1,4 @@
 import esprima from "esprima";
-import type {ExpressionStatement} from "estree";
 import {ArrowFunctionExpression} from "./arrowFunctionExpression.js";
 import {createJspiclTranspiler} from "../../transpile.js";
 import {describe, it, expect} from "vitest";
@@ -25,7 +24,12 @@ describe("ArrowFunctionExpression", () => {
     const {body} = esprima.parseScript(input);
     const {expression} = body[0] as ExpressionStatement;
 
-    expect(ArrowFunctionExpression(expression, parserOptions)).toBe(output);
+    expect(
+      ArrowFunctionExpression(
+        expression as ArrowFunctionExpression,
+        parserOptions
+      )
+    ).toBe(output);
   });
 
   it("renders a function that accepts arguments", () => {
@@ -36,6 +40,27 @@ describe("ArrowFunctionExpression", () => {
     const {body} = esprima.parseScript(input);
     const {expression} = body[0] as ExpressionStatement;
 
-    expect(ArrowFunctionExpression(expression, parserOptions)).toBe(output);
+    expect(
+      ArrowFunctionExpression(
+        expression as ArrowFunctionExpression,
+        parserOptions
+      )
+    ).toBe(output);
+  });
+
+  it("renders a function with an implicit return", () => {
+    const input = "() => expression";
+    const output = `function ()
+    return expression
+  end`;
+    const {body} = esprima.parseScript(input);
+    const {expression} = body[0] as ExpressionStatement;
+
+    expect(
+      ArrowFunctionExpression(
+        expression as ArrowFunctionExpression,
+        parserOptions
+      )
+    ).toBe(output);
   });
 });

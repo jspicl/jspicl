@@ -1,14 +1,25 @@
 import type {AstNodeVisitor} from "../../types.js";
+import {assert} from "../../utils/assert.js";
 import {FunctionDeclaration} from "../declarations/functionDeclaration.js";
 
-// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#function-expression
-export const FunctionExpression: AstNodeVisitor = (node, options) =>
-  FunctionDeclaration(
+export const FunctionExpression: AstNodeVisitor<FunctionExpression> = (
+  node,
+  options
+) => {
+  assert(!node.async, "Async arrow functions are not supported.");
+  assert(!node.generator, "Generator arrow functions are not supported.");
+
+  return FunctionDeclaration(
     {
-      ...node,
-      id: null
+      id: null,
+      params: node.params,
+      body: node.body,
+      async: node.async,
+      generator: node.generator,
+      type: "FunctionDeclaration"
     },
     options
   );
+};
 
 FunctionExpression.scopeBoundary = true;

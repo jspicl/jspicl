@@ -25,7 +25,9 @@ describe("FunctionExpression", () => {
     const {body} = esprima.parseScript(input);
     const {expression} = body[0] as ExpressionStatement;
 
-    expect(FunctionExpression(expression, parserOptions)).toBe(output);
+    expect(
+      FunctionExpression(expression as FunctionExpression, parserOptions)
+    ).toBe(output);
   });
 
   it("renders a function that accepts arguments", () => {
@@ -36,6 +38,8 @@ describe("FunctionExpression", () => {
     const {body} = esprima.parseScript(input);
     const {expression} = body[0] as ExpressionStatement;
 
-    expect(FunctionExpression(expression, parserOptions)).toBe(output);
+    expect(
+      FunctionExpression(expression as FunctionExpression, parserOptions)
+    ).toBe(output);
   });
 });
