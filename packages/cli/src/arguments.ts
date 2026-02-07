@@ -1,4 +1,3 @@
-import fs from "node:fs";
 import path from "node:path";
 import type {Options} from "yargs";
 import type {CommandLineOptions, Config} from "./types.js";
@@ -18,9 +17,9 @@ export const cliArguments: Record<keyof CommandLineOptions, Options> = {
     default: {
       jsOutput: "build/jsOutput.js"
     } as Config,
-    coerce: (p: string) => {
-      const content = fs.readFileSync(path.resolve(p), "utf-8");
-      return JSON.parse(content);
+    coerce: async (p: string) => {
+      const configModule = await import(path.resolve(p));
+      return configModule.default;
     }
   }
 };

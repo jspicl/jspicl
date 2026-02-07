@@ -12,19 +12,19 @@ import type {CommandLineOptions} from "./types.js";
 import {createPico8Launcher} from "./createPico8Launcher.js";
 import {watchPlugin} from "./watchPlugin.js";
 
-function getCommandlineArguments(): {
+async function getCommandlineArguments(): Promise<{
   input: string;
   output: string;
   options: CommandLineOptions;
-} {
-  const argv = yargs(hideBin(process.argv))
+}> {
+  const argv = await yargs(hideBin(process.argv))
     .options(cliArguments)
     .usage("jspicl-cli input output [<args>]")
     .demandCommand(2, "Please specify an input and output file")
     .help(false)
     .strict()
     .wrap(null)
-    .parseSync();
+    .parseAsync();
 
   const {
     _: [input, output],
@@ -58,6 +58,7 @@ export async function startBuildService(
     bundle: true,
     platform: "neutral",
     treeShaking: false,
+    minify: false,
     format: "esm",
     outfile: jsOutput,
     plugins: [
@@ -97,7 +98,7 @@ export async function startBuildService(
 }
 
 async function runCLI() {
-  const {input, output, options} = getCommandlineArguments();
+  const {input, output, options} = await getCommandlineArguments();
 
   process.on("SIGINT", () => {
     logInfo("Shutting down...");
@@ -108,6 +109,7 @@ async function runCLI() {
     await startBuildService(input, output, options);
   } catch (error) {
     logError(String(error));
+    throw error;
   }
 }
 

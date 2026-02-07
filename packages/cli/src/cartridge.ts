@@ -12,7 +12,7 @@ export function generateCartridgeContent({
 }: Partial<PicoSections> = {}) {
   return [
     "pico-8 cartridge // http://www.pico-8.com",
-    "version 29",
+    "version 42",
     "__lua__",
     lua,
     gfx && `__gfx__\n${gfx}`,

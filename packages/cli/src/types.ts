@@ -21,6 +21,7 @@ export interface Config {
   showStats?: boolean;
   jspicl?: JspiclOptions;
 }
+
 export interface CommandLineOptions {
   watch: boolean;
   config: Config;
