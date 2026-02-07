@@ -1,11 +1,15 @@
 import {normalizeName} from "../../utils/normalizeName.js";
 import type {AstNodeVisitor} from "../../types.js";
 import {assert} from "../../utils/assert.js";
+import {
+  declareLocalVariablesForArrayPattern,
+  declareLocalVariablesForObjectPattern,
+  declareVariable
+} from "../../utils/declareVariable.js";
 
-// http://esprima.readthedocs.io/en/latest/syntax-tree-format.html#function-declaration
 export const FunctionDeclaration: AstNodeVisitor<FunctionDeclaration> = (
   {id, body, params, async, generator},
-  {transpile}
+  {transpile, scope}
 ) => {
   assert(async === false, "Async functions are not supported.");
   assert(generator === false, "Generator functions are not supported.");
@@ -13,7 +17,7 @@ export const FunctionDeclaration: AstNodeVisitor<FunctionDeclaration> = (
   const name = id?.name || "";
 
   // Handle destructuring in parameters
-  const processedParams: string[] = [];
+  const processedArguments: string[] = [];
   const destructuringStatements: string[] = [];
 
   // Process arguments that are destructured in the argument list
@@ -21,34 +25,45 @@ export const FunctionDeclaration: AstNodeVisitor<FunctionDeclaration> = (
     if (param.type === "ObjectPattern" || param.type === "ArrayPattern") {
       // Generate temporary parameter name
       const tempParam = `__p${index}`;
-      processedParams.push(tempParam);
+      processedArguments.push(tempParam);
 
       // Generate destructuring statements for the function body
       if (param.type === "ObjectPattern") {
-        param.properties.forEach((property: Property) => {
-          const keyName = transpile(property.key);
-          const valueName = transpile(property.value);
-          destructuringStatements.push(
-            `local ${valueName} = ${tempParam}.${keyName}`
-          );
-        });
-      } else if (param.type === "ArrayPattern") {
-        param.elements.forEach((element: ArrayPatternElement, i: number) => {
-          if (element) {
-            const elementName = transpile(element);
-            destructuringStatements.push(
-              `local ${elementName} = ${tempParam}[${i + 1}]`
-            );
-          }
-        });
+        destructuringStatements.push(
+          declareLocalVariablesForObjectPattern(
+            param,
+            tempParam,
+            scope,
+            transpile
+          )
+        );
+      } else {
+        destructuringStatements.push(
+          declareLocalVariablesForArrayPattern(
+            param,
+            tempParam,
+            scope,
+            transpile
+          )
+        );
       }
+    } else if (param.type === "AssignmentPattern") {
+      const variableName = normalizeName(transpile(param.left));
+      processedArguments.push(variableName);
+      destructuringStatements.push(
+        declareVariable(
+          variableName,
+          `${variableName} or ${transpile(param.right)}`,
+          scope
+        )
+      );
     } else {
       // Regular parameter
-      processedParams.push(transpile(param));
+      processedArguments.push(normalizeName(transpile(param)));
     }
   });
 
-  const argumentList = processedParams.join(", ");
+  const argumentList = processedArguments.join(", ");
   let functionContent = transpile(body);
 
   // Prepend destructuring statements at the top of the function body
