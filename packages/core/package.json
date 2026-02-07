@@ -1,6 +1,6 @@
 {
   "name": "@jspicl/core",
-  "version": "3.0.0",
+  "version": "4.0.0-alpha.0",
   "description": "A javascript to PICO-8 LUA converter",
   "license": "MIT",
   "type": "module",
