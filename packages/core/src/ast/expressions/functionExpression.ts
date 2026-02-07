@@ -1,6 +1,10 @@
-import type {AstNodeVisitor} from "../../types.js";
+import type {ASTNode, AstNodeVisitor} from "../../types.js";
 import {assert} from "../../utils/assert.js";
 import {FunctionDeclaration} from "../declarations/functionDeclaration.js";
+
+export const isFunctionExpression = (
+  node?: ASTNode | null
+): node is FunctionExpression => node?.type === "FunctionExpression";
 
 export const FunctionExpression: AstNodeVisitor<FunctionExpression> = (
   node,

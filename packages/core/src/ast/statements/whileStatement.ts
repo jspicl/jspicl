@@ -1,4 +1,8 @@
-import type {AstNodeVisitor} from "../../types.js";
+import type {ASTNode, AstNodeVisitor} from "../../types.js";
+
+export const isWhileStatement = (
+  node?: ASTNode | null
+): node is WhileStatement => node?.type === "WhileStatement";
 
 export const WhileStatement: AstNodeVisitor<WhileStatement> = (
   {body, test},

@@ -1,4 +1,8 @@
-import type {AstNodeVisitor} from "../../types.js";
+import type {ASTNode, AstNodeVisitor} from "../../types.js";
+
+export const isUpdateExpression = (
+  node?: ASTNode | null
+): node is UpdateExpression => node?.type === "UpdateExpression";
 
 export const UpdateExpression: AstNodeVisitor<UpdateExpression> = (
   {argument, operator},

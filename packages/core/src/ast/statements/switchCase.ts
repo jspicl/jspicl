@@ -1,4 +1,7 @@
-import type {AstNodeVisitor} from "../../types.js";
+import type {ASTNode, AstNodeVisitor} from "../../types.js";
+
+export const isSwitchCase = (node?: ASTNode | null): node is SwitchCase =>
+  node?.type === "SwitchCase";
 
 export const SwitchCase: AstNodeVisitor<SwitchCase> = (
   {test, consequent},

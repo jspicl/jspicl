@@ -1,6 +1,10 @@
 import {getPolyfilledCallExpression} from "../../polyfills/getPolyfilledCallExpression.js";
 import {wrapWithParantheses} from "../../utils/wrapWithParantheses.js";
-import type {AstNodeVisitor} from "../../types.js";
+import type {ASTNode, AstNodeVisitor} from "../../types.js";
+
+export const isCallExpression = (
+  node?: ASTNode | null
+): node is CallExpression => node?.type === "CallExpression";
 
 export const CallExpression: AstNodeVisitor<CallExpression> = (
   {callee, arguments: args},

@@ -1,4 +1,8 @@
-import type {AstNodeVisitor} from "../../types.js";
+import type {ASTNode, AstNodeVisitor} from "../../types.js";
+
+export const isBinaryExpression = (
+  node?: ASTNode | null
+): node is BinaryExpression => node?.type === "BinaryExpression";
 
 const operatorTable: Record<string, string> = {
   "!==": "!=",

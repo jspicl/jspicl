@@ -1,4 +1,8 @@
-import type {AstNodeVisitor} from "../../types.js";
+import type {ASTNode, AstNodeVisitor} from "../../types.js";
+
+export const isReturnStatement = (
+  node?: ASTNode | null
+): node is ReturnStatement => node?.type === "ReturnStatement";
 
 export const ReturnStatement: AstNodeVisitor<ReturnStatement> = (
   {argument},

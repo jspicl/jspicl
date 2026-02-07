@@ -1,4 +1,8 @@
-import type {AstNodeVisitor} from "../../types.js";
+import type {ASTNode, AstNodeVisitor} from "../../types.js";
+
+export const isClassDeclaration = (
+  node?: ASTNode | null
+): node is ClassDeclaration => node?.type === "ClassDeclaration";
 
 export const ClassDeclaration: AstNodeVisitor<ClassDeclaration> = (
   {id, body},

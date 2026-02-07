@@ -1,6 +1,10 @@
-import type {AstNodeVisitor} from "../../types.js";
+import type {ASTNode, AstNodeVisitor} from "../../types.js";
 import {assert} from "../../utils/assert.js";
 import {FunctionDeclaration} from "../declarations/functionDeclaration.js";
+
+export const isArrowFunctionExpression = (
+  node?: ASTNode | null
+): node is ArrowFunctionExpression => node?.type === "ArrowFunctionExpression";
 
 export const ArrowFunctionExpression: AstNodeVisitor<
   ArrowFunctionExpression

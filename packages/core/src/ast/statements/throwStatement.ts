@@ -1,4 +1,8 @@
-import type {AstNodeVisitor} from "../../types.js";
+import type {ASTNode, AstNodeVisitor} from "../../types.js";
+
+export const isThrowStatement = (
+  node?: ASTNode | null
+): node is ThrowStatement => node?.type === "ThrowStatement";
 
 // https://esprima.readthedocs.io/en/latest/syntax-tree-format.html#throw-statement
 export const ThrowStatement: AstNodeVisitor<ThrowStatement> = (

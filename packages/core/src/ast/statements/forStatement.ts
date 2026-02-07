@@ -1,4 +1,8 @@
-import type {AstNodeVisitor} from "../../types.js";
+import type {ASTNode, AstNodeVisitor} from "../../types.js";
+
+export const isForStatement = (
+  node?: ASTNode | null
+): node is ForStatement => node?.type === "ForStatement";
 
 export const ForStatement: AstNodeVisitor<ForStatement> = (
   {body, init, test, update},

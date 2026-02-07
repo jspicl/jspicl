@@ -1,4 +1,8 @@
-import type {AstNodeVisitor} from "../../types.js";
+import type {ASTNode, AstNodeVisitor} from "../../types.js";
+
+export const isConditionalExpression = (
+  node?: ASTNode | null
+): node is ConditionalExpression => node?.type === "ConditionalExpression";
 
 export const ConditionalExpression: AstNodeVisitor<ConditionalExpression> = (
   {test, consequent, alternate},

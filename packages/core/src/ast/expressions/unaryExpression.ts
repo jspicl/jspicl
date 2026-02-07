@@ -1,4 +1,8 @@
-import type {AstNodeVisitor} from "../../types.js";
+import type {ASTNode, AstNodeVisitor} from "../../types.js";
+
+export const isUnaryExpression = (
+  node?: ASTNode | null
+): node is UnaryExpression => node?.type === "UnaryExpression";
 
 export const UnaryExpression: AstNodeVisitor<UnaryExpression> = (
   {operator, argument},

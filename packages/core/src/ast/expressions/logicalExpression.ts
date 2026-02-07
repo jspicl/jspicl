@@ -1,5 +1,9 @@
 import {wrapWithParantheses} from "../../utils/wrapWithParantheses.js";
-import type {AstNodeVisitor} from "../../types.js";
+import type {ASTNode, AstNodeVisitor} from "../../types.js";
+
+export const isLogicalExpression = (
+  node?: ASTNode | null
+): node is LogicalExpression => node?.type === "LogicalExpression";
 
 export const LogicalExpression: AstNodeVisitor<LogicalExpression> = (
   {operator, left, right},

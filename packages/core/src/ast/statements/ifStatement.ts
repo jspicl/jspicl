@@ -1,4 +1,8 @@
-import type {AstNodeVisitor} from "../../types.js";
+import type {ASTNode, AstNodeVisitor} from "../../types.js";
+
+export const isIfStatement = (
+  node?: ASTNode | null
+): node is IfStatement => node?.type === "IfStatement";
 
 const IfStatement: AstNodeVisitor<IfStatement> = (
   {test, consequent, alternate},
