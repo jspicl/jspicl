@@ -10,8 +10,7 @@
       "import": "./dist/index.js"
     },
     "./types": {
-      "types": "./dist/types.d.ts",
-      "import": "./dist/types.js"
+      "types": "./dist/types.d.ts"
     },
     "./pic8-api.d.ts": {
       "types": "./dist/pico8-api.d.ts"

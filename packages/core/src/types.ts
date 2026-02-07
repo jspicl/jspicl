@@ -1,6 +1,11 @@
 import type {ASTNode as GenericASTNode, TranspileFunction} from "trastpiler";
 
-export type ASTNode = Expression | Statement | Declaration | GenericASTNode;
+export type ASTNode =
+  | Expression
+  | Statement
+  | Declaration
+  | BindingPattern
+  | GenericASTNode;
 
 export type Options = {
   prettify?: boolean;

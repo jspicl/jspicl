@@ -115,7 +115,7 @@ declare global {
     type: "Property";
     key: Expression;
     computed: boolean;
-    value: Expression | null;
+    value: Expression | AssignmentPattern | BindingPattern | null;
     kind: "get" | "set" | "init";
     method: boolean;
     shorthand: boolean;
