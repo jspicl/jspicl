@@ -19,34 +19,54 @@ npm install -D @jspicl/cli
 ## Usage
 
 ```bash
-jspicl <input> <output> [options]
+jspicl <input> <output> --config <config-file> [--watch]
 ```
 
 **Example:**
 
 ```bash
-jspicl src/game.js build/game.p8 \
-  --cartridgePath build/game.p8 \
-  --spritesheetImagePath assets/sprites.png \
-  --watch
+jspicl src/game.js build/game.p8 --config jspicl.config.ts --watch
 ```
 
-## Options
+## Config File
 
-| Name                     | Type    | Default | Description                                             |
-| ------------------------ | ------- | ------- | ------------------------------------------------------- |
-| `--cartridgePath`        | string  |         | Path to existing cartridge (reuses sound, music, flags) |
-| `--spritesheetImagePath` | string  |         | Path to PNG spritesheet                                 |
-| `--watch`                | boolean | false   | Watch for changes and rebuild automatically             |
-| `--prettify`             | boolean | true    | Format the generated Lua code                           |
-| `--showStats`            | boolean | true    | Display build statistics                                |
-| `--includeBanner`        | boolean | true    | Include jspicl info comment in output                   |
-| `--reloadOnSave`         | boolean | true    | Reload PICO-8 when cartridge is updated                 |
-| `--picoPath`             | string  |         | Custom path to PICO-8 executable                        |
-| `--jsOutput`             | string  |         | Path to output bundled JavaScript (for debugging)       |
-| `--luaOutput`            | string  |         | Path to output transpiled Lua (for debugging)           |
-| `--pipeOutputToConsole`  | boolean | false   | Pipe console.log to terminal                            |
-| `-c, --config`           | string  |         | Path to config file                                     |
+Create a config file (JavaScript or TypeScript):
+
+```typescript
+// jspicl.config.ts
+import type {Config} from "@jspicl/cli/types";
+
+const config: Config = {
+  spritesheetImagePath: "assets/sprites.png",
+  jsOutput: "build/game.js",
+  picoPath: "/Applications/PICO-8.app/Contents/MacOS/pico8",
+  reloadOnSave: true,
+  showStats: true
+};
+
+export default config;
+```
+
+### Config Options
+
+| Name                   | Type     | Required | Description                                        |
+| ---------------------- | -------- | -------- | -------------------------------------------------- |
+| `spritesheetImagePath` | string   | Yes      | Path to PNG spritesheet                            |
+| `jsOutput`             | string   | Yes      | Path to output bundled JavaScript (for debugging)  |
+| `picoPath`             | string   | No       | Custom path to PICO-8 executable                   |
+| `includeBanner`        | boolean  | No       | Include jspicl info comment in output              |
+| `luaOutput`            | string   | No       | Path to output transpiled Lua (for debugging)      |
+| `pipeOutputToConsole`  | boolean  | No       | Pipe console.log to terminal                       |
+| `reloadOnSave`         | boolean  | No       | Reload PICO-8 when cartridge is updated            |
+| `showStats`            | boolean  | No       | Display build statistics                           |
+| `jspicl`               | object   | No       | Options passed to @jspicl/core (prettify, etc.)    |
+
+## CLI Options
+
+| Name              | Description                              |
+| ----------------- | ---------------------------------------- |
+| `--config`, `-c`  | Path to config file (required)           |
+| `--watch`, `-w`   | Watch for changes and rebuild            |
 
 ## Watch Mode
 

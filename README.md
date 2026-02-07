@@ -24,10 +24,10 @@ npm install -D @jspicl/cli
 ```
 
 ```bash
-jspicl src/game.js output.p8 --cartridgePath template.p8 --spritesheetImagePath sprites.png
+jspicl src/game.js output.p8 --config jspicl.config.ts --watch
 ```
 
-See the [CLI documentation](./packages/cli/README.md) for full usage.
+See the [CLI documentation](./packages/cli/README.md) for config file setup and options.
 
 ## Using the Core Library
 
