@@ -13,11 +13,12 @@
       "types": "./dist/types.d.ts"
     },
     "./pic8-api.d.ts": {
-      "types": "./dist/pico8-api.d.ts"
+      "types": "./global-types/pico8-api.d.ts"
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "global-types"
   ],
   "publishConfig": {
     "access": "public"
