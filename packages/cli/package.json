@@ -1,6 +1,6 @@
 {
   "name": "@jspicl/cli",
-  "version": "4.0.0-alpha.1",
+  "version": "4.0.0-alpha.2",
   "description": "CLI for simplifying PICO-8 game development in JavaScript",
   "author": "Agron Kabashi",
   "license": "MIT",
@@ -69,5 +69,6 @@
   },
   "engines": {
     "node": ">=22"
-  }
+  },
+  "stableVersion": "4.0.0-alpha.1"
 }
