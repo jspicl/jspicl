@@ -9,6 +9,8 @@
     "packages/*"
   ],
   "scripts": {
+    "bump": "yarn workspaces foreach --all --topological --no-private version",
+    "release": "yarn workspaces foreach --all --topological --no-private npm publish",
     "build": "yarn workspaces foreach -A --topological run build",
     "clean": "yarn workspaces foreach -A run clean",
     "test": "vitest run",
