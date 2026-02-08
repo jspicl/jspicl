@@ -55,16 +55,16 @@
     "@types/lodash.debounce": "^4.0.9",
     "@types/node": "^22.0.0",
     "@types/pngjs": "^6.0.5",
-    "@types/yargs": "^17.0.33",
-    "esbuild": "^0.25.0",
-    "typescript": "^5.7.0"
+    "@types/yargs": "^17.0.33"
   },
   "dependencies": {
     "@jspicl/core": "workspace:^",
     "chokidar": "^5.0.0",
+    "esbuild": "^0.25.0",
     "lodash.debounce": "^4.0.8",
     "mkdirp": "^3.0.1",
     "pngjs": "^7.0.0",
+    "typescript": "^5.7.0",
     "yargs": "^18.0.0"
   },
   "engines": {
