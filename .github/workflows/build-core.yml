@@ -22,6 +22,10 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: Enable corepack
+        run: corepack enable
+
       - name: npm ci, build and test
         run: |
           yarn --frozen-lockfile
