@@ -3,7 +3,7 @@ import {JSPICL_BANNER} from "./constants.js";
 import type {Config} from "./types.js";
 
 export function transpile(javascriptCode: string, config: Config) {
-  const {includeBanner, polyfillTransform, jspicl: jspiclOptions = {}} = config;
+  const {includeBanner, polyfillTransform, jspiclOptions} = config;
 
   const jspiclBanner = (includeBanner && `${JSPICL_BANNER}`) || "";
 

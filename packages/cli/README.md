@@ -40,7 +40,6 @@ const config: Config = {
   spritesheetImagePath: "assets/sprites.png",
   jsOutput: "build/game.js",
   picoPath: "/Applications/PICO-8.app/Contents/MacOS/pico8",
-  reloadOnSave: true,
   showStats: true
 };
 
@@ -49,24 +48,23 @@ export default config;
 
 ### Config Options
 
-| Name                   | Type     | Required | Description                                        |
-| ---------------------- | -------- | -------- | -------------------------------------------------- |
-| `spritesheetImagePath` | string   | Yes      | Path to PNG spritesheet                            |
-| `jsOutput`             | string   | Yes      | Path to output bundled JavaScript (for debugging)  |
-| `picoPath`             | string   | No       | Custom path to PICO-8 executable                   |
-| `includeBanner`        | boolean  | No       | Include jspicl info comment in output              |
-| `luaOutput`            | string   | No       | Path to output transpiled Lua (for debugging)      |
-| `pipeOutputToConsole`  | boolean  | No       | Pipe console.log to terminal                       |
-| `reloadOnSave`         | boolean  | No       | Reload PICO-8 when cartridge is updated            |
-| `showStats`            | boolean  | No       | Display build statistics                           |
-| `jspicl`               | object   | No       | Options passed to @jspicl/core (prettify, etc.)    |
+| Name                   | Type    | Required | Description                                       |
+| ---------------------- | ------- | -------- | ------------------------------------------------- |
+| `spritesheetImagePath` | string  | Yes      | Path to PNG spritesheet                           |
+| `jsOutput`             | string  | Yes      | Path to output bundled JavaScript (for debugging) |
+| `picoPath`             | string  | No       | Custom path to PICO-8 executable                  |
+| `includeBanner`        | boolean | No       | Include jspicl info comment in output             |
+| `luaOutput`            | string  | No       | Path to output transpiled Lua (for debugging)     |
+| `pipeOutputToConsole`  | boolean | No       | Pipe console.log to terminal                      |
+| `showStats`            | boolean | No       | Display build statistics                          |
+| `jspicl`               | object  | No       | Options passed to @jspicl/core (prettify, etc.)   |
 
 ## CLI Options
 
-| Name              | Description                              |
-| ----------------- | ---------------------------------------- |
-| `--config`, `-c`  | Path to config file (required)           |
-| `--watch`, `-w`   | Watch for changes and rebuild            |
+| Name             | Description                    |
+| ---------------- | ------------------------------ |
+| `--config`, `-c` | Path to config file (required) |
+| `--watch`, `-w`  | Watch for changes and rebuild  |
 
 ## Watch Mode
 

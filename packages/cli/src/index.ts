@@ -45,9 +45,7 @@ export async function startBuildService(
 ) {
   const {watch, config} = cliOptions;
   const runPico = createPico8Launcher(
-    watch,
-    config.picoPath,
-    config.reloadOnSave,
+    config.picoOptions,
     config.pipeOutputToConsole
   );
 
@@ -75,7 +73,9 @@ export async function startBuildService(
           logToFile(cartridgeContent, output);
 
           logSuccess("Build completed");
-          runPico(output);
+          if (watch) {
+            runPico(output);
+          }
 
           // Statistics
           config.showStats &&

@@ -9,6 +9,11 @@ export interface PicoSections extends Record<string, string> {
   sfx: string;
 }
 
+export interface PicoOptions {
+  execPath?: string;
+  cartDataPath?: string;
+}
+
 export interface Config {
   spritesheetImagePath: string;
   jsOutput: string;
@@ -17,9 +22,9 @@ export interface Config {
   luaOutput?: string;
   pipeOutputToConsole?: boolean;
   polyfillTransform?: (polyfills: Record<string, string>) => string;
-  reloadOnSave?: boolean;
   showStats?: boolean;
-  jspicl?: JspiclOptions;
+  picoOptions?: PicoOptions;
+  jspiclOptions?: JspiclOptions;
 }
 
 export interface CommandLineOptions {
