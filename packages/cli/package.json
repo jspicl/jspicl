@@ -65,6 +65,7 @@
     "mkdirp": "^3.0.1",
     "pngjs": "^7.0.0",
     "typescript": "^5.7.0",
+    "untildify": "^6.0.0",
     "yargs": "^18.0.0"
   },
   "engines": {

@@ -416,6 +416,7 @@ __metadata:
     mkdirp: "npm:^3.0.1"
     pngjs: "npm:^7.0.0"
     typescript: "npm:^5.7.0"
+    untildify: "npm:^6.0.0"
     yargs: "npm:^18.0.0"
   bin:
     jspicl: dist/cli.js
@@ -1896,6 +1897,13 @@ __metadata:
   dependencies:
     imurmurhash: "npm:^0.1.4"
   checksum: 10c0/da7ade4cb04eb33ad0499861f82fe95ce9c7c878b7139dc54d140ecfb6a6541c18a5c8dac16188b8b379fe62c0c1f1b710814baac910cde5f4fec06212126c6a
+  languageName: node
+  linkType: hard
+
+"untildify@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "untildify@npm:6.0.0"
+  checksum: 10c0/0a1ed4f3e3322b9e09340152a40e4068b9f0cf5aa343d8a040e5fa14275d0c83ffc874484facb0687becf659cfe8c6dcaf04e36ea116212c83613602004a1e4f
   languageName: node
   linkType: hard
 
