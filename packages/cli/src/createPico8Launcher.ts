@@ -1,58 +1,63 @@
-import path from "path";
-import {spawn, exec, ChildProcess} from "child_process";
-import {fileURLToPath} from "url";
+import {ChildProcess, spawn} from "child_process";
+import fs from "node:fs";
+import path from "node:path";
+import untildify from "untildify";
+import {HOTRELOAD_ID} from "./constants.js";
 import {logSuccess, logWarning} from "./logging.js";
+import type {PicoOptions} from "./types.js";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-const osMatrix: Record<string, {execPath: string; reloadCommand?: string}> = {
+const osMatrix: Record<string, {execPath: string; cartDataPath?: string}> = {
   win32: {
     execPath: `"C:\\Program Files (x86)\\PICO-8\\pico8.exe"`
   },
   darwin: {
     execPath: "/Applications/PICO-8.app/Contents/MacOS/pico8",
-    reloadCommand: path.resolve(__dirname, "../scripts/reload-pico8-bin")
+    cartDataPath: untildify("~/Library/Application Support/pico-8/cdata/")
   },
   linux: {
-    execPath: "~/pico-8/pico8"
+    execPath: untildify("~/pico-8/pico8")
   }
 };
 
 export function createPico8Launcher(
-  watch: boolean,
-  customPicoPath?: string,
-  reloadOnSave?: boolean,
+  picoOptions?: PicoOptions,
   pipeOutputToConsole?: boolean
 ) {
   let picoProcess: ChildProcess | null;
-  const {execPath, reloadCommand} = osMatrix[process.platform];
+  const {execPath, cartDataPath} = {
+    ...osMatrix[process.platform],
+    ...picoOptions
+  };
 
   return (cartridgePath: string) => {
-    if (!watch || !cartridgePath) {
+    if (!cartridgePath) {
       return;
     }
 
     if (picoProcess) {
-      if (!reloadOnSave) {
+      if (!cartDataPath) {
+        logWarning(
+          "Autoreloading is currently not supported on your OS. Please press Ctrl+R in PICO-8 to see the new changes."
+        );
         return;
       }
 
-      if (reloadCommand) {
-        logSuccess("Reloading cartridge in PICO-8");
-        exec(reloadCommand);
-      } else {
+      if (!fs.existsSync(cartDataPath)) {
         logWarning(
-          "Autoreloading is currently not supported on your OS. Please press Ctrl+R in PICO-8 to see new changes."
+          "Unable to reload cartridge in PICO-8 since the cartridge data path does not exist or is inaccessible. Please press Ctrl+R in PICO-8 to see the new changes."
         );
+        return;
       }
+
+      fs.writeFileSync(
+        path.resolve(cartDataPath, `${HOTRELOAD_ID}.p8d.txt`),
+        "1"
+      );
+      logSuccess("Reloading cartridge in PICO-8");
     } else {
       logSuccess("Running cartridge in PICO-8");
-      // Use customized path if available, otherwise fallback to the default one for the current OS
-      picoProcess = launchPico8(
-        customPicoPath || execPath,
-        cartridgePath,
-        pipeOutputToConsole
-      );
+
+      picoProcess = launchPico8(execPath, cartridgePath, pipeOutputToConsole);
 
       picoProcess.on("close", (errorCode) => {
         if (errorCode !== 0) {
@@ -69,8 +74,18 @@ function launchPico8(
   cartridgePath: string,
   pipeOutputToConsole?: boolean
 ) {
-  return spawn(picoPath, ["-run", `"${path.resolve(cartridgePath)}"`], {
-    shell: true,
-    stdio: pipeOutputToConsole ? "inherit" : "pipe"
-  });
+  const resolvedPath = path.resolve(cartridgePath);
+  return spawn(
+    picoPath,
+    [
+      "-run",
+      `"${resolvedPath}"`,
+      "-root_path",
+      `"${path.dirname(resolvedPath)}"`
+    ],
+    {
+      shell: true,
+      stdio: pipeOutputToConsole ? "inherit" : "pipe"
+    }
+  );
 }
