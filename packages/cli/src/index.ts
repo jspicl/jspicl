@@ -5,12 +5,13 @@ import path from "node:path";
 
 import process from "process";
 
-import esbuild, {type BuildOptions} from "esbuild";
+import esbuild, {type BuildOptions, type Plugin} from "esbuild";
 import {cliArguments} from "./arguments.js";
 import {logError, logInfo, logStats, logSuccess, logToFile} from "./logging.js";
 import type {CommandLineOptions} from "./types.js";
-import {createPico8Launcher} from "./createPico8Launcher.js";
-import {watchPlugin} from "./watchPlugin.js";
+import {buildPlugin} from "./esbuildPlugins/buildPlugin.js";
+import {hotReloadPlugin} from "./esbuildPlugins/hotReloadPlugin.js";
+import chokidar from "chokidar";
 
 async function getCommandlineArguments(): Promise<{
   input: string;
@@ -44,10 +45,6 @@ export async function startBuildService(
   cliOptions: CommandLineOptions
 ) {
   const {watch, config} = cliOptions;
-  const runPico = createPico8Launcher(
-    config.picoOptions,
-    config.pipeOutputToConsole
-  );
 
   const jsOutput = path.resolve(config.jsOutput || "build/jsOutput.js");
 
@@ -60,7 +57,7 @@ export async function startBuildService(
     format: "esm",
     outfile: jsOutput,
     plugins: [
-      watchPlugin({
+      buildPlugin({
         config,
         output,
 
@@ -69,13 +66,9 @@ export async function startBuildService(
         },
 
         onBuildEnd: (cartridgeContent, transpiledSource) => {
-          config.luaOutput && logToFile(transpiledSource.lua, config.luaOutput);
-          logToFile(cartridgeContent, output);
-
           logSuccess("Build completed");
-          if (watch) {
-            runPico(output);
-          }
+
+          config.luaOutput && logToFile(transpiledSource.lua, config.luaOutput);
 
           // Statistics
           config.showStats &&
@@ -85,12 +78,23 @@ export async function startBuildService(
               cartridgeContent
             );
         }
-      })
-    ]
+      }),
+      watch &&
+        hotReloadPlugin({
+          config,
+          output
+        })
+    ].filter(Boolean) as Plugin[]
   };
 
   if (watch) {
     const context = await esbuild.context(buildConfig);
+
+    // Rebuild if the spritesheet is changed, since it's not part of the esbuild graph
+    chokidar.watch(config.spritesheetImagePath).on("change", async () => {
+      await context.rebuild();
+    });
+
     await context.watch();
   } else {
     await esbuild.build(buildConfig);
