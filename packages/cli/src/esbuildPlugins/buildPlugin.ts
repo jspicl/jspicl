@@ -3,12 +3,13 @@ import fs from "node:fs";
 import {
   generateCartridgeContent,
   getPicoSectionsFromCartridge
-} from "./cartridge.js";
-import {getSpritesheetFromImage} from "./spritesheet.js";
-import {transpile} from "./transpile.js";
-import type {Config} from "./types.js";
+} from "../cartridge.js";
+import {getSpritesheetFromImage} from "../spritesheet.js";
+import {transpile} from "../transpile.js";
+import type {Config} from "../types.js";
+import {logToFile} from "../logging.js";
 
-type WatchPluginOptions = {
+type BuildPluginOptions = {
   config: Config;
   output: string;
   onBuildEnd?: (
@@ -18,8 +19,8 @@ type WatchPluginOptions = {
   onBuildError?: (errors: string) => void;
 };
 
-export const watchPlugin = (options: WatchPluginOptions): Plugin => ({
-  name: "watcher",
+export const buildPlugin = (options: BuildPluginOptions): Plugin => ({
+  name: "buildPlugin",
   setup(build) {
     build.onEnd(async (result: BuildResult) => {
       const {onBuildEnd, onBuildError, config, output} = options;
@@ -45,6 +46,8 @@ export const watchPlugin = (options: WatchPluginOptions): Plugin => ({
         lua: transpiledSource.lua,
         gfx: gfxSection
       });
+
+      logToFile(cartridgeContent, output);
 
       onBuildEnd?.(cartridgeContent, transpiledSource);
     });
