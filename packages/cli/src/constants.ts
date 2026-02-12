@@ -8,6 +8,8 @@ https://github.com/jspicl/jspicl/issues
 ]]--
 `;
 
+export const HOTRELOAD_ID = "jspicl_hotreload";
+
 export const PICO8_PALETTE = [
   {
     r: 0,
