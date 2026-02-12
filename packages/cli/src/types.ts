@@ -21,7 +21,6 @@ export type PicoOptionsMatrix = Record<SupportedPlatforms, PicoOptions>;
 export interface Config {
   spritesheetImagePath: string;
   jsOutput: string;
-  picoPath?: string;
   includeBanner?: boolean;
   luaOutput?: string;
   pipeOutputToConsole?: boolean;

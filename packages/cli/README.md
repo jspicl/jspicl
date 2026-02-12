@@ -39,8 +39,10 @@ import type {Config} from "@jspicl/cli/types";
 const config: Config = {
   spritesheetImagePath: "assets/sprites.png",
   jsOutput: "build/game.js",
-  picoPath: "/Applications/PICO-8.app/Contents/MacOS/pico8",
-  showStats: true
+  showStats: true,
+  picoOptions: {
+    executablePath: "/Applications/PICO-8.app/Contents/MacOS/pico8"
+  }
 };
 
 export default config;
@@ -48,16 +50,25 @@ export default config;
 
 ### Config Options
 
-| Name                   | Type    | Required | Description                                       |
-| ---------------------- | ------- | -------- | ------------------------------------------------- |
-| `spritesheetImagePath` | string  | Yes      | Path to PNG spritesheet                           |
-| `jsOutput`             | string  | Yes      | Path to output bundled JavaScript (for debugging) |
-| `picoPath`             | string  | No       | Custom path to PICO-8 executable                  |
-| `includeBanner`        | boolean | No       | Include jspicl info comment in output             |
-| `luaOutput`            | string  | No       | Path to output transpiled Lua (for debugging)     |
-| `pipeOutputToConsole`  | boolean | No       | Pipe console.log to terminal                      |
-| `showStats`            | boolean | No       | Display build statistics                          |
-| `jspicl`               | object  | No       | Options passed to @jspicl/core (prettify, etc.)   |
+| Name                   | Type     | Required | Description                                       |
+| ---------------------- | -------- | -------- | ------------------------------------------------- |
+| `spritesheetImagePath` | string   | Yes      | Path to PNG spritesheet                           |
+| `jsOutput`             | string   | Yes      | Path to output bundled JavaScript (for debugging) |
+| `includeBanner`        | boolean  | No       | Include jspicl info comment in output             |
+| `luaOutput`            | string   | No       | Path to output transpiled Lua (for debugging)     |
+| `pipeOutputToConsole`  | boolean  | No       | Pipe PICO-8 output to terminal                    |
+| `showStats`            | boolean  | No       | Display build statistics                          |
+| `jspiclOptions`        | object   | No       | Options passed to @jspicl/core (prettify, etc.)   |
+| `polyfillTransform`    | function | No       | Custom function to transform polyfill output      |
+| `picoOptions`          | object   | No       | PICO-8 configuration (see below)                  |
+
+#### picoOptions
+
+| Name             | Type   | Description                                    |
+| ---------------- | ------ | ---------------------------------------------- |
+| `executablePath` | string | Custom path to PICO-8 executable               |
+| `cartDataPath`   | string | Path to PICO-8 cart data directory             |
+| `cartDataId`     | string | Cart data ID for hot reload (default: "jspicl_hotreload") |
 
 ## CLI Options
 
@@ -76,7 +87,7 @@ This applies for the spritesheet as well. Simply save your image and your change
 
 ![](https://github.com/AgronKabashi/assets/raw/814f6efe24bc9aca5d9d6ca6259279733529e300/rollup-plugin-jspicl/spritesheetLiveReload.gif)
 
-**Note:** Automatic PICO-8 reload is currently only supported on macOS.
+**Note:** Automatic PICO-8 reload is supported on macOS and Linux. On Windows, PICO-8 will launch but you'll need to press Ctrl+R to reload manually.
 
 ## Requirements
 
