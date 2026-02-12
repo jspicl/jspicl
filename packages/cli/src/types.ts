@@ -10,9 +10,13 @@ export interface PicoSections extends Record<string, string> {
 }
 
 export interface PicoOptions {
-  execPath?: string;
+  executablePath?: string;
   cartDataPath?: string;
+  cartDataId?: string;
 }
+
+export type SupportedPlatforms = "win32" | "darwin" | "linux";
+export type PicoOptionsMatrix = Record<SupportedPlatforms, PicoOptions>;
 
 export interface Config {
   spritesheetImagePath: string;

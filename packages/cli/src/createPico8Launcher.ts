@@ -2,20 +2,25 @@ import {ChildProcess, spawn} from "child_process";
 import fs from "node:fs";
 import path from "node:path";
 import untildify from "untildify";
-import {HOTRELOAD_ID} from "./constants.js";
-import {logSuccess, logWarning} from "./logging.js";
-import type {PicoOptions} from "./types.js";
+import {logError, logSuccess, logWarning} from "./logging.js";
+import type {
+  PicoOptions,
+  PicoOptionsMatrix,
+  SupportedPlatforms
+} from "./types.js";
+import {EMPTY_CART_DATA} from "./constants.js";
 
-const osMatrix: Record<string, {execPath: string; cartDataPath?: string}> = {
+const osMatrix: PicoOptionsMatrix = {
   win32: {
-    execPath: `"C:\\Program Files (x86)\\PICO-8\\pico8.exe"`
+    executablePath: `"C:\\Program Files (x86)\\PICO-8\\pico8.exe"`
   },
   darwin: {
-    execPath: "/Applications/PICO-8.app/Contents/MacOS/pico8",
+    executablePath: "/Applications/PICO-8.app/Contents/MacOS/pico8",
     cartDataPath: untildify("~/Library/Application Support/pico-8/cdata/")
   },
   linux: {
-    execPath: untildify("~/pico-8/pico8")
+    executablePath: untildify("~/pico-8/pico8"),
+    cartDataPath: untildify("~/.lexaloffle/pico-8/cdata/")
   }
 };
 
@@ -23,14 +28,27 @@ export function createPico8Launcher(
   picoOptions?: PicoOptions,
   pipeOutputToConsole?: boolean
 ) {
+  const platform = process.platform as SupportedPlatforms;
   let picoProcess: ChildProcess | null;
-  const {execPath, cartDataPath} = {
-    ...osMatrix[process.platform],
+  const {
+    executablePath,
+    cartDataPath,
+    cartDataId = "jspicl_hotreload"
+  } = {
+    ...osMatrix[platform],
     ...picoOptions
   };
 
   return (cartridgePath: string) => {
+    if (!executablePath) {
+      logError(
+        `PICO-8 executable not found. Please install PICO-8 or set the executablePath option. Default path for your OS: ${osMatrix[platform].executablePath}`
+      );
+      return;
+    }
+
     if (!cartridgePath) {
+      logError("No cartridge path provided");
       return;
     }
 
@@ -49,15 +67,31 @@ export function createPico8Launcher(
         return;
       }
 
+      const cartDataFilePath = path.resolve(
+        cartDataPath,
+        `${cartDataId}.p8d.txt`
+      );
+
+      const cartDataContent = fs.existsSync(cartDataFilePath)
+        ? fs.readFileSync(
+            path.resolve(cartDataPath, `${cartDataId}.p8d.txt`),
+            "utf-8"
+          )
+        : EMPTY_CART_DATA;
+
       fs.writeFileSync(
-        path.resolve(cartDataPath, `${HOTRELOAD_ID}.p8d.txt`),
-        "1"
+        cartDataFilePath,
+        cartDataContent.slice(0, 64 * 8 + 8 - 2) + "1"
       );
       logSuccess("Reloading cartridge in PICO-8");
     } else {
       logSuccess("Running cartridge in PICO-8");
 
-      picoProcess = launchPico8(execPath, cartridgePath, pipeOutputToConsole);
+      picoProcess = launchPico8(
+        executablePath,
+        cartridgePath,
+        pipeOutputToConsole
+      );
 
       picoProcess.on("close", (errorCode) => {
         if (errorCode !== 0) {
