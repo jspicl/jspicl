@@ -1,0 +1,22 @@
+---
+layout: main-layout.liquid
+---
+
+<div class="post">
+  <aside class="sidebar">
+    <input id="hamburger" name="hamburger" type="checkbox">
+    <label class="hamburger-label" for="hamburger">
+      <div class="hamburger-icon"></div>
+    </label>
+    <nav>
+      {%- for post in collections.sortedPosts -%}
+      <a
+        href="{{ post.url }}"
+        class="{% if page.url == post.url %}active{% endif %}"
+        >{{ post.data.title }}</a
+      >
+      {%- endfor -%}
+    </nav>
+  </aside>
+  <main class="content">{{ content }}</main>
+</div>
