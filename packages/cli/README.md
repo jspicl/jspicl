@@ -56,6 +56,7 @@ export default config;
 | `jsOutput`             | string   | Yes      | Path to output bundled JavaScript (for debugging) |
 | `includeBanner`        | boolean  | No       | Include jspicl info comment in output             |
 | `luaOutput`            | string   | No       | Path to output transpiled Lua (for debugging)     |
+| `minify`               | boolean  | No       | Experimental: Minify bundled JavaScript via esbuild |
 | `pipeOutputToConsole`  | boolean  | No       | Pipe PICO-8 output to terminal                    |
 | `showStats`            | boolean  | No       | Display build statistics                          |
 | `jspiclOptions`        | object   | No       | Options passed to @jspicl/core (prettify, etc.)   |
