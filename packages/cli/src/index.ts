@@ -45,15 +45,14 @@ export async function startBuildService(
   cliOptions: CommandLineOptions
 ) {
   const {watch, config} = cliOptions;
-
-  const jsOutput = path.resolve(config.jsOutput || "build/jsOutput.js");
+  const {jsOutput} = config;
 
   const buildConfig: BuildOptions = {
     entryPoints: [input],
     bundle: true,
     platform: "neutral",
     treeShaking: false,
-    minify: false,
+    minify: config.minify,
     format: "esm",
     outfile: jsOutput,
     plugins: [

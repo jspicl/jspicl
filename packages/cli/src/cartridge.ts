@@ -1,5 +1,4 @@
 import fs from "fs";
-import path from "path";
 import type {PicoSections} from "./types.js";
 
 export function generateCartridgeContent({
@@ -30,9 +29,8 @@ export function getPicoSectionsFromCartridge(
   cartridgePath: string
 ): PicoSections {
   try {
-    const resolvedCartridgePath = path.resolve(cartridgePath);
-    const content = fs.existsSync(resolvedCartridgePath)
-      ? fs.readFileSync(resolvedCartridgePath, "utf8")
+    const content = fs.existsSync(cartridgePath)
+      ? fs.readFileSync(cartridgePath, "utf8")
       : "";
     return parsePico8Cartridge(content);
   } catch (error) {

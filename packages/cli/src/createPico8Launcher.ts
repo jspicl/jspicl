@@ -108,14 +108,13 @@ function launchPico8(
   cartridgePath: string,
   pipeOutputToConsole?: boolean
 ) {
-  const resolvedPath = path.resolve(cartridgePath);
   return spawn(
     picoPath,
     [
       "-run",
-      `"${resolvedPath}"`,
+      `"${cartridgePath}"`,
       "-root_path",
-      `"${path.dirname(resolvedPath)}"`
+      `"${path.dirname(cartridgePath)}"`
     ],
     {
       shell: true,

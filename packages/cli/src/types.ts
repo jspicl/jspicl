@@ -23,6 +23,7 @@ export interface Config {
   jsOutput: string;
   includeBanner?: boolean;
   luaOutput?: string;
+  minify?: boolean; // Highly experimental
   pipeOutputToConsole?: boolean;
   polyfillTransform?: (polyfills: Record<string, string>) => string;
   showStats?: boolean;

@@ -17,9 +17,25 @@ export const cliArguments: Record<keyof CommandLineOptions, Options> = {
     default: {
       jsOutput: "build/jsOutput.js"
     } as Config,
-    coerce: async (p: string) => {
-      const configModule = await import(path.resolve(p));
-      return configModule.default;
+    coerce: async (configPath: string) => {
+      const configDir = path.dirname(configPath);
+      const configModule = await import(path.resolve(configPath));
+
+      const config: Config = configModule.default;
+
+      config.jsOutput = path.resolve(configDir, config.jsOutput);
+      if (config.luaOutput) {
+        config.luaOutput = path.resolve(configDir, config.luaOutput);
+      }
+
+      if (config.spritesheetImagePath) {
+        config.spritesheetImagePath = path.resolve(
+          configDir,
+          config.spritesheetImagePath
+        );
+      }
+
+      return config;
     }
   }
 };

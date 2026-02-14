@@ -7,8 +7,9 @@ import {
   getPicoSectionsFromCartridge
 } from "../src/cartridge.js";
 import {transpile} from "../src/transpile.js";
-import {convertSpritesheetToGfxString} from "../src/spritesheet.js";
+
 import type {Config} from "../src/types.js";
+import {getSpritesheetFromImage} from "../src/spritesheet.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -16,8 +17,7 @@ const defaultUnitTestOptions: Config = {
   spritesheetImagePath: path.join(__dirname, "fixtures/spritesheet.png"),
   jsOutput: "build/game.js",
   includeBanner: false,
-  showStats: false,
-  reloadOnSave: false
+  showStats: false
 };
 
 // Compatibility layer to mimic the old plugin API
@@ -36,7 +36,7 @@ const setup = (options: Partial<Config> & {cartridgePath?: string}) => {
         : {lua: "", gfx: "", gff: "", map: "", sfx: "", music: ""};
 
       const gfx = config.spritesheetImagePath
-        ? await convertSpritesheetToGfxString(config.spritesheetImagePath)
+        ? await getSpritesheetFromImage(config.spritesheetImagePath)
         : sections.gfx;
 
       const code = generateCartridgeContent({
@@ -69,7 +69,10 @@ describe("jspicl-cli", () => {
 
     const result = await renderChunk("var a = 1;");
     expect(result.code).toEqual(
-      fs.readFileSync(path.join(__dirname, "expected/singleNewline.txt"), "utf8")
+      fs.readFileSync(
+        path.join(__dirname, "expected/singleNewline.txt"),
+        "utf8"
+      )
     );
   });
 
