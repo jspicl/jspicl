@@ -241,7 +241,6 @@ _2017-11-14_
 - Api now returns an object containing the transpiled code and polyfills instead of a string
 - Polyfills are now only included if used
 - Added several polyfills/remaps:
-
   - object/array.toString()
   - console.log
   - array.reduce

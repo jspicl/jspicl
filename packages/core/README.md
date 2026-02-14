@@ -61,6 +61,7 @@ Transpiles JavaScript source code to PICO-8 Lua.
 #### Returns
 
 An object containing:
+
 - `code` (string) - The transpiled Lua code
 - `polyfills` (object) - Map of required polyfill function names to their Lua implementations
 
@@ -69,7 +70,11 @@ An object containing:
 Types can be imported from `@jspicl/core/types`:
 
 ```typescript
-import type {JspiclOptions, JspiclOutput, AstNodeParser} from "@jspicl/core/types";
+import type {
+  JspiclOptions,
+  JspiclOutput,
+  AstNodeParser
+} from "@jspicl/core/types";
 ```
 
 ## Custom Mappers
@@ -90,6 +95,7 @@ const result = jspicl(source, {customMappers});
 ```
 
 Each mapper receives the AST node and an options object with:
+
 - `transpile` - Function to recursively transpile child nodes
 - `scope` - Object containing variable metadata and scope information
 

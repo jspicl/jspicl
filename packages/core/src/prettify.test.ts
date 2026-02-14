@@ -46,8 +46,12 @@ describe("prettify", () => {
   });
 
   it("indents lua code", () => {
-    const input = readFileSync(join(__dirname, "../fixtures/luacode.lua")).toString();
-    const expected = readFileSync(join(__dirname, "../fixtures/expected.lua")).toString();
+    const input = readFileSync(
+      join(__dirname, "../fixtures/luacode.lua")
+    ).toString();
+    const expected = readFileSync(
+      join(__dirname, "../fixtures/expected.lua")
+    ).toString();
 
     expect(prettify(input)).toBe(expected);
   });

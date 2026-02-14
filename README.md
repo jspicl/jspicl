@@ -10,10 +10,10 @@ A JavaScript to PICO-8 Lua transpiler. Write your PICO-8 games in JavaScript!
 
 This monorepo contains two packages:
 
-| Package | Description |
-| ------- | ----------- |
+| Package                         | Description                                                |
+| ------------------------------- | ---------------------------------------------------------- |
 | [@jspicl/core](./packages/core) | The transpiler library - converts JavaScript to PICO-8 Lua |
-| [@jspicl/cli](./packages/cli) | Command-line tool for building PICO-8 cartridges |
+| [@jspicl/cli](./packages/cli)   | Command-line tool for building PICO-8 cartridges           |
 
 ## Quick Start
 
@@ -52,7 +52,7 @@ const result = jspicl(`
   }
 `);
 
-console.log(result.code);      // Lua code
+console.log(result.code); // Lua code
 console.log(result.polyfills); // Required polyfill implementations
 ```
 

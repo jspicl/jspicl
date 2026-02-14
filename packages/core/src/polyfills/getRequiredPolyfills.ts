@@ -10,10 +10,13 @@ export function getRequiredPolyfills(luaCode: string) {
     string
   >;
 
-  return Array.from(detectedPolyfills).reduce((result, match) => {
-    // Remove the '(' character from the match
-    const polyfillId = match.substr(0, match.length - 1);
-    result[polyfillId] = implementations[polyfillId];
-    return result;
-  }, {} as Record<string, string>);
+  return Array.from(detectedPolyfills).reduce(
+    (result, match) => {
+      // Remove the '(' character from the match
+      const polyfillId = match.substr(0, match.length - 1);
+      result[polyfillId] = implementations[polyfillId];
+      return result;
+    },
+    {} as Record<string, string>
+  );
 }

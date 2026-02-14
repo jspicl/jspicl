@@ -50,25 +50,25 @@ export default config;
 
 ### Config Options
 
-| Name                   | Type     | Required | Description                                       |
-| ---------------------- | -------- | -------- | ------------------------------------------------- |
-| `spritesheetImagePath` | string   | Yes      | Path to PNG spritesheet                           |
-| `jsOutput`             | string   | Yes      | Path to output bundled JavaScript (for debugging) |
-| `includeBanner`        | boolean  | No       | Include jspicl info comment in output             |
-| `luaOutput`            | string   | No       | Path to output transpiled Lua (for debugging)     |
+| Name                   | Type     | Required | Description                                         |
+| ---------------------- | -------- | -------- | --------------------------------------------------- |
+| `spritesheetImagePath` | string   | Yes      | Path to PNG spritesheet                             |
+| `jsOutput`             | string   | Yes      | Path to output bundled JavaScript (for debugging)   |
+| `includeBanner`        | boolean  | No       | Include jspicl info comment in output               |
+| `luaOutput`            | string   | No       | Path to output transpiled Lua (for debugging)       |
 | `minify`               | boolean  | No       | Experimental: Minify bundled JavaScript via esbuild |
-| `pipeOutputToConsole`  | boolean  | No       | Pipe PICO-8 output to terminal                    |
-| `showStats`            | boolean  | No       | Display build statistics                          |
-| `jspiclOptions`        | object   | No       | Options passed to @jspicl/core (prettify, etc.)   |
-| `polyfillTransform`    | function | No       | Custom function to transform polyfill output      |
-| `picoOptions`          | object   | No       | PICO-8 configuration (see below)                  |
+| `pipeOutputToConsole`  | boolean  | No       | Pipe PICO-8 output to terminal                      |
+| `showStats`            | boolean  | No       | Display build statistics                            |
+| `jspiclOptions`        | object   | No       | Options passed to @jspicl/core (prettify, etc.)     |
+| `polyfillTransform`    | function | No       | Custom function to transform polyfill output        |
+| `picoOptions`          | object   | No       | PICO-8 configuration (see below)                    |
 
 #### picoOptions
 
-| Name             | Type   | Description                                    |
-| ---------------- | ------ | ---------------------------------------------- |
-| `executablePath` | string | Custom path to PICO-8 executable               |
-| `cartDataPath`   | string | Path to PICO-8 cart data directory             |
+| Name             | Type   | Description                                               |
+| ---------------- | ------ | --------------------------------------------------------- |
+| `executablePath` | string | Custom path to PICO-8 executable                          |
+| `cartDataPath`   | string | Path to PICO-8 cart data directory                        |
 | `cartDataId`     | string | Cart data ID for hot reload (default: "jspicl_hotreload") |
 
 ## CLI Options
