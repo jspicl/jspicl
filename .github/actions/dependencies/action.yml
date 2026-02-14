@@ -1,0 +1,22 @@
+name: "Setup dependencies"
+
+inputs:
+  nodeVersion:
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Enable corepack
+      run: corepack enable
+      shell: bash
+
+    - name: Use Node.js ${{ inputs.nodeVersion }}
+      uses: actions/setup-node@v6
+      with:
+        node-version: ${{ inputs.nodeVersion }}
+        cache: "yarn"
+
+    - name: Install dependencies
+      run: yarn --frozen-lockfile
+      shell: bash

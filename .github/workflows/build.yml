@@ -1,0 +1,63 @@
+name: Build and Test
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ${{vars.RUNNER}}
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Manage dependencies
+        uses: ./.github/actions/dependencies
+        with:
+          nodeVersion: ${{ vars.NODE_LTS }}
+
+      - name: Lint
+        run: yarn lint
+
+  test:
+    runs-on: ${{vars.RUNNER}}
+
+    strategy:
+      matrix:
+        node-version: ["${{ vars.NODE_LTS }}", "${{ vars.NODE_LATEST}}"]
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Manage dependencies
+        uses: ./.github/actions/dependencies
+        with:
+          nodeVersion: ${{ matrix.node-version }}
+
+      - name: Test
+        run: yarn test
+
+  build:
+    runs-on: ${{vars.RUNNER}}
+
+    strategy:
+      matrix:
+        node-version: ["${{ vars.NODE_LTS }}", "${{ vars.NODE_LATEST}}"]
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Manage dependencies
+        uses: ./.github/actions/dependencies
+        with:
+          nodeVersion: ${{ matrix.node-version }}
+
+      - name: Build
+        run: yarn build
