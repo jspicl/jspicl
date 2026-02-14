@@ -41,7 +41,9 @@ the AST node is that it contains a string property called `type` since this is u
   </a>
 </div>
 
-```js-with-tab
+```js
+import {jspicl} from "@jspicl/core";
+
 const customMappers = {
   // Replace the default while-statement implementation
   WhileStatement: ({ body, test }, { transpile }) =>

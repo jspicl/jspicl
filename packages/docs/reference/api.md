@@ -11,14 +11,14 @@ sort: 3.1
 Entry point for transpiling your JavaScript code.
 
 ```ts
-function jspicl(source: string, options?: JspiclOptions): JspiclOutput;
+function jspicl(source: string, options?: Options): Output;
 ```
 
 <ul class="argument-list">
   <li>
-    <code>rootNode</code>
+    <code>root</code>
     <span>
-      Root node of your AST. jspicl will transpile the entire hierarchy.
+      Root node of your AST. Jspicl will traverse and transpile the entire hierarchy.
     </span>
   </li>
 
@@ -28,12 +28,12 @@ function jspicl(source: string, options?: JspiclOptions): JspiclOutput;
   </li>
 </ul>
 
-#### JspiclOptions
+#### Options
 
 ```ts
-type JspiclOptions = {
+type Options = {
   prettify?: boolean;
-  customMappers?: Record<string, AstNodeParser>;
+  customMappers?: Record<string, AstNodeVisitor>;
 };
 ```
 
@@ -52,10 +52,10 @@ type JspiclOptions = {
   </li>
 </ul>
 
-#### JspiclOutput
+#### Output
 
 ```ts
-type JspiclOutput = {
+type Output = {
   code: string;
   polyfills: Record<string, string>;
 };
@@ -77,34 +77,34 @@ type JspiclOutput = {
   </li>
 </ul>
 
-#### AstNode
+#### ASTNode
 
 Represents a node in the syntax tree. All nodes contain at least a type property.
 
 ```ts
-type AstNode = {
+type ASTNode = {
   type: string;
   [key: string]: any;
 };
 ```
 
-#### AstNodeParser
+#### AstNodeVisitor
 
-Contract for a parser function. The function should be named after the AST node type. Binding a scopeBoundary field on the function will create a new scope for all variables defined inside the hieararchy.
+Contract for a visitor function. The function should be named after the AST node type. Binding a scopeBoundary field on the function will create a new scope for all variables defined inside the hierarchy.
 
 ```ts
-type AstNodeParser = {
-  (node: Omit<AstNode, "type">, options: AstNodeParserOptions): string;
+type AstNodeVisitor<T extends ASTNode = ASTNode> = {
+  (node: T, options: AstNodeVisitorOptions): string;
   scopeBoundary?: boolean;
 };
 ```
 
-#### AstNodeParserOptions
+#### AstNodeVisitorOptions
 
 Includes references to the transpile function and scope.
 
 ```ts
-type AstNodeParserOptions = {
+type AstNodeVisitorOptions = {
   transpile: TranspileFunction;
   scope: {
     variables: Record<string, any>;
@@ -116,7 +116,7 @@ type AstNodeParserOptions = {
 #### TranspileFunction
 
 ```ts
-type TranspileFunction = (node: AstNode, options?: TranspileOptions) => string;
+type TranspileFunction = (node: ASTNode, options?: TranspileOptions) => string;
 ```
 
 #### TranspileOptions

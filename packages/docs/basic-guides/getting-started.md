@@ -11,42 +11,52 @@ taking care of the build process so you can focus on the implementation.
 
 **Features:**
 
-- Comes with its own build pipeline so you don't have to set one up yourself.
-- Supports treeshaking, preventing unused code from being included and increasing your token count.
-- Use a PNG file for the spritesheet, enabling you to update it using an image editor of choice.
-- Live reloading of PICO-8 cartridge whenever source code or spritesheet is updated.
+- Built-in build pipeline powered by esbuild
+- Tree-shaking to minimize token count
+- PNG spritesheet support - use your favorite image editor
+- Live reloading with watch mode
 
-## Installation (optional)
+## Installation
 
-Depending on your use case you can install the CLI globally, locally or use npx to run it directly.
-
-```bash-with-tab
-npm install jspicl-cli -g
-npm install jspicl-cli
-npx jspicl-cli [<args>]
+```bash
+npm install -D @jspicl/cli
 ```
-
-Recommended use-case is to install it locally in your project and include it in the scripts section in package.json.
 
 ## Usage
 
-Let's start by creating a file with the following content:
+First, create a config file:
 
-```js-with-tab
+```typescript
+// jspicl.config.ts
+import type {Config} from "@jspicl/cli/types";
+
+const config: Config = {
+  jsOutput: "build/game.js",
+  showStats: true
+};
+
+export default config;
+```
+
+Then create your game file:
+
+```js
 function _draw() {
   cls();
   print("hello world");
 }
 ```
 
-That's it! Now all you have to do is supply jspicl-cli with your game file to generate a PICO-8 cartridge and run it in PICO-8:
+Now run the CLI to generate a PICO-8 cartridge:
 
-```bash-with-tab
-jspicl-cli PATH_TO_YOUR_FILE game.p8 --watch
+```bash
+jspicl src/game.js build/game.p8 --config jspicl.config.ts --watch
 ```
 
-Assuming you have PICO-8 installed in your system you should see the following:
+Assuming you have PICO-8 installed on your system, you should see the following:
 
 <img src="/assets/images/pico8-hello-world.png" width="320" class="center" alt="Hello World" />
 
-Any changes to the source code will reload PICO-8 automatically for you **(_only on Mac OS for now, other OS will need a manual reload with Ctrl+R_)**.
+Any changes to the source code will reload PICO-8 automatically for you.
+
+**Note:** Automatic PICO-8 reload is supported on macOS and Linux. On Windows, PICO-8 will launch but you'll need to press Ctrl+R to reload manually.

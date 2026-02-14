@@ -10,14 +10,14 @@ The API can be used for transpiling JavaScript into the subset of Lua that PICO-
 
 ## Installation
 
-```bash-with-tab
-npm install jspicl --save
+```bash
+npm install @jspicl/core
 ```
 
 ## Usage
 
-```js-with-tab
-import {jspicl} from "jspicl";
+```js
+import {jspicl} from "@jspicl/core";
 
 const javascriptCode = `
   // Your code here
