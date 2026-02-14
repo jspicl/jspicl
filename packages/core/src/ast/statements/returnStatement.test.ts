@@ -16,15 +16,63 @@ describe("ReturnStatement", () => {
   });
 
   it("returns 'value' if argument is supplied", () => {
-    const input = {
+    const input: ReturnStatement = {
+      type: "ReturnStatement",
       argument: {
         type: "Literal",
-        raw: 1
-      }
+        raw: "1",
+        value: 1
+      } as Literal
     };
 
     expect(ReturnStatement(input, parserOptions)).toBe(
-      `return ${input.argument.raw}`
+      `return ${input.argument!.raw}`
     );
+  });
+
+  it("handles SequenceExpressions", () => {
+    const input: ReturnStatement = {
+      type: "ReturnStatement",
+      argument: {
+        type: "SequenceExpression",
+        expressions: [
+          {
+            type: "AssignmentExpression",
+            operator: "%",
+            left: {
+              type: "AssignmentExpression",
+              operator: "=",
+              left: {
+                type: "Identifier",
+                name: "O"
+              },
+              right: {
+                type: "BinaryExpression",
+                operator: "+",
+                left: {
+                  type: "Identifier",
+                  name: "O"
+                },
+                right: {
+                  type: "Literal",
+                  raw: 1
+                }
+              }
+            },
+            right: {
+              type: "Literal",
+              raw: 100
+            }
+          },
+          {
+            type: "Identifier",
+            name: "O"
+          }
+        ] as ReturnStatement["argument"][]
+      } as SequenceExpression
+    };
+
+    const result = ReturnStatement(input, parserOptions);
+    expect(result).toBe(`o=o + 1%100\nreturn o`);
   });
 });
