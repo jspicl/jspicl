@@ -6,6 +6,11 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -23,14 +28,17 @@ jobs:
       - name: Build
         run: cd packages/docs && yarn build
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
         with:
-          path: "packages/docs/dist"
+          name: docs
+          path: packages/docs/dist
+          retention-days: 1
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Trigger deployment
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.PAGES_DEPLOY_TOKEN }}" \
+            https://api.github.com/repos/jspicl/jspicl.github.io/dispatches \
+            -d '{"event_type":"deploy","client_payload":{"run_id":"${{ github.run_id }}","repo":"jspicl","sha":"${{ github.sha }}"}}'

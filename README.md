@@ -5,6 +5,8 @@
 # jspicl
 
 A JavaScript to PICO-8 Lua transpiler. Write your PICO-8 games in JavaScript!
+<br />
+Visit [jspicl.github.io](https://jspicl.github.io) for docs, guides, API and more!
 
 ## Packages
 

@@ -580,6 +580,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@jspicl/docs@workspace:packages/docs":
+  version: 0.0.0-use.local
+  resolution: "@jspicl/docs@workspace:packages/docs"
+  dependencies:
+    "@11ty/eleventy": "npm:^3.1.2"
+    "@11ty/eleventy-plugin-syntaxhighlight": "npm:^3.2.2"
+  languageName: unknown
+  linkType: soft
+
 "@jspicl/jspicl@workspace:.":
   version: 0.0.0-use.local
   resolution: "@jspicl/jspicl@workspace:."
@@ -1336,15 +1345,6 @@ __metadata:
   checksum: 10c0/10d1e248ab68a33654335559bae5ec142c51959cbff1cba8b35cdccfdc12eb8d136227df85c31b71b9ee9fed1b2bfbd01721661b4f927e12d890d13c4230788f
   languageName: node
   linkType: hard
-
-"docs@workspace:packages/docs":
-  version: 0.0.0-use.local
-  resolution: "docs@workspace:packages/docs"
-  dependencies:
-    "@11ty/eleventy": "npm:^3.1.2"
-    "@11ty/eleventy-plugin-syntaxhighlight": "npm:^3.2.2"
-  languageName: unknown
-  linkType: soft
 
 "dom-serializer@npm:^1.0.1":
   version: 1.4.1
