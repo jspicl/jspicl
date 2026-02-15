@@ -1,0 +1,23 @@
+import type {ASTNode, AstNodeVisitor} from "../../types.js";
+
+export const isSwitchCase = (node?: ASTNode | null): node is SwitchCase =>
+  node?.type === "SwitchCase";
+
+export const SwitchCase: AstNodeVisitor<SwitchCase> = (
+  {test, consequent},
+  {transpile}
+) => {
+  if (consequent.length === 0) {
+    throw new Error("Switch case fallthroughs are not supported.");
+  }
+
+  const statements = transpile(consequent, {arraySeparator: "\n"});
+  if (!test) {
+    return `\n${statements}`; // Default case
+  }
+
+  const testValue = transpile(test);
+  return `if ${testValue} == switchCase then
+    ${statements}
+  `;
+};

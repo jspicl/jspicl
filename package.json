@@ -1,87 +1,30 @@
 {
   "name": "@jspicl/jspicl",
-  "version": "3.0.0",
-  "description": "A javascript to PICO-8 LUA converter",
+  "version": "0.0.0",
+  "private": true,
+  "description": "jspicl monorepo - JavaScript to PICO-8 Lua transpiler",
   "license": "MIT",
-  "typings": "dist/index.d.ts",
-  "main": "dist/index.js",
-  "module": "dist/jspicl.esm.js",
-  "type": "module",
-  "files": [
-    "dist",
-    "src"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
-  "scripts": {
-    "prepublishOnly": "npm test && npm run build",
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test",
-    "lint": "tsdx lint",
-    "prepare": "tsdx build",
-    "size": "size-limit",
-    "analyze": "size-limit --why",
-    "codecoverage": "npm t -- --coverage=true"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
-  },
-  "size-limit": [
-    {
-      "path": "dist/jspicl.cjs.production.min.js",
-      "limit": "35 KB"
-    },
-    {
-      "path": "dist/jspicl.esm.js",
-      "limit": "35 KB"
-    }
-  ],
-  "prettier": {
-    "arrowParens": "always",
-    "bracketSpacing": false,
-    "endOfLine": "lf",
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": false,
-    "tabWidth": 2,
-    "trailingComma": "none",
-    "useTabs": false
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AgronKabashi/jspicl"
-  },
-  "keywords": [
-    "pico-8",
-    "javascript",
-    "buildtool",
-    "lua",
-    "ast",
-    "transpile",
-    "transpiler"
-  ],
   "author": "Agron Kabashi",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "bump": "yarn workspaces foreach --all --topological --no-private version",
+    "release": "yarn workspaces foreach --all --topological --no-private npm publish",
+    "prerelease": "yarn build && yarn test",
+    "build": "yarn workspaces foreach -A --topological run build",
+    "clean": "yarn workspaces foreach -A run clean",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "prettier --check .",
+    "prettier": "prettier --write ."
+  },
   "devDependencies": {
-    "@babel/core": "^7.12.3",
-    "@size-limit/preset-small-lib": "^4.8.0",
-    "@types/esprima": "^4.0.2",
-    "babel-loader": "^8.2.1",
-    "husky": "^4.3.0",
-    "react-is": "^17.0.1",
-    "size-limit": "^4.8.0",
-    "tsdx": "^0.14.1",
-    "tslib": "^2.0.3",
-    "typescript": "^4.0.5"
+    "prettier": "^3.4.0",
+    "vitest": "^4.0.15"
   },
-  "dependencies": {
-    "esprima": "^4.0.1",
-    "trastpiler": "^1.0.2"
-  },
+  "packageManager": "yarn@4.6.0",
   "engines": {
-    "node": ">=15"
+    "node": ">=22"
   }
 }

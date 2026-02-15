@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 60">
+  <defs/>
+  <g fill="none" fill-rule="nonzero">
+    <path fill="#1E2C52" d="M16 56v-4h4v-4h4v-4h-8v-4h-4v12H0v-4h4v-8h4v-4h8v-4H8v-4H4v-4H0v-4h4v4h4v-8H4v-4h4V8h4V4h4V0h12v4h4v4h4v12h4v4h-4v4h-4v4h-4v24h-4v4h-8z"/>
+    <path fill="#A9523A" d="M8 38v-2h8v-8H8V16h4v-4h4v4h8v8h4v-4h8v4h-4v4h-4v8H16v4H8z"/>
+    <path fill="#FC1051" d="M8 38v-2h8v-8H8v-8h16v4h4v-4h8v4h-4v4h-4v8H16v4H8z"/>
+    <path fill="#34AFFC" d="M24 44v-4h4v8h-4v-4zM8 38v-2h8v-8H8v-8h16v4h8v-4h4v4h-4v4h-4v8H16v4H8v-2zm4-24v-2h4v4h-4v-2zm0-8V4h4V0h4v4h-4v4h-4V6z"/>
+    <path fill="#C2C3C7" d="M8 24v-4h16v4h8v-4h4v4h-4v4H8z"/>
+    <path fill="#FECCAC" d="M8 24v-4h16v4h4v4H8z"/>
+    <path fill="#FFF1E9" d="M20 26v-2h8v4h-8v-2zm12-4v-2h4v4h-4v-2z"/>
+  </g>
+</svg>

@@ -1,0 +1,7 @@
+node_modules
+.baseDir.*
+.DS_STORE
+.esm-cache
+.nyc_output
+coverage
+dist

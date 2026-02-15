@@ -1,0 +1,36 @@
+name: Publish docs
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ${{vars.RUNNER}}
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: ./.github/actions/dependencies
+        with:
+          nodeVersion: ${{ vars.NODE_LTS }}
+
+      - name: Build
+        run: cd packages/docs && yarn build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "packages/docs/dist"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
