@@ -23,32 +23,14 @@ jobs:
       - name: Build
         run: cd packages/docs && yarn build
 
-      - name: Generate docs artifact
-        uses: actions/upload-artifact@v6
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: docs-artifact
-          path: packages/docs/dist
-          if-no-files-found: error
+          path: "packages/docs/dist"
 
-      - name: Checkout gh-pages
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 1
-          ref: gh-pages
-
-      - name: Clear directory
-        run: |
-          rm -rf $(ls -A | grep -v .git)
-
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: docs-artifact
-
-      - name: Push changes
-        run: |
-          git config --global user.name "Github Actions"
-          git config --global user.email "actions@github.com"
-          git add .
-          git commit -m "Automated deploy"
-          git push
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

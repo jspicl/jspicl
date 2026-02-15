@@ -1,7 +1,7 @@
 ---
 layout: post.liquid
 title: Migration Guide
-sort: 4
+sort: 3.1
 ---
 
 # Migration Guide
@@ -12,10 +12,10 @@ sort: 4
 
 The packages have been renamed to use the `@jspicl` scope:
 
-| Old | New |
-|-----|-----|
-| `jspicl` | `@jspicl/core` |
-| `jspicl-cli` | `@jspicl/cli` |
+| Old          | New            |
+| ------------ | -------------- |
+| `jspicl`     | `@jspicl/core` |
+| `jspicl-cli` | `@jspicl/cli`  |
 
 Update your imports:
 
@@ -62,13 +62,13 @@ The `customPicoPath` option is now nested under `picoOptions`:
 ```typescript
 // Before
 {
-  customPicoPath: "/path/to/pico8"
+  customPicoPath: "/path/to/pico8";
 }
 
 // After
 {
   picoOptions: {
-    executablePath: "/path/to/pico8"
+    executablePath: "/path/to/pico8";
   }
 }
 ```

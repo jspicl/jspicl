@@ -1,7 +1,7 @@
 ---
 layout: post.liquid
 title: Reference - CLI
-sort: 3.2
+sort: 4.2
 ---
 
 # CLI Reference
@@ -51,7 +51,7 @@ const config: Config = {
 export default config;
 ```
 
-**Note:** Config file paths (`jsOutput`, `luaOutput`, `spritesheetImagePath`) are resolved relative to the config file's directory.
+**Note:** Config file paths (`jsOutput`, `luaOutput`, `spritesheetImagePath`) are resolved relative to the config file's directory unless an absolute path is specified.
 
 ### Config Options
 
@@ -80,10 +80,10 @@ export default config;
 
 The CLI will listen for changes when the `--watch` option is passed.
 
-<img width="100%" src="https://i.imgur.com/QYj4Xga.gif">
+<video width="640" controls loop src="https://github.com/AgronKabashi/assets/raw/refs/heads/master/jspicl/hotreloading.mp4"></video>
 
 This applies for the spritesheet as well. Simply save your image and your changes will be reloaded in PICO-8.
 
-<img width="100%" src="https://github.com/AgronKabashi/assets/raw/814f6efe24bc9aca5d9d6ca6259279733529e300/rollup-plugin-jspicl/spritesheetLiveReload.gif">
+<video width="640" controls loop src="https://github.com/AgronKabashi/assets/raw/refs/heads/master/jspicl/hotreloading2.mp4"></video>
 
 **Note:** Automatic PICO-8 reload is supported on macOS and Linux. On Windows, PICO-8 will launch but you'll need to press Ctrl+R to reload manually.

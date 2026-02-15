@@ -46,23 +46,23 @@ import {jspicl} from "@jspicl/core";
 
 const customMappers = {
   // Replace the default while-statement implementation
-  WhileStatement: ({ body, test }, { transpile }) =>
+  WhileStatement: ({body, test}, {transpile}) =>
     `while ${transpile(test)} do
       -- We have full control of the output!
       ${transpile(body)}
     end`,
 
   // Add support for missing features
-  ForOfStatement: ({ left, right, body }, {transpile}) => {
+  ForOfStatement: ({left, right, body}, {transpile}) => {
     // ...
   },
 
   // Custom statements, declarations and expressions are also valid
   // as long as the nodes are included in the AST
-  SuperDuperComment: () => `-- You're doing great!`,
+  SuperDuperComment: () => `-- You're doing great!`
 
   // ...
 };
 
-const { code } = jspicl(javascriptCode, { customMappers });
+const {code} = jspicl(javascriptCode, {customMappers});
 ```

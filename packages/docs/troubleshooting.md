@@ -1,7 +1,7 @@
 ---
 layout: post.liquid
 title: Troubleshooting
-sort: 5
+sort: 3.2
 ---
 
 # Troubleshooting
@@ -32,8 +32,6 @@ for (let i = 1; i <= arr.length; i++) {
 }
 ```
 
----
-
 ## PICO-8 Won't Auto-Reload
 
 **Problem:** Changes don't appear in PICO-8 automatically.
@@ -42,55 +40,29 @@ for (let i = 1; i <= arr.length; i++) {
 
 1. **OS Support** - Auto-reload works on macOS and Linux. Windows requires manual Ctrl+R.
 
-2. **Executable Path** - Ensure `picoOptions.executablePath` points to the correct PICO-8 binary:
+2. **Executable Path** - The cli will use default Pico-8 installation paths by default. If you've installed it in a different path, please ensure `picoOptions.executablePath` points to the correct PICO-8 binary:
+
    ```typescript
-   picoOptions: {
-     // macOS
-     executablePath: "/Applications/PICO-8.app/Contents/MacOS/pico8"
-     // Linux
-     executablePath: "/home/user/pico-8/pico8"
+   // jspicl.config.ts
+   export default {
+    picoOptions: {
+      // macOS
+      executablePath: "/Applications/PICO-8.app/Contents/MacOS/pico8"
+      // Linux
+      executablePath: "~/home/USERNAME~/pico-8/pico8"
+    }
    }
    ```
 
-3. **Cart Data Path** - Hot reload uses cart data. Verify the path exists:
+3. **Cart Data Path** - Hot reload uses cart data to enable hot reloading. If you're not using the default folder please make sure that you're setting it explicitly in the config:
    ```typescript
-   picoOptions: {
-     cartDataPath: "~/.lexaloffle/pico-8/cdata"
-   }
+   // jspicl.config.ts
+   export default {
+     picoOptions: {
+       cartDataPath: "~/Library/Application Support/pico-8/cdata/"
+     }
+   };
    ```
-
----
-
-## Token Count Too High
-
-**Problem:** PICO-8 reports "out of tokens" error.
-
-**Solutions:**
-
-1. **Check tree-shaking** - Ensure unused code isn't being included. The CLI uses esbuild's tree-shaking by default.
-
-2. **Avoid polyfill-heavy methods** - Each polyfill adds tokens:
-   ```js
-   // Heavy - adds _map polyfill (~25 tokens)
-   const doubled = arr.map(x => x * 2);
-
-   // Lighter - native loop
-   const doubled = [];
-   for (let i = 1; i <= arr.length; i++) {
-     doubled[i] = arr[i] * 2;
-   }
-   ```
-
-3. **Use PICO-8 built-ins** - Prefer `foreach`, `all`, `add`, `del` over JS equivalents.
-
-4. **Enable minify (experimental)**:
-   ```typescript
-   {
-     minify: true
-   }
-   ```
-
----
 
 ## Spritesheet Not Loading
 
@@ -100,17 +72,15 @@ for (let i = 1; i <= arr.length; i++) {
 
 1. **File format** - Only PNG is supported.
 
-2. **Dimensions** - Must be 128x128 pixels (or 128x64/128x32 for partial sheets).
+2. **Dimensions** - Must be 128x128 pixels
 
-3. **Path** - Paths are relative to the config file location:
+3. **Path** - Unless you specify an absolute path, paths will be relative to the config file location:
    ```typescript
    // If config is in project root
    {
-     spritesheetImagePath: "assets/sprites.png"
+     spritesheetImagePath: "assets/sprites.png";
    }
    ```
-
----
 
 ## "Unsupported syntax" Error
 
@@ -118,14 +88,12 @@ for (let i = 1; i <= arr.length; i++) {
 
 **Common causes:**
 
-| Syntax | Status | Alternative |
-|--------|--------|-------------|
+| Syntax        | Status        | Alternative          |
+| ------------- | ------------- | -------------------- |
 | `async/await` | Not supported | Use synchronous code |
-| `class` | Not supported | Use functions and tables |
-| `generators` | Not supported | Use loops |
-| `import/export` | Handled by bundler | Works with CLI |
+| `generators`  | Not supported | Use loops            |
 
-If you need unsupported syntax, use `customMappers` to add support or pre-process with Babel/esbuild.
+If you need unsupported syntax, you can use `customMappers` to add support.
 
 ---
 
@@ -135,17 +103,19 @@ If you need unsupported syntax, use `customMappers` to add support or pre-proces
 
 **Debug steps:**
 
-1. **Check Lua output** - Set `luaOutput` to inspect generated code:
+1. **Check Lua output** - Look at the generated code in Pico-8 directly or set `luaOutput` to inspect generated code:
+
    ```typescript
    {
-     luaOutput: "build/debug.lua"
+     luaOutput: "build/debug.lua";
    }
    ```
 
 2. **Enable console output**:
+
    ```typescript
    {
-     pipeOutputToConsole: true
+     pipeOutputToConsole: true; // printh will output to the terminal
    }
    ```
 
