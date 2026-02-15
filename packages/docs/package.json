@@ -1,6 +1,6 @@
 {
-  "name": "docs",
-  "version": "1.0.0",
+  "name": "@jspicl/docs",
+  "version": "0.0.0",
   "description": "Jspicl documentation",
   "private": true,
   "scripts": {
