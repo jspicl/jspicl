@@ -18,5 +18,5 @@ runs:
         cache: "yarn"
 
     - name: Install dependencies
-      run: yarn --frozen-lockfile
+      run: yarn --immutable
       shell: bash
