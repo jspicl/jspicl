@@ -1,15 +1,14 @@
 pico-8 cartridge // http://www.pico-8.com
-version 8
+version 42
 __lua__
-code to be replaced
+print('hello')
 __gfx__
-1
+00000000
 __gff__
-2
+0000
 __map__
-3
+0000
 __sfx__
-4
+000000
 __music__
-5
-
+00

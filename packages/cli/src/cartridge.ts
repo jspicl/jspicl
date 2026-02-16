@@ -12,8 +12,7 @@ export function generateCartridgeContent({
   return [
     "pico-8 cartridge // http://www.pico-8.com",
     "version 42",
-    "__lua__",
-    lua,
+    lua && `__lua__\n${lua}`,
     gfx && `__gfx__\n${gfx}`,
     gff && `__gff__\n${gff}`,
     map && `__map__\n${map}`,
@@ -22,7 +21,8 @@ export function generateCartridgeContent({
     "\n"
   ]
     .filter(Boolean)
-    .join("\n");
+    .join("\n")
+    .replace(/\n\n/, "\n");
 }
 
 export function getPicoSectionsFromCartridge(
