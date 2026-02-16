@@ -77,6 +77,50 @@ type Output = {
   </li>
 </ul>
 
+### Types
+
+Types can be imported from `@jspicl/core/types`:
+
+```typescript
+import type {
+  JspiclOptions,
+  JspiclOutput,
+  AstNodeParser
+} from "@jspicl/core/types";
+```
+
+## Custom Mappers
+
+You can provide custom mappers to override how specific AST node types are transpiled:
+
+```javascript
+import {jspicl} from "@jspicl/core";
+
+const customMappers = {
+  Literal: ({raw}) => {
+    // Custom handling for literals
+    return raw === "null" ? "nil" : raw;
+  }
+};
+
+const result = jspicl(source, {customMappers});
+```
+
+Each mapper receives the AST node and an options object with:
+
+- `transpile` - Function to recursively transpile child nodes
+- `scope` - Object containing variable metadata and scope information
+
+## Supported Polyfills
+
+When your JavaScript uses methods without direct Lua equivalents, jspicl automatically detects and provides polyfill implementations:
+
+- Array methods: `map`, `filter`, `reduce`, `includes`, `findIndex`, `join`, `pop`, `sort`
+- String methods: `split`, `substr`, `substring`, `toString`
+- Object methods: `Object.assign`, `Object.keys`, `Object.values`, `Object.entries`
+
+The polyfills are returned separately so you can include them once at the top of your PICO-8 cartridge.
+
 #### ASTNode
 
 Represents a node in the syntax tree. All nodes contain at least a type property.
