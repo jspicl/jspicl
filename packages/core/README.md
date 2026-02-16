@@ -2,11 +2,6 @@
 
 The core transpiler library for jspicl. Converts JavaScript to PICO-8 Lua.
 
-<a href="https://www.npmjs.com/package/@jspicl/core" target="_blank" rel="noopener noreferrer">
-  <img alt="npm version" src="https://img.shields.io/npm/v/@jspicl/core.svg?style=for-the-badge" />
-  <img alt="License" src="https://img.shields.io/npm/l/@jspicl/core.svg?style=for-the-badge">
-</a>
-
 ## Installation
 
 ```bash
