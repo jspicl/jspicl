@@ -1,15 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-  <title>jspicl - {{title}}</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link href="/assets/css/main.css" rel="stylesheet" />
-  <link href="/assets/css/code-theme.css" rel="stylesheet" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&family=Raleway:wght@300&display=swap"
-    rel="stylesheet"
-  />
+  <head>
+    <title>jspicl - {{title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="/assets/css/main.css" rel="stylesheet" />
+    <link href="/assets/css/code-theme.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&family=Raleway:wght@300;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
   <body>
+    <header class="top-nav">
+      <div class="top-nav-inner">
+        <a href="/" class="logo">
+          <img src="/assets/images/logo-366x250.png" alt="jspicl" class="logo-image" />
+          <span class="logo-text">jspicl</span>
+        </a>
+        <div class="search-container">
+          <input type="text" id="search-input" placeholder="Search docs..." autocomplete="off" />
+          <div id="search-results" class="search-results"></div>
+        </div>
+        <nav class="top-nav-links">
+          {%- for item in navigation.topNav -%}
+          <a href="{{ item.url }}"{% if item.external %} target="_blank" rel="noopener noreferrer"{% endif %}>
+          {% if item.icon %}
+            <img src="{{item.icon}}" width="16" />
+          {% else %}
+            {{ item.title }}
+          {% endif %}
+          </a>
+          {%- endfor -%}
+        </nav>
+
+      </div>
+    </header>
     {{ content }}
+    <script>
+      const searchData = [
+        {%- for post in collections.sortedPosts -%}
+        {
+          title: "{{ post.data.title | escapeQuotes }}",
+          url: "{{ post.url }}",
+          content: "{{ post.templateContent | stripHtml | escapeQuotes | truncate: 500 }}"
+        }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ];
+    </script>
+    <script src="/assets/js/navigation.js"></script>
+    <script src="/assets/js/search.js"></script>
   </body>
 </html>

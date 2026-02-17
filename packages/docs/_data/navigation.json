@@ -1,0 +1,67 @@
+{
+  "topNav": [
+    {
+      "icon": "/assets/images/github-white.svg",
+      "url": "https://github.com/jspicl/jspicl",
+      "external": true
+    }
+  ],
+  "sidebar": [
+    {
+      "title": "Getting Started",
+      "items": [
+        {
+          "title": "Introduction",
+          "url": "/"
+        },
+        {
+          "title": "Getting Started",
+          "url": "/basic-guides/getting-started/"
+        }
+      ]
+    },
+    {
+      "title": "Advanced Guides",
+      "items": [
+        {
+          "title": "Using the API",
+          "url": "/advanced-guides/using-api/"
+        },
+        {
+          "title": "Customized Transpilation",
+          "url": "/advanced-guides/customized-transpilation/"
+        }
+      ]
+    },
+    {
+      "title": "Examples & Migration",
+      "items": [
+        {
+          "title": "Example Projects",
+          "url": "/example-projects/"
+        },
+        {
+          "title": "Migration Guide",
+          "url": "/migration-guide/"
+        },
+        {
+          "title": "Troubleshooting",
+          "url": "/troubleshooting/"
+        }
+      ]
+    },
+    {
+      "title": "Reference",
+      "items": [
+        {
+          "title": "API Reference",
+          "url": "/reference/api/"
+        },
+        {
+          "title": "CLI Reference",
+          "url": "/reference/cli/"
+        }
+      ]
+    }
+  ]
+}

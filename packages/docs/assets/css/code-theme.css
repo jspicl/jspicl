@@ -30,6 +30,7 @@ pre[class*="language-"] {
   -moz-hyphens: none;
   -ms-hyphens: none;
   hyphens: none;
+  white-space: pre-wrap;
 }
 
 /* Code blocks */

@@ -5,16 +5,23 @@ layout: main-layout.liquid
 <div class="post">
   <aside class="sidebar">
     <input id="hamburger" name="hamburger" type="checkbox">
+
     <label class="hamburger-label" for="hamburger">
       <div class="hamburger-icon"></div>
     </label>
-    <nav>
-      {%- for post in collections.sortedPosts -%}
-      <a
-        href="{{ post.url }}"
-        class="{% if page.url == post.url %}active{% endif %}"
-        >{{ post.data.title }}</a
-      >
+    <nav class="sidebar-nav">
+      {%- for section in navigation.sidebar -%}
+      <div class="nav-section">
+        <div class="nav-section-header">{{ section.title }}</div>
+        <div class="nav-section-items">
+          {%- for item in section.items -%}
+          <a href="{{ item.url }}"
+             class="nav-item{% if page.url == item.url %} active{% endif %}">
+            {{ item.title }}
+          </a>
+          {%- endfor -%}
+        </div>
+      </div>
       {%- endfor -%}
     </nav>
   </aside>
