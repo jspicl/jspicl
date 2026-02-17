@@ -11,7 +11,25 @@ module.exports = function (config) {
       Prism.languages["js-with-tab"] = Prism.languages.js;
     }
   });
+
+  // Passthrough copy for assets (CSS, images, JS)
   config.addPassthroughCopy("assets");
+
+  // Filter to strip HTML and create search excerpts
+  config.addFilter("stripHtml", function (content) {
+    if (!content) return "";
+    return content
+      .replace(/<[^>]*>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  });
+
+  // Escape quotes for JSON embedding
+  config.addFilter("escapeQuotes", function (str) {
+    if (!str) return "";
+    return str.replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\n/g, " ");
+  });
+
   config.addCollection("sortedPosts", function (collection) {
     return collection.getFilteredByGlob("**/*.md").sort(function (a, b) {
       const nameA = a.data.sort;
