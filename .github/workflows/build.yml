@@ -26,25 +26,7 @@ jobs:
       - name: Lint
         run: yarn lint
 
-  test:
-    runs-on: ${{vars.RUNNER}}
-
-    strategy:
-      matrix:
-        node-version: ["${{ vars.NODE_LTS }}", "${{ vars.NODE_LATEST}}"]
-
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Manage dependencies
-        uses: ./.github/actions/dependencies
-        with:
-          nodeVersion: ${{ matrix.node-version }}
-
-      - name: Test
-        run: yarn test
-
-  build:
+  build-and-test:
     runs-on: ${{vars.RUNNER}}
 
     strategy:
@@ -61,3 +43,6 @@ jobs:
 
       - name: Build
         run: yarn build
+
+      - name: Test
+        run: yarn test
