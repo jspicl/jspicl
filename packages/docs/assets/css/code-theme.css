@@ -45,14 +45,14 @@ code[class*="language-"] * {
   font-family: "Fira Code";
 }
 
-:not(pre)>code[class*="language-"],
+:not(pre) > code[class*="language-"],
 pre[class*="language-"] {
   background-color: transparent !important;
   background-image: linear-gradient(to bottom, #2a2139 75%, #34294f);
 }
 
 /* Inline code */
-:not(pre)>code[class*="language-"] {
+:not(pre) > code[class*="language-"] {
   padding: 0.1em;
   border-radius: 0.3em;
   white-space: normal;
@@ -184,7 +184,7 @@ pre[class*="language-"] {
   position: relative;
 }
 
-pre[class*="language-"]>code {
+pre[class*="language-"] > code {
   overflow: auto;
   display: block;
 }

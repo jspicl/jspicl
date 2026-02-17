@@ -140,16 +140,16 @@ a[href^="http"] {
   bottom: -8px;
 }
 
-#hamburger:checked+.hamburger-label>.hamburger-icon {
+#hamburger:checked + .hamburger-label > .hamburger-icon {
   background-color: transparent;
 }
 
-#hamburger:checked+.hamburger-label>.hamburger-icon::before {
+#hamburger:checked + .hamburger-label > .hamburger-icon::before {
   top: 0;
   transform: rotate(225deg);
 }
 
-#hamburger:checked+.hamburger-label>.hamburger-icon::after {
+#hamburger:checked + .hamburger-label > .hamburger-icon::after {
   bottom: 0;
   transform: rotate(-225deg);
 }
@@ -327,7 +327,7 @@ a[href^="http"] {
     z-index: 1;
   }
 
-  .sidebar>nav {
+  .sidebar > nav {
     background-image: linear-gradient(to bottom right, #2a2139 35%, #34294f);
     opacity: 0;
     pointer-events: none;
@@ -340,12 +340,12 @@ a[href^="http"] {
     transition: opacity 200ms ease-out;
   }
 
-  #hamburger:checked~nav {
+  #hamburger:checked ~ nav {
     opacity: 1;
     pointer-events: all;
   }
 
-  .post>.content {
+  .post > .content {
     padding: 20px;
   }
 }
@@ -369,7 +369,7 @@ a[href^="http"] {
     border-right: 1px solid rgba(0, 0, 0, 0.05);
   }
 
-  .sidebar>nav {
+  .sidebar > nav {
     position: sticky;
     top: 80px;
     width: 100%;
@@ -377,7 +377,7 @@ a[href^="http"] {
     flex-direction: column;
   }
 
-  .post>.content {
+  .post > .content {
     min-height: 100vh;
     padding: 40px 60px;
     max-width: 1024px;
@@ -444,7 +444,9 @@ a[href^="http"] {
   text-decoration: none;
   padding: 8px 12px;
   border-radius: 4px;
-  transition: background-color 0.2s, text-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    text-shadow 0.2s;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -482,7 +484,9 @@ a[href^="http"] {
   color: #fdfdfd;
   font-size: 14px;
   font-family: inherit;
-  transition: border-color 0.2s, width 0.2s;
+  transition:
+    border-color 0.2s,
+    width 0.2s;
 }
 
 #search-input::placeholder {
@@ -582,7 +586,9 @@ a[href^="http"] {
   font-size: 13px;
   color: #fdfdfd;
   text-decoration: none;
-  transition: background-color 0.15s, padding-left 0.15s;
+  transition:
+    background-color 0.15s,
+    padding-left 0.15s;
   border-left: 3px solid transparent;
 }
 
@@ -620,7 +626,9 @@ a[href^="http"] {
   width: 100%;
   height: 2px;
   background-color: #fdfdfd;
-  transition: transform 0.3s, opacity 0.3s;
+  transition:
+    transform 0.3s,
+    opacity 0.3s;
 }
 
 .top-nav.menu-open .mobile-nav-toggle span:nth-child(1) {
@@ -689,7 +697,7 @@ body {
     top: 60px;
   }
 
-  .sidebar>nav {
+  .sidebar > nav {
     height: calc(100vh - 120px);
   }
 }
