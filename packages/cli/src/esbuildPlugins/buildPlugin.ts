@@ -38,6 +38,7 @@ export const buildPlugin = (options: BuildPluginOptions): Plugin => ({
 
       const jsContent = fs.readFileSync(jsOutput, "utf-8");
       const transpiledSource = transpile(jsContent, config);
+      console.log(fs.readFileSync(output, "utf-8"));
       const cartridgeSections = getPicoSectionsFromCartridge(output);
       const gfxSection = await getSpritesheetFromImage(spritesheetImagePath);
 

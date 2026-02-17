@@ -10,8 +10,7 @@
   ],
   "scripts": {
     "bump": "yarn workspaces foreach --all --topological --no-private version",
-    "release": "yarn workspaces foreach --all --topological --no-private npm publish",
-    "prerelease": "yarn build && yarn test",
+    "release": "yarn prerelease && yarn workspaces foreach --all --topological --no-private npm publish",
     "build": "yarn workspaces foreach -A --topological run build",
     "clean": "yarn workspaces foreach -A run clean",
     "test": "vitest run",
@@ -20,8 +19,8 @@
     "prettier": "prettier --write ."
   },
   "devDependencies": {
-    "prettier": "^3.4.0",
-    "vitest": "^4.0.15"
+    "prettier": "^3.8.1",
+    "vitest": "^4.0.18"
   },
   "packageManager": "yarn@4.6.0",
   "engines": {

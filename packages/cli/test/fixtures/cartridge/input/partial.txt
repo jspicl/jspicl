@@ -1,15 +1,15 @@
 pico-8 cartridge // http://www.pico-8.com
 version 8
 __lua__
-this section is ignored and not reused
+print('test')
 __gfx__
-this section is ignored and not reused
+abcdef
 __gff__
-2
+123456
 __map__
-3
+fedcba
 __sfx__
-4
+999999
 __music__
-5
+888888
 
