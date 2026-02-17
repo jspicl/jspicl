@@ -43,7 +43,10 @@ local a = 1`;
       }
     });
     const expected = fs.readFileSync(
-      path.join(__dirname, "../test/fixtures/transpile/expected/customPolyfill.txt"),
+      path.join(
+        __dirname,
+        "../test/fixtures/transpile/expected/customPolyfill.txt"
+      ),
       "utf8"
     );
     expect(lua).toEqual(expected);

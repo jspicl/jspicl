@@ -29,7 +29,10 @@ describe("generateCartridgeContent", () => {
       music: "00"
     });
     const expected = fs.readFileSync(
-      path.join(__dirname, "../test/fixtures/cartridge/expected/allSections.txt"),
+      path.join(
+        __dirname,
+        "../test/fixtures/cartridge/expected/allSections.txt"
+      ),
       "utf8"
     );
     expect(result).toEqual(expected);
@@ -53,7 +56,10 @@ describe("generateCartridgeContent", () => {
       music: ""
     });
     const expected = fs.readFileSync(
-      path.join(__dirname, "../test/fixtures/cartridge/expected/partialSections.txt"),
+      path.join(
+        __dirname,
+        "../test/fixtures/cartridge/expected/partialSections.txt"
+      ),
       "utf8"
     );
     expect(result).toEqual(expected);
