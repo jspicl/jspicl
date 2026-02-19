@@ -4,6 +4,7 @@
     <title>jspicl - {{title}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="/assets/css/main.css" rel="stylesheet" />
     <link href="/assets/css/code-theme.css" rel="stylesheet" />
     <link
@@ -12,12 +13,13 @@
     />
   </head>
   <body>
+    <input id="hamburger" name="hamburger" type="checkbox">
     <header class="top-nav">
-      <div class="top-nav-inner">
-        <a href="/" class="logo">
+      <a href="/" class="logo">
           <img src="/assets/images/logo-366x250.png" alt="jspicl" class="logo-image" />
           <span class="logo-text">jspicl</span>
         </a>
+      <div class="top-nav-inner">
         <div class="search-container">
           <input type="text" id="search-input" placeholder="Search docs..." autocomplete="off" />
           <div id="search-results" class="search-results"></div>
@@ -34,6 +36,9 @@
           {%- endfor -%}
         </nav>
 
+        <label class="hamburger-label" for="hamburger">
+          <div class="hamburger-icon"></div>
+        </label>
       </div>
     </header>
     {{ content }}

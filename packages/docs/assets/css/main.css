@@ -75,7 +75,7 @@ a[href^="http"] {
   cursor: pointer;
   display: flex;
   align-items: start;
-  padding: 3px 3px 3px 24px;
+  padding: 3px 3px 3px 32px;
   font-size: 13px;
   text-decoration: none;
   color: #fdfdfd;
@@ -140,16 +140,16 @@ a[href^="http"] {
   bottom: -8px;
 }
 
-#hamburger:checked + .hamburger-label > .hamburger-icon {
+#hamburger:checked ~ .top-nav .hamburger-label > .hamburger-icon {
   background-color: transparent;
 }
 
-#hamburger:checked + .hamburger-label > .hamburger-icon::before {
+#hamburger:checked ~ .top-nav .hamburger-label > .hamburger-icon::before {
   top: 0;
   transform: rotate(225deg);
 }
 
-#hamburger:checked + .hamburger-label > .hamburger-icon::after {
+#hamburger:checked ~ .top-nav .hamburger-label > .hamburger-icon::after {
   bottom: 0;
   transform: rotate(-225deg);
 }
@@ -322,8 +322,7 @@ a[href^="http"] {
   .sidebar {
     justify-content: flex-end;
     position: sticky;
-    top: 0;
-    height: 60px;
+    top: 60px;
     z-index: 1;
   }
 
@@ -340,7 +339,7 @@ a[href^="http"] {
     transition: opacity 200ms ease-out;
   }
 
-  #hamburger:checked ~ nav {
+  #hamburger:checked ~ .post .sidebar-nav {
     opacity: 1;
     pointer-events: all;
   }
@@ -396,16 +395,17 @@ a[href^="http"] {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   z-index: 100;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  padding: 0 16px;
 }
 
 .top-nav-inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: end;
   height: 100%;
-  max-width: 1400px;
+  width: 100%;
   margin: 0 auto;
-  padding: 0 20px;
 }
 
 .logo {
@@ -568,7 +568,7 @@ a[href^="http"] {
 }
 
 .nav-section-header {
-  padding: 12px 18px 4px;
+  padding: 12px 20px 4px;
   color: rgba(255, 255, 255, 0.7);
   font-size: 11px;
   font-weight: 700;
@@ -648,6 +648,18 @@ body {
   padding-top: 60px;
 }
 
+@media (min-width: 1024px) {
+  .logo,
+  .sidebar {
+    max-width: 300px;
+    width: 100%;
+  }
+
+  .top-nav-inner {
+    max-width: 944px;
+  }
+}
+
 /* ===== RESPONSIVE ADJUSTMENTS ===== */
 @media (max-width: 1024px) {
   .top-nav-links {
@@ -692,13 +704,8 @@ body {
     width: 100%;
   }
 
-  /* Adjust sidebar positioning */
-  .sidebar {
-    top: 60px;
-  }
-
   .sidebar > nav {
-    height: calc(100vh - 120px);
+    height: calc(100vh - 60px);
   }
 }
 
