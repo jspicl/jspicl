@@ -4,6 +4,7 @@ import fs from "node:fs";
 import {createPico8Launcher} from "../createPico8Launcher.js";
 import type {Config} from "../types.js";
 import {logToFile} from "../logging.js";
+import {HOTRELOAD_ID} from "../constants.js";
 
 type HotReloadPluginOptions = {
   config: Config;
@@ -25,7 +26,7 @@ export const hotReloadPlugin = (options: HotReloadPluginOptions): Plugin => ({
       const hotReloadScript = `
 local shouldreload = false
 function hotreload()
-  cartdata("${options.config.picoOptions?.cartDataId || "jspicl_hotreload"}")
+  cartdata("${options.config.picoOptions?.cartDataId || HOTRELOAD_ID}")
   shouldreload=peek(0x5eff - 3) == 1
   if shouldreload then
     poke(0x5eff - 3, 0)

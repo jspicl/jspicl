@@ -1,6 +1,38 @@
-import path from "node:path";
 import type {Options} from "yargs";
-import type {CommandLineOptions, Config} from "./types.js";
+import type {
+  CommandLineOptions,
+  Config,
+  PicoOptionsMatrix,
+  SupportedPlatforms
+} from "./types.js";
+import {HOTRELOAD_ID} from "./constants.js";
+import {resolvePath} from "./utils.js";
+import merge from "lodash.merge";
+
+const osMatrix: PicoOptionsMatrix = {
+  win32: {
+    executablePath: `"C:\\Program Files (x86)\\PICO-8\\pico8.exe"`
+  },
+  darwin: {
+    executablePath: "/Applications/PICO-8.app/Contents/MacOS/pico8",
+    cartDataPath: "~/Library/Application Support/pico-8/cdata/"
+  },
+  linux: {
+    executablePath: "~/pico-8/pico8",
+    cartDataPath: "~/.lexaloffle/pico-8/cdata/"
+  }
+};
+
+const platform = process.platform as SupportedPlatforms;
+
+const defaultConfig: Partial<Config> = {
+  jsOutput: "build/jsOutput.js",
+  picoOptions: {
+    cartDataId: HOTRELOAD_ID,
+    cartDataPath: osMatrix[platform].cartDataPath,
+    executablePath: osMatrix[platform].executablePath
+  }
+};
 
 export const cliArguments: Record<keyof CommandLineOptions, Options> = {
   watch: {
@@ -14,24 +46,23 @@ export const cliArguments: Record<keyof CommandLineOptions, Options> = {
     type: "string",
     alias: "c",
     requiresArg: true,
-    default: {
-      jsOutput: "build/jsOutput.js"
-    } as Config,
     coerce: async (configPath: string) => {
-      const configDir = path.dirname(configPath);
-      const configModule = await import(path.resolve(configPath));
+      const configModule = await import(resolvePath(configPath));
+      const config: Config = merge({}, defaultConfig, configModule.default);
 
-      const config: Config = configModule.default;
+      config.jsOutput = resolvePath(config.jsOutput);
 
-      config.jsOutput = path.resolve(configDir, config.jsOutput);
       if (config.luaOutput) {
-        config.luaOutput = path.resolve(configDir, config.luaOutput);
+        config.luaOutput = resolvePath(config.luaOutput);
       }
 
       if (config.spritesheetImagePath) {
-        config.spritesheetImagePath = path.resolve(
-          configDir,
-          config.spritesheetImagePath
+        config.spritesheetImagePath = resolvePath(config.spritesheetImagePath);
+      }
+
+      if (config.picoOptions?.cartDataPath) {
+        config.picoOptions.cartDataPath = resolvePath(
+          config.picoOptions.cartDataPath
         );
       }
 
