@@ -1,6 +1,7 @@
 ---
 layout: post.liquid
 title: Getting Started
+description: Install the jspicl CLI and build your first PICO-8 game in JavaScript. Includes setup, configuration, and live reload.
 sort: 1.1
 ---
 

@@ -1,6 +1,7 @@
 ---
 layout: post.liquid
 title: Custom Polyfill Transforms
+description: Customize jspicl polyfill output. Replace implementations, add comments, or filter unused polyfills.
 sort: 5.3
 ---
 

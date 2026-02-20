@@ -1,6 +1,7 @@
 ---
 layout: post.liquid
 title: Supported Features
+description: JavaScript features supported by jspicl. Includes polyfills for arrays, strings, objects, and Math methods.
 sort: 4.3
 ---
 

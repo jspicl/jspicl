@@ -1,6 +1,7 @@
 ---
 layout: post.liquid
 title: Introduction
+description: jspicl is a JavaScript to PICO-8 Lua transpiler. Write PICO-8 games in JavaScript with hot reload, PNG spritesheets, and modern tooling.
 sort: 1
 ---
 
@@ -9,7 +10,7 @@ sort: 1
 **jspicl** is a JavaScript to <a href="https://www.lexaloffle.com/pico-8.php" target="_blank" rel="noopener">PICO-8</a> Lua transpiler.
 It enables you to develop PICO-8 games in JavaScript by creating an AST out of the JavaScript code and then transpiling it down to the Lua subset that PICO-8 supports.
 
-## Choose Your Path
+<h2 class="subheading">Choose Your Path</h2>
 
 <div class="link-list">
   <a class="link-item" href="/reference/cli">
@@ -28,7 +29,7 @@ It enables you to develop PICO-8 games in JavaScript by creating an AST out of t
   </a>
 </div>
 
-<div class="subheading">Guides</div>
+<h2 class="subheading">Guides</h2>
 <div class="link-list">
   <a class="link-item" href="/basic-guides/getting-started">
     <img src="/assets/images/repo.svg" alt="Basic guides" />
@@ -54,7 +55,7 @@ It enables you to develop PICO-8 games in JavaScript by creating an AST out of t
     </span>
   </a>
 </div>
-<div class="subheading">Resources</div>
+<h2 class="subheading">Resources</h2>
 <div class="link-list">
   <a
     class="link-item"

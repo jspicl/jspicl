@@ -1,6 +1,7 @@
 ---
 layout: post.liquid
 title: Example Projects
+description: Sample PICO-8 games and starter templates built with jspicl. Includes Mario, Megaman, and minimal starter projects.
 sort: 3
 ---
 

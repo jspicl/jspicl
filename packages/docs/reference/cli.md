@@ -1,6 +1,7 @@
 ---
 layout: post.liquid
 title: Reference - CLI
+description: Complete CLI reference for @jspicl/cli. Config options, watch mode, hot reload, spritesheet setup, and PICO-8 integration.
 sort: 4.2
 ---
 

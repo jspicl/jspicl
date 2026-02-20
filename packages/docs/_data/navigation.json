@@ -51,23 +51,6 @@
       ]
     },
     {
-      "title": "Reference",
-      "items": [
-        {
-          "title": "API Reference",
-          "url": "/reference/api/"
-        },
-        {
-          "title": "CLI Reference",
-          "url": "/reference/cli/"
-        },
-        {
-          "title": "Supported Features",
-          "url": "/reference/supported-features/"
-        }
-      ]
-    },
-    {
       "title": "Recipes",
       "items": [
         {
@@ -81,6 +64,23 @@
         {
           "title": "Custom Polyfill Transforms",
           "url": "/recipes/polyfill-transform/"
+        }
+      ]
+    },
+    {
+      "title": "Reference",
+      "items": [
+        {
+          "title": "API Reference",
+          "url": "/reference/api/"
+        },
+        {
+          "title": "CLI Reference",
+          "url": "/reference/cli/"
+        },
+        {
+          "title": "Supported Features",
+          "url": "/reference/supported-features/"
         }
       ]
     }

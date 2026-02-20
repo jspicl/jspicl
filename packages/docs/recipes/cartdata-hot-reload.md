@@ -1,6 +1,7 @@
 ---
 layout: post.liquid
 title: Cartdata with Hot Reload
+description: Use PICO-8 cartdata for save games while keeping jspicl hot reload working. Covers slot reservation and configuration.
 sort: 5.2
 ---
 

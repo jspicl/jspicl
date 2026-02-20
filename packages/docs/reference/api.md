@@ -1,6 +1,7 @@
 ---
 layout: post.liquid
 title: Reference - API
+description: Complete API reference for @jspicl/core. Function signatures, options, output types, and custom mappers.
 sort: 4.1
 ---
 

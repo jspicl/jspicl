@@ -1,6 +1,7 @@
 ---
 layout: post.liquid
 title: Debugging with printh
+description: Output debug messages from PICO-8 to your terminal using printh and pipeOutputToConsole.
 sort: 5.1
 ---
 
