@@ -1,6 +1,7 @@
 ---
 layout: post.liquid
 title: Reference - CLI
+description: Complete CLI reference for @jspicl/cli. Config options, watch mode, hot reload, spritesheet setup, and PICO-8 integration.
 sort: 4.2
 ---
 
@@ -57,7 +58,7 @@ export default config;
 
 | Name                   | Type     | Required | Description                                         |
 | ---------------------- | -------- | -------- | --------------------------------------------------- |
-| `spritesheetImagePath` | string   | Yes      | Path to PNG spritesheet                             |
+| `spritesheetImagePath` | string   | Yes      | Path to PNG spritesheet (must be 128x128 pixels)    |
 | `jsOutput`             | string   | Yes      | Path to output bundled JavaScript (for debugging)   |
 | `includeBanner`        | boolean  | No       | Include jspicl info comment in output               |
 | `luaOutput`            | string   | No       | Path to output transpiled Lua (for debugging)       |
@@ -129,3 +130,29 @@ This applies for the spritesheet as well. Simply save your image and your change
 <video width="640" controls loop src="https://github.com/AgronKabashi/assets/raw/refs/heads/master/jspicl/hotreloading2.mp4"></video>
 
 **Note:** Automatic PICO-8 reload is supported on macOS and Linux. On Windows, PICO-8 will launch but you'll need to press Ctrl+R to reload manually.
+
+## Spritesheets
+
+Your spritesheet must be a **128x128 pixel PNG** image. The CLI will:
+
+1. Parse the PNG file
+2. Match each pixel to the closest PICO-8 palette color
+3. Embed the result in the cartridge's `__gfx__` section
+
+Use any image editor (Aseprite, Photoshop, GIMP, etc.) to create your sprites. When you save the file in watch mode, PICO-8 reloads automatically.
+
+## Cartridge Sections
+
+When building a cartridge, the CLI only modifies:
+
+- `__lua__` - Your transpiled game code
+- `__gfx__` - Your spritesheet
+
+All other PICO-8 sections are preserved if the output file already exists:
+
+- `__gff__` - Sprite flags
+- `__map__` - Map data
+- `__sfx__` - Sound effects
+- `__music__` - Music patterns
+
+This means you can edit sound effects and music directly in PICO-8, and the CLI won't overwrite them.

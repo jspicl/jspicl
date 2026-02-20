@@ -1,6 +1,7 @@
 ---
 layout: post.liquid
 title: Troubleshooting
+description: Common jspicl issues and solutions. Array indexing, token limits, and debugging tips.
 sort: 3.2
 ---
 

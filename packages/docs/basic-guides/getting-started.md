@@ -1,6 +1,7 @@
 ---
 layout: post.liquid
 title: Getting Started
+description: Install the jspicl CLI and build your first PICO-8 game in JavaScript. Includes setup, configuration, and live reload.
 sort: 1.1
 ---
 
@@ -41,9 +42,22 @@ export default config;
 Then create your game file:
 
 ```js
+// src/game.js
+function _init() {
+  x = 64;
+  y = 64;
+}
+
+function _update() {
+  if (btn(0)) x -= 1;
+  if (btn(1)) x += 1;
+  if (btn(2)) y -= 1;
+  if (btn(3)) y += 1;
+}
+
 function _draw() {
   cls();
-  print("hello world");
+  circfill(x, y, 4, 8);
 }
 ```
 
@@ -60,3 +74,57 @@ Assuming you have PICO-8 installed on your system, you should see the following:
 Any changes to the source code will reload PICO-8 automatically for you.
 
 **Note:** Automatic PICO-8 reload is supported on macOS and Linux. On Windows, PICO-8 will launch but you'll need to press Ctrl+R to reload manually.
+
+## What Gets Generated
+
+Your JavaScript is transpiled to PICO-8 Lua. The example above becomes:
+
+```lua
+function _init()
+  x = 64
+  y = 64
+end
+
+function _update()
+  if btn(0) then
+    x -= 1
+  end
+  if btn(1) then
+    x += 1
+  end
+  if btn(2) then
+    y -= 1
+  end
+  if btn(3) then
+    y += 1
+  end
+end
+
+function _draw()
+  cls()
+  circfill(x, y, 4, 8)
+end
+```
+
+The CLI embeds this code into a `.p8` cartridge file along with your spritesheet.
+
+## Adding a Spritesheet
+
+Create a **128x128 pixel PNG** image for your sprites:
+
+```typescript
+// jspicl.config.ts
+const config: Config = {
+  spritesheetImagePath: "assets/sprites.png", // Must be 128x128
+  jsOutput: "build/game.js",
+  showStats: true
+};
+```
+
+Use any image editor (Aseprite, Photoshop, GIMP, etc.). Colors are automatically matched to the PICO-8 palette.
+
+## Next Steps
+
+- [CLI Reference](/reference/cli/) - All config options
+- [Supported Features](/reference/supported-features/) - What JavaScript features work
+- [Example Projects](/example-projects/) - Full game templates

@@ -1,6 +1,7 @@
 ---
 layout: post.liquid
 title: Migration Guide
+description: Upgrade from jspicl v3 to v4. Covers package renames, config file changes, and breaking changes.
 sort: 3.1
 ---
 

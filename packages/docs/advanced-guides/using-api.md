@@ -1,6 +1,7 @@
 ---
 layout: post.liquid
 title: Using the API
+description: Use the @jspicl/core library to transpile JavaScript to PICO-8 Lua in your own build tools and pipelines.
 sort: 2.1
 ---
 
