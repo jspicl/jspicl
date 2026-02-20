@@ -76,6 +76,48 @@ export default config;
 | `cartDataPath`   | string | Path to PICO-8 cart data directory                        |
 | `cartDataId`     | string | Cart data ID for hot reload (default: "jspicl_hotreload") |
 
+## Debugging with printh
+
+When `pipeOutputToConsole` is enabled, any `printh()` calls in your PICO-8 code will output to the CLI's terminal. This is useful for debugging without cluttering the PICO-8 console.
+
+```typescript
+const config: Config = {
+  pipeOutputToConsole: true
+  // ...
+};
+```
+
+In your game code:
+
+```js
+printh("Player position: " + player.x + ", " + player.y);
+```
+
+The output will appear in your terminal where the CLI is running.
+
+## Hot Reload and Cartdata
+
+The CLI uses PICO-8's `cartdata()` mechanism to achieve hot reloading during watch mode. This allows your game to automatically refresh when you save changes.
+
+### Using Your Own Cartdata
+
+PICO-8 only allows **one `cartdata()` call per cart**. If you need to use cartdata yourself (for high scores, save data, etc.), the CLI can share the same cartdata slot.
+
+Configure `cartDataId` to match your game's cartdata ID:
+
+```typescript
+const config: Config = {
+  picoOptions: {
+    cartDataId: "mygame" // Must match your cartdata("mygame") call
+  }
+  // ...
+};
+```
+
+**Important:** The CLI reserves the last index (`dget(63)`) for hot reload signals. Avoid using this index in your game code.
+
+See the [Cartdata with Hot Reload](/recipes/cartdata-hot-reload/) recipe for a complete example.
+
 ## Watch Mode
 
 The CLI will listen for changes when the `--watch` option is passed.

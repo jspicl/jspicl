@@ -6,7 +6,13 @@ sort: 4.1
 
 # API Reference
 
-#### jspicl
+## Installation
+
+```bash
+npm install -D @jspicl/cli
+```
+
+## Usage
 
 Entry point for transpiling your JavaScript code.
 

@@ -95,8 +95,6 @@ for (let i = 1; i <= arr.length; i++) {
 
 If you need unsupported syntax, you can use `customMappers` to add support.
 
----
-
 ## Build Works But Game Crashes
 
 **Problem:** Cartridge generates but PICO-8 shows runtime errors.
