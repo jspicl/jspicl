@@ -34,7 +34,7 @@ export const buildPlugin = (options: BuildPluginOptions): Plugin => ({
         return;
       }
 
-      // console.clear();
+      console.clear();
 
       const jsContent = fs.readFileSync(jsOutput, "utf-8");
       const transpiledSource = transpile(jsContent, config);
