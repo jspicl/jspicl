@@ -60,6 +60,10 @@
         {
           "title": "CLI Reference",
           "url": "/reference/cli/"
+        },
+        {
+          "title": "Supported Features",
+          "url": "/reference/supported-features/"
         }
       ]
     },

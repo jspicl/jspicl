@@ -1,6 +1,8 @@
 # @jspicl/core
 
-The core transpiler library for jspicl. Converts JavaScript to PICO-8 Lua.
+The transpiler library that converts JavaScript to PICO-8 Lua. Use this to build custom tools, integrate into existing pipelines, or when you need fine-grained control over transpilation.
+
+> **Most users should use [@jspicl/cli](../cli)** - it handles bundling, transpiling, and cartridge generation in one step.
 
 ## Installation
 
@@ -22,8 +24,6 @@ function _init() {
 function _update() {
   if (btn(0)) x -= 1;
   if (btn(1)) x += 1;
-  if (btn(2)) y -= 1;
-  if (btn(3)) y += 1;
 }
 
 function _draw() {
@@ -34,10 +34,45 @@ function _draw() {
 
 const result = jspicl(javascript);
 console.log(result.code);
-// Output: Lua code ready for PICO-8
-
-console.log(result.polyfills);
-// Output: Any required polyfill implementations
 ```
 
-Visit [jspicl.github.io](https://jspicl.github.io/reference/api/) for detailed documentation.
+**Output:**
+
+```lua
+function _init()
+  x = 64
+  y = 64
+end
+
+function _update()
+  if btn(0) then
+    x -= 1
+  end
+  if btn(1) then
+    x += 1
+  end
+end
+
+function _draw()
+  cls()
+  circfill(x, y, 4, 8)
+end
+```
+
+## Advanced Usage
+
+Extend or replace transpilation behavior with custom mappers:
+
+```javascript
+const result = jspicl(javascript, {
+  customMappers: {
+    // Replace how while loops are transpiled
+    WhileStatement: ({body, test}, {transpile}) =>
+      `while ${transpile(test)} do\n${transpile(body)}\nend`
+  }
+});
+```
+
+## Documentation
+
+Visit [jspicl.github.io](https://jspicl.github.io/reference/api/) for the full API reference and customization guides.
