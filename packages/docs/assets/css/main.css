@@ -297,6 +297,10 @@ a[href^="http"] {
   margin-right: auto;
 }
 
+.content {
+  width: 100%;
+}
+
 @media (min-width: 620px) {
   .link-list {
     row-gap: 20px;

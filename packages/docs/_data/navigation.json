@@ -62,6 +62,23 @@
           "url": "/reference/cli/"
         }
       ]
+    },
+    {
+      "title": "Recipes",
+      "items": [
+        {
+          "title": "Debugging with printh",
+          "url": "/recipes/debugging-with-printh/"
+        },
+        {
+          "title": "Cartdata with Hot Reload",
+          "url": "/recipes/cartdata-hot-reload/"
+        },
+        {
+          "title": "Custom Polyfill Transforms",
+          "url": "/recipes/polyfill-transform/"
+        }
+      ]
     }
   ]
 }

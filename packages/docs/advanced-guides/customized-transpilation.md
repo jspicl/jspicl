@@ -66,3 +66,22 @@ const customMappers = {
 
 const {code} = jspicl(javascriptCode, {customMappers});
 ```
+
+## Polyfill Transform
+
+When using the CLI, you can customize how polyfills are output using the `polyfillTransform` option. This is useful when you need to modify the generated polyfill code before it's written to the cartridge.
+
+The `polyfillTransform` function receives a record where keys are polyfill names and values are their implementations:
+
+```typescript
+// jspicl.config.ts
+const config: Config = {
+  polyfillTransform: (polyfills) => {
+    // Modify the polyfill code as needed
+    return Object.values(polyfills).join("\n");
+  }
+  // ...
+};
+```
+
+See the [Custom Polyfill Transforms](/recipes/polyfill-transform/) recipe for practical examples.
