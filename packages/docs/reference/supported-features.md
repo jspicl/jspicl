@@ -13,11 +13,11 @@ This page lists the JavaScript features that jspicl supports and how they're tra
 
 ### Variables
 
-| JavaScript | Lua |
-|------------|-----|
-| `let x = 1` | `local x = 1` |
-| `const y = 2` | `local y = 2` |
-| `var z = 3` | `z = 3` (global) |
+| JavaScript    | Lua              |
+| ------------- | ---------------- |
+| `let x = 1`   | `local x = 1`    |
+| `const y = 2` | `local y = 2`    |
+| `var z = 3`   | `z = 3` (global) |
 
 ### Functions
 
@@ -50,14 +50,14 @@ All standard control flow is supported:
 
 ### Operators
 
-| JavaScript | Lua | Notes |
-|------------|-----|-------|
-| `+` (strings) | `..` | String concatenation |
-| `===`, `!==` | `==`, `~=` | Equality |
-| `&&`, `\|\|` | `and`, `or` | Logical |
-| `!` | `not` | Negation |
-| `%` | `%` | Modulo |
-| `**` | `^` | Exponentiation |
+| JavaScript    | Lua         | Notes                |
+| ------------- | ----------- | -------------------- |
+| `+` (strings) | `..`        | String concatenation |
+| `===`, `!==`  | `==`, `~=`  | Equality             |
+| `&&`, `\|\|`  | `and`, `or` | Logical              |
+| `!`           | `not`       | Negation             |
+| `%`           | `%`         | Modulo               |
+| `**`          | `^`         | Exponentiation       |
 
 ### Destructuring
 
@@ -79,58 +79,58 @@ When you use JavaScript methods that don't exist in Lua, jspicl provides polyfil
 
 ### Array Methods
 
-| Method | Description |
-|--------|-------------|
-| `arr.map(fn)` | Transform each element |
-| `arr.filter(fn)` | Keep elements matching predicate |
-| `arr.reduce(fn, init)` | Reduce to single value |
-| `arr.forEach(fn)` | Iterate without returning |
-| `arr.includes(val)` | Check if value exists |
-| `arr.findIndex(fn)` | Find index of matching element |
-| `arr.join(sep)` | Join elements into string |
-| `arr.push(val)` | Add element to end |
-| `arr.pop()` | Remove and return last element |
-| `arr.sort(fn)` | Sort elements (in-place) |
-| `arr.length` | Get array length (via `#arr`) |
+| Method                 | Description                      |
+| ---------------------- | -------------------------------- |
+| `arr.map(fn)`          | Transform each element           |
+| `arr.filter(fn)`       | Keep elements matching predicate |
+| `arr.reduce(fn, init)` | Reduce to single value           |
+| `arr.forEach(fn)`      | Iterate without returning        |
+| `arr.includes(val)`    | Check if value exists            |
+| `arr.findIndex(fn)`    | Find index of matching element   |
+| `arr.join(sep)`        | Join elements into string        |
+| `arr.push(val)`        | Add element to end               |
+| `arr.pop()`            | Remove and return last element   |
+| `arr.sort(fn)`         | Sort elements (in-place)         |
+| `arr.length`           | Get array length (via `#arr`)    |
 
 ### String Methods
 
-| Method | Description |
-|--------|-------------|
-| `str.split(sep)` | Split into array |
-| `str.substr(start, len)` | Extract substring by length |
-| `str.substring(start, end)` | Extract substring by indices |
-| `str.toString()` | Convert to string |
-| `String.fromCharCode(n)` | Character from code (uses `chr()`) |
+| Method                      | Description                        |
+| --------------------------- | ---------------------------------- |
+| `str.split(sep)`            | Split into array                   |
+| `str.substr(start, len)`    | Extract substring by length        |
+| `str.substring(start, end)` | Extract substring by indices       |
+| `str.toString()`            | Convert to string                  |
+| `String.fromCharCode(n)`    | Character from code (uses `chr()`) |
 
 ### Object Methods
 
-| Method | Description |
-|--------|-------------|
-| `Object.assign(target, source)` | Merge objects |
-| `Object.keys(obj)` | Get array of keys |
-| `Object.values(obj)` | Get array of values |
-| `Object.entries(obj)` | Get array of [key, value] pairs |
+| Method                          | Description                     |
+| ------------------------------- | ------------------------------- |
+| `Object.assign(target, source)` | Merge objects                   |
+| `Object.keys(obj)`              | Get array of keys               |
+| `Object.values(obj)`            | Get array of values             |
+| `Object.entries(obj)`           | Get array of [key, value] pairs |
 
 ### Math Methods
 
 These map directly to Lua/PICO-8 equivalents:
 
-| JavaScript | PICO-8 |
-|------------|--------|
-| `Math.abs(x)` | `abs(x)` |
-| `Math.floor(x)` | `flr(x)` |
-| `Math.ceil(x)` | `ceil(x)` |
+| JavaScript       | PICO-8      |
+| ---------------- | ----------- |
+| `Math.abs(x)`    | `abs(x)`    |
+| `Math.floor(x)`  | `flr(x)`    |
+| `Math.ceil(x)`   | `ceil(x)`   |
 | `Math.min(a, b)` | `min(a, b)` |
 | `Math.max(a, b)` | `max(a, b)` |
-| `Math.sqrt(x)` | `sqrt(x)` |
-| `Math.sin(x)` | `sin(x)` |
-| `Math.random()` | `rnd()` |
+| `Math.sqrt(x)`   | `sqrt(x)`   |
+| `Math.sin(x)`    | `sin(x)`    |
+| `Math.random()`  | `rnd()`     |
 
 ### Console
 
-| JavaScript | PICO-8 |
-|------------|--------|
+| JavaScript         | PICO-8        |
+| ------------------ | ------------- |
 | `console.log(msg)` | `printh(msg)` |
 
 ## Using Polyfills
