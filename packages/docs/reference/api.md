@@ -10,7 +10,7 @@ sort: 4.1
 ## Installation
 
 ```bash
-npm install -D @jspicl/cli
+npm install @jspicl/core
 ```
 
 ## Usage
@@ -23,9 +23,9 @@ function jspicl(source: string, options?: Options): Output;
 
 <ul class="argument-list">
   <li>
-    <code>root</code>
+    <code>source</code>
     <span>
-      Root node of your AST. Jspicl will traverse and transpile the entire hierarchy.
+      The JavaScript source code to transpile to Lua. Jspicl parses this code, converts it to an AST, and generates equivalent PICO-8 Lua code.
     </span>
   </li>
 
