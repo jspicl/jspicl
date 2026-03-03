@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "description": "jspicl monorepo - JavaScript to PICO-8 Lua transpiler",
+  "homepage": "https://jspicl.github.io",
   "license": "MIT",
   "author": "Agron Kabashi",
   "workspaces": [
