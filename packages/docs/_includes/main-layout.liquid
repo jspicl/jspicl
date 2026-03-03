@@ -1,11 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>jspicl - {{title}}</title>
+    <title>{{ title }} - jspicl</title>
+
+    {%- comment -%} Essential meta tags {%- endcomment -%}
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% if description %}<meta name="description" content="{{ description }}">{% endif %}
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <meta name="author" content="{{ site.author }}">
+    <meta name="theme-color" content="{{ site.themeColor }}">
+
+    {%- comment -%} Favicons {%- endcomment -%}
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
+
+    {%- comment -%} Canonical URL {%- endcomment -%}
+    <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+
+    {%- comment -%} Open Graph tags for social sharing {%- endcomment -%}
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ site.name }} - {{ site.tagline }}">
+    <meta property="og:title" content="{{ title }} | {{ site.name }}">
+    {% if description %}<meta property="og:description" content="{{ description }}">{% endif %}
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+    <meta property="og:image" content="{{ site.url }}{{ site.ogImage }}">
+    <meta property="og:locale" content="en_US">
+
+    {%- comment -%} Twitter Card tags {%- endcomment -%}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ title }} | {{ site.name }}">
+    {% if description %}<meta name="twitter:description" content="{{ description }}">{% endif %}
+    <meta name="twitter:image" content="{{ site.url }}{{ site.ogImage }}">
+
+    {%- comment -%} Structured data (JSON-LD) {%- endcomment -%}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "{{ title | escape }}",
+      {% if description %}"description": "{{ description | escape }}",{% endif %}
+      "url": "{{ site.url }}{{ page.url }}",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "{{ site.name }}",
+        "url": "{{ site.url }}",
+        "description": "{{ site.tagline }}"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "{{ site.name }}",
+        "url": "{{ site.url }}"
+      }
+    }
+    </script>
+
+    {%- comment -%} Fonts and styles {%- endcomment -%}
+
     <link href="/assets/css/main.css" rel="stylesheet" />
     <link href="/assets/css/code-theme.css" rel="stylesheet" />
     <link
@@ -17,7 +71,7 @@
     <input id="hamburger" name="hamburger" type="checkbox">
     <header class="top-nav">
       <a href="/" class="logo">
-          <img src="/assets/images/logo-366x250.png" alt="jspicl" class="logo-image" />
+          <img src="/assets/images/logo-366x250.png" alt="jspicl - JavaScript to PICO-8 Transpiler" class="logo-image" />
           <span class="logo-text">jspicl</span>
         </a>
       <div class="top-nav-inner">
@@ -29,7 +83,7 @@
           {%- for item in navigation.topNav -%}
           <a href="{{ item.url }}"{% if item.external %} target="_blank" rel="noopener noreferrer"{% endif %}>
           {% if item.icon %}
-            <img src="{{item.icon}}" width="16" />
+            <img src="{{item.icon}}" width="16" alt="GitHub" />
           {% else %}
             {{ item.title }}
           {% endif %}

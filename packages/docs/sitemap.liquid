@@ -1,0 +1,15 @@
+---
+permalink: /sitemap.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  {%- for post in collections.sortedPosts %}
+  <url>
+    <loc>{{ site.url }}{{ post.url }}</loc>
+    <lastmod>{{ post.date | date: "%Y-%m-%d" }}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>{% if post.url == "/" %}1.0{% elsif post.url contains "getting-started" %}0.9{% elsif post.url contains "reference" %}0.8{% else %}0.7{% endif %}</priority>
+  </url>
+  {%- endfor %}
+</urlset>

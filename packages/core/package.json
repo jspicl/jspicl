@@ -41,9 +41,10 @@
     "trailingComma": "none",
     "useTabs": false
   },
+  "homepage": "https://jspicl.github.io",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AgronKabashi/jspicl"
+    "url": "git+https://github.com/jspicl/jspicl"
   },
   "keywords": [
     "pico-8",

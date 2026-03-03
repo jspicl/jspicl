@@ -1,0 +1,10 @@
+{
+  "name": "jspicl",
+  "tagline": "JavaScript to PICO-8 Transpiler",
+  "url": "https://jspicl.github.io",
+  "repo": "https://github.com/jspicl/jspicl",
+  "author": "Agron Kabashi",
+  "twitter": "@jspicl",
+  "ogImage": "/assets/images/og-image.png",
+  "themeColor": "#31284a"
+}

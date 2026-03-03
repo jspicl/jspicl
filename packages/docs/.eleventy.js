@@ -12,8 +12,9 @@ module.exports = function (config) {
     }
   });
 
-  // Passthrough copy for assets (CSS, images, JS)
+  // Passthrough copy for assets (CSS, images, JS) and static files
   config.addPassthroughCopy("assets");
+  config.addPassthroughCopy("robots.txt");
 
   // Filter to strip HTML and create search excerpts
   config.addFilter("stripHtml", function (content) {

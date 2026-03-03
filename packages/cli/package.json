@@ -36,6 +36,7 @@
     "trailingComma": "none",
     "useTabs": false
   },
+  "homepage": "https://jspicl.github.io",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jspicl/jspicl"

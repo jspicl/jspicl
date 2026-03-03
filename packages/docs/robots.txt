@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jspicl.github.io/sitemap.xml
