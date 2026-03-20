@@ -58,6 +58,17 @@
     }
     </script>
 
+    {%- comment -%} Google Analytics {%- endcomment -%}
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G19X98EHS6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-G19X98EHS6');
+    </script>
+
     {%- comment -%} Fonts and styles {%- endcomment -%}
 
     <link href="/assets/css/main.css" rel="stylesheet" />
