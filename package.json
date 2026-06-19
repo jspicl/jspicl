@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "prettier": "^3.8.1",
-    "vitest": "^4.0.18"
+    "vitest": "^4.1.0"
   },
   "packageManager": "yarn@4.6.0",
   "engines": {
