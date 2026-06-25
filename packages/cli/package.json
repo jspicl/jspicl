@@ -62,7 +62,7 @@
   "dependencies": {
     "@jspicl/core": "workspace:^",
     "chokidar": "^5.0.0",
-    "esbuild": "^0.25.0",
+    "esbuild": "^0.28.1",
     "lodash.debounce": "^4.0.8",
     "lodash.merge": "^4.6.2",
     "mkdirp": "^3.0.1",
